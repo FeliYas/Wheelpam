@@ -14,7 +14,7 @@ import {
     faUsers,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link, router, usePage } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import { Toaster } from 'react-hot-toast';
@@ -197,6 +197,9 @@ export default function Dashboard({ children }) {
 
     return (
         <div className="font-red-hat flex flex-row">
+            <Head>
+                <title>Administrador</title>
+            </Head>
             <Toaster />
             {/* Sidebar */}
             <AnimatePresence>

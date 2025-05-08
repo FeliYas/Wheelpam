@@ -13,7 +13,7 @@ export default function AdminLogin() {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        post(route('login'));
+        post(route('adm'));
     };
 
     return (

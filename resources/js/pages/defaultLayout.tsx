@@ -1,7 +1,9 @@
+import NavBar from '@/components/defaultLayout/navBar';
+
 export default function DefaultLayout({ children }) {
     return (
         <>
-            <div>default</div>
+            <NavBar />
             {children}
         </>
     );
