@@ -1,15 +1,16 @@
 import {
     faBars,
+    faBellConcierge,
     faBoxArchive,
     faChevronRight,
+    faCircleCheck,
     faEnvelope,
     faGear,
     faHouse,
     faImage,
-    faLock,
+    faMoneyCheckDollar,
     faNewspaper,
     faShield,
-    faStar,
     faUser,
     faUsers,
 } from '@fortawesome/free-solid-svg-icons';
@@ -49,8 +50,7 @@ export default function Dashboard({ children }) {
             href: '#',
             subHref: [
                 { title: 'Contenido', href: 'bannerportada' },
-                { title: 'Marcas', href: 'marcas' },
-                { title: 'Instagram', href: 'instagram' },
+                { title: 'Slider', href: 'slider' },
             ],
         },
         {
@@ -81,15 +81,20 @@ export default function Dashboard({ children }) {
             ],
         },
         {
-            id: 'calidad',
+            id: 'servicios',
             open: false,
-            title: 'Calidad',
-            icon: faStar,
-            href: 'calidad',
-            subHref: [
-                { title: 'Contenido', href: 'calidad' },
-                { title: 'Archivos', href: 'archivos' },
-            ],
+            title: 'Servicios',
+            icon: faBellConcierge,
+            href: '#',
+            subHref: [],
+        },
+        {
+            id: 'garantia',
+            open: false,
+            title: 'Garantia',
+            icon: faCircleCheck,
+            href: '#',
+            subHref: [],
         },
         {
             id: 'novedades',
@@ -103,6 +108,18 @@ export default function Dashboard({ children }) {
             ],
         },
         {
+            id: 'solicitud',
+            open: false,
+            title: 'Solicitud de presupuesto',
+            icon: faMoneyCheckDollar,
+            href: 'novedades',
+            subHref: [
+                { title: 'Banner', href: 'bannernovedades' },
+                { title: 'Contenido', href: 'novedades' },
+            ],
+        },
+
+        {
             id: 'contacto',
             open: false,
             title: 'Contacto',
@@ -110,28 +127,7 @@ export default function Dashboard({ children }) {
             href: 'contacto',
             subHref: [],
         },
-        {
-            id: 'zonaprivada',
-            open: false,
-            title: 'Zona Privada',
-            icon: faLock,
-            href: '#',
-            subHref: [
-                { title: 'Clientes', href: 'clientes' },
-                {
-                    title: 'Carrito',
-                    href: 'carrito',
-                },
-                {
-                    title: 'Mis Pedidos',
-                    href: 'pedidos',
-                },
-                {
-                    title: 'Lista de precios',
-                    href: 'listadeprecios',
-                },
-            ],
-        },
+
         {
             id: 'administradores',
             open: false,
@@ -154,7 +150,7 @@ export default function Dashboard({ children }) {
             open: false,
             title: 'Logos',
             icon: faImage,
-            href: 'logos',
+            href: 'dashboard/logos',
             subHref: [],
         },
     ]);

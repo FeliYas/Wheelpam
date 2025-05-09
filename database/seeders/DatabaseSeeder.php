@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Metadatos;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,6 +20,50 @@ class DatabaseSeeder extends Seeder
             'name' => 'pablo',
             'email' => 'pablo@pablo.com',
             'password' => bcrypt('pablopablo'),
+        ]);
+
+        Metadatos::factory()->createMany([
+            [
+                'title' => 'Inicio',
+                'description' => 'Inicio',
+                'keywords' => 'Inicio',
+            ],
+            [
+                'title' => 'Nosotros',
+                'description' => 'Nosotros',
+                'keywords' => 'Nosotros',
+            ],
+            [
+                'title' => 'Productos',
+                'description' => 'Productos',
+                'keywords' => 'Productos',
+            ],
+            [
+                'title' => 'Servicios',
+                'description' => 'Servicios',
+                'keywords' => 'Servicios',
+            ],
+            [
+                'title' => 'Garantia',
+                'description' => 'Garantia',
+                'keywords' => 'Garantia',
+            ],
+            [
+                'title' => 'Novedades',
+                'description' => 'Novedades',
+                'keywords' => 'Novedades',
+            ],
+            [
+                'title' => 'Solicitud de presupuesto',
+                'description' => 'Solicitud de presupuesto',
+                'keywords' => 'Solicitud de presupuesto',
+            ],
+            [
+                'title' => 'Contacto',
+                'description' => 'Contacto',
+                'keywords' => 'Contacto',
+            ],
+            // Puedes agregar más registros aquí
         ]);
     }
 }

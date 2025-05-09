@@ -1,10 +1,16 @@
 <?php
 
+use App\Models\Logos;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('home');
+
+    $logos = Logos::first();
+
+    return Inertia::render('home', [
+        'logos' => $logos
+    ]);
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {

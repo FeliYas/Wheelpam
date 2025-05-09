@@ -8,6 +8,9 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\LogosController;
+use App\Http\Controllers\MetadatosController;
+use App\Http\Controllers\SliderController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -53,4 +56,16 @@ Route::middleware('auth')->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
+
+    # Logos
+    Route::get('dashboard/logos', [LogosController::class, 'index'])->name('admin.logos');
+    Route::post('dashboard/logos', [LogosController::class, 'update'])->name('admin.logos.update');
+    # Metadatos
+    Route::get('dashboard/metadatos', [MetadatosController::class, 'index'])->name('admin.metadatos');
+    Route::post('dashboard/metadatos', [MetadatosController::class, 'update'])->name('admin.metadatos.update');
+    # Slider
+    Route::get('dashboard/slider', [SliderController::class, 'index'])->name('admin.slider');
+    Route::post('dashboard/slider/update', [SliderController::class, 'update'])->name('admin.slider.update');
+    Route::delete('dashboard/slider/destroy', [SliderController::class, 'destroy'])->name('admin.slider.destroy');
+    Route::post('dashboard/slider/store', [SliderController::class, 'store'])->name('admin.slider.store');
 });
