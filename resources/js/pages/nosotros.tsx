@@ -1,14 +1,13 @@
-import Slider from '@/components/home/slider';
 import { Head } from '@inertiajs/react';
 import DefaultLayout from './defaultLayout';
 
-export default function Home() {
+export default function Nosotros() {
     return (
         <DefaultLayout>
             <Head>
-                <title>Inicio</title>
+                <title>Nosotros</title>
             </Head>
-            <Slider />
+            <div>nosotros</div>
         </DefaultLayout>
     );
 }

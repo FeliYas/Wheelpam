@@ -1,147 +1,166 @@
 import SliderRow from '@/components/admin/sliderRow';
 import { useForm, usePage } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { useState } from 'react';
-import { Toaster, toast } from 'react-hot-toast';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
 import Dashboard from '../dashboard';
 
-export default function SliderAdmin() {
+export default function MarcasAdmin() {
     const { slider } = usePage().props;
 
-    const [createView, setCreateView] = useState(false);
-
-    const createForm = useForm({
+    const { data, setData, post, reset, errors } = useForm({
         order: '',
         title: '',
         subtitle: '',
-        media: '',
     });
 
-    const onSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
-        ev.preventDefault();
+    const [searchTerm, setSearchTerm] = useState('');
+    const [createView, setCreateView] = useState(false);
 
-        // Mostrar toast de carga
-        const loadingToast = toast.loading('Procesando solicitud...');
+    const handleSubmit = (e) => {
+        e.preventDefault();
 
-        createForm.post('store', {
+        post(route('admin.slider.store'), {
+            preserveScroll: true,
             onSuccess: () => {
-                // Actualizar el toast de carga a un toast de éxito
-                toast.dismiss(loadingToast);
-                toast.success('¡Registro creado correctamente!');
-
+                toast.success('Campo creado correctamente');
+                reset();
                 setCreateView(false);
-                createForm.reset();
             },
             onError: (errors) => {
-                // Actualizar el toast de carga a un toast de error
-                toast.dismiss(loadingToast);
-                toast.error('Error al crear el registro');
-
+                toast.error(`Error al crear campo: \n${Object.values(errors).join('\n')}`);
                 console.log(errors);
-                // No necesitamos hacer nada más aquí porque useForm maneja automáticamente
-                // los errores y los pone disponibles a través de createForm.errors
             },
         });
     };
 
     return (
         <Dashboard>
-            <div className="flex h-screen flex-col items-center gap-4 p-6">
-                <Toaster />
+            <div className="flex w-full flex-col p-6">
                 <AnimatePresence>
                     {createView && (
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="fixed top-0 left-0 z-50 flex h-screen w-screen items-center justify-center bg-black/50"
+                            className="fixed top-0 left-0 z-50 flex h-full w-full items-center justify-center bg-black/50 text-left"
                         >
-                            <form onSubmit={onSubmit} className="flex h-fit w-fit flex-col justify-around gap-3 rounded-md bg-white p-4" action="">
-                                <h2 className="py-5 text-[24px] font-bold">Crear Administrador</h2>
-                                <div className="flex flex-col gap-3">
-                                    <div className="flex flex-col gap-2">
-                                        <label htmlFor="user">Usuario</label>
+                            <form onSubmit={handleSubmit} method="POST" className="text-black">
+                                <div className="w-[500px] rounded-md bg-white p-4">
+                                    <h2 className="mb-4 text-2xl font-semibold">Crear Campo</h2>
+                                    <div className="flex flex-col gap-4">
+                                        <label htmlFor="ordennn">Orden</label>
                                         <input
-                                            value={createForm.data.name}
-                                            onChange={(ev) => createForm.setData('name', ev.target.value)}
-                                            className={`h-[45px] w-[328px] border pl-2 ${createForm.errors.name ? 'border-red-500' : ''}`}
-                                            type="text"
-                                            name="user"
-                                            id="user"
-                                        />
-                                        {createForm.errors.name && <div className="mt-1 text-sm text-red-500">{createForm.errors.name}</div>}
-                                    </div>
-
-                                    <div className="flex flex-col gap-2">
-                                        <label htmlFor="password">Contraseña</label>
-                                        <input
-                                            value={createForm.data.password}
-                                            onChange={(ev) => createForm.setData('password', ev.target.value)}
-                                            className={`h-[45px] w-[328px] border pl-2 ${createForm.errors.password ? 'border-red-500' : ''}`}
-                                            type="password"
-                                            name="password"
-                                            id="password"
-                                        />
-                                        {createForm.errors.password && <div className="mt-1 text-sm text-red-500">{createForm.errors.password}</div>}
-                                    </div>
-
-                                    <div className="flex flex-col gap-2">
-                                        <label htmlFor="password_confirmation">Confirmar Contraseña</label>
-                                        <input
-                                            value={createForm.data.password_confirmation}
-                                            onChange={(ev) => createForm.setData('password_confirmation', ev.target.value)}
-                                            className={`h-[45px] w-[328px] border pl-2 ${
-                                                createForm.errors.password_confirmation ? 'border-red-500' : ''
+                                            className={`focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline ${
+                                                errors.order ? 'outline-red-500' : ''
                                             }`}
-                                            type="password"
-                                            name="password_confirmation"
-                                            id="password_confirmation"
+                                            type="text"
+                                            name="ordennn"
+                                            id="ordennn"
+                                            onChange={(e) => setData('order', e.target.value)}
                                         />
-                                        {createForm.errors.password_confirmation && (
-                                            <div className="mt-1 text-sm text-red-500">{createForm.errors.password_confirmation}</div>
-                                        )}
-                                    </div>
-                                </div>
+                                        {errors.order && <p className="mt-1 text-xs text-red-500">{errors.order}</p>}
 
-                                <div className="flex flex-row justify-end gap-2">
-                                    <button
-                                        onClick={() => setCreateView(false)}
-                                        className="bg-primary-color my-5 self-center rounded-md px-2 py-1 text-white"
-                                        type="button"
-                                    >
-                                        Cancelar
-                                    </button>
-                                    <button className="bg-primary-color self-center rounded-md px-2 py-1 text-white" type="submit">
-                                        Registrar
-                                    </button>
+                                        <label htmlFor="nombree">
+                                            Titulo <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            className={`focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline ${
+                                                errors.title ? 'outline-red-500' : ''
+                                            }`}
+                                            type="text"
+                                            name="nombree"
+                                            id="nombree"
+                                            onChange={(e) => setData('title', e.target.value)}
+                                        />
+                                        {errors.title && <p className="mt-1 text-xs text-red-500">{errors.title}</p>}
+
+                                        <label htmlFor="subtitulo">
+                                            Sub-titulo <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            className={`focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline ${
+                                                errors.subtitle ? 'outline-red-500' : ''
+                                            }`}
+                                            type="text"
+                                            name="subtitulo"
+                                            id="subtitulo"
+                                            onChange={(e) => setData('subtitle', e.target.value)}
+                                        />
+                                        {errors.subtitle && <p className="mt-1 text-xs text-red-500">{errors.subtitle}</p>}
+
+                                        <label htmlFor="imagenn">Multimedia</label>
+                                        <span className="text-base font-normal">Resolucion recomendada: 501x181px</span>
+                                        <div className="flex flex-col">
+                                            <div className="flex flex-row">
+                                                <input
+                                                    type="file"
+                                                    name="imagen"
+                                                    id="imagenn"
+                                                    onChange={(e) => setData('media', e.target.files[0])}
+                                                    className="hidden"
+                                                />
+                                                <label
+                                                    className={`border-primary-color text-primary-color hover:bg-primary-color cursor-pointer rounded-md border px-2 py-1 transition duration-300 hover:text-white ${
+                                                        errors.media ? 'border-red-500 text-red-500' : ''
+                                                    }`}
+                                                    htmlFor="imagenn"
+                                                >
+                                                    Elegir Multimedia
+                                                </label>
+                                                <p className="self-center px-2">{data?.media?.name}</p>
+                                            </div>
+                                            {errors.media && <p className="mt-1 text-xs text-red-500">{errors.media}</p>}
+                                        </div>
+
+                                        <div className="flex justify-end gap-4">
+                                            <button
+                                                type="button"
+                                                onClick={() => setCreateView(false)}
+                                                className="border-primary-color text-primary-color hover:bg-primary-color rounded-md border px-2 py-1 transition duration-300 hover:text-white"
+                                            >
+                                                Cancelar
+                                            </button>
+                                            <button
+                                                type="submit"
+                                                className="bg-primary-color hover:text-primary-color hover:border-primary-color rounded-md border px-2 py-1 text-white transition duration-300 hover:border hover:bg-transparent"
+                                            >
+                                                Guardar
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </form>
                         </motion.div>
                     )}
                 </AnimatePresence>
-                <div className="border-primary-color flex w-full flex-row justify-between border-b-2 py-1">
-                    <h2 className="border-primary-color text-primary-color text-bold w-full text-2xl">Slider</h2>
-                    <button onClick={() => setCreateView(true)} className="bg-primary-color w-[300px] rounded-md px-2 py-1 text-white">
-                        Agregar a slider
-                    </button>
-                </div>
+                <div className="mx-auto flex w-full flex-col gap-3">
+                    <div className="flex h-fit w-full flex-row gap-5">
+                        <h2 className="border-primary-color text-primary-color text-bold w-full border-b-2 text-2xl">Slider</h2>
+                        <button
+                            onClick={() => setCreateView(true)}
+                            className="bg-primary-color w-[200px] rounded px-4 py-1 font-bold text-white hover:bg-red-500"
+                        >
+                            Crear Slider
+                        </button>
+                    </div>
 
-                <table className="w-full border text-left text-sm text-gray-500 rtl:text-right dark:text-gray-400">
-                    <thead className="bg-gray-300 text-sm font-medium text-black uppercase">
-                        <tr>
-                            <td className="text-center">ORDEN</td>
-                            <td className="text-center">TITULO</td>
-                            <td className="w-[400px] px-3 py-2 text-center">SUBTITULO</td>
-                            <td className="text-center">MULTIMEDIA</td>
-                            <td className="text-center">EDITAR</td>
-                        </tr>
-                    </thead>
-                    <tbody className="border">
-                        {slider.map((info) => (
-                            <SliderRow key={info.id} sliderObject={info} />
-                        ))}
-                    </tbody>
-                </table>
+                    <div className="flex w-full justify-center">
+                        <table className="w-full border text-left text-sm text-gray-500 rtl:text-right dark:text-gray-400">
+                            <thead className="bg-gray-300 text-sm font-medium text-black uppercase">
+                                <tr>
+                                    <td className="text-center">ORDEN</td>
+                                    <td className="text-center">TITULO</td>
+                                    <td className="text-center">SUBTITULO</td>
+                                    <td className="text-center">LINK</td>
+                                    <td className="w-[400px] px-3 py-2 text-center">MULTIMEDIA</td>
+                                    <td className="text-center">EDITAR</td>
+                                </tr>
+                            </thead>
+                            <tbody className="text-center">{slider?.map((slider) => <SliderRow key={slider.id} sliderObject={slider} />)}</tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </Dashboard>
     );

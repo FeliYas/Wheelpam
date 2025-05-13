@@ -28,7 +28,8 @@ class SliderController extends Controller
         $data = $request->validate([
             'order' => 'required|string',
             'title' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
+            'subtitle' => 'required|string|max:255',
+            'link' => 'sometimes|string|max:255',
             'media' => 'required|file',
         ]);
 
@@ -54,7 +55,8 @@ class SliderController extends Controller
         $data = $request->validate([
             'order' => 'sometimes|string',
             'title' => 'sometimes|string|max:255',
-            'description' => 'sometimes|string|max:255',
+            'subtitle' => 'sometimes|string|max:255',
+            'link' => 'sometimes|string|max:255',
             'media' => 'sometimes|file',
         ]);
 
@@ -72,7 +74,7 @@ class SliderController extends Controller
         }
 
         $slider->update($data);
-        return redirect()->back()->with('success', 'Slider updated successfully.');
+        return redirect()->back()->with('success', value: 'Slider updated successfully.');
     }
 
     /**

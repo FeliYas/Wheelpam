@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\NosotrosController;
 use App\Models\Logos;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -12,6 +13,8 @@ Route::get('/', function () {
         'logos' => $logos
     ]);
 })->name('home');
+
+Route::get('/nosotros', [NosotrosController::class, 'index']);
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {

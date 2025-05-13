@@ -27,8 +27,10 @@ export default function NavBar() {
     const defaultLinks = [
         { title: 'Nosotros', href: '/nosotros' },
         { title: 'Productos', href: '/productos' },
-        { title: 'Calidad', href: '/calidad' },
+        { title: 'Servicios', href: '/servicios' },
+        { title: 'Garantia', href: '/garantia' },
         { title: 'Novedades', href: '/novedades' },
+        { title: 'Solicitud de presupuesto', href: '/solicitud-de-presupuesto' },
         { title: 'Contacto', href: '/contacto' },
     ];
 
@@ -39,8 +41,8 @@ export default function NavBar() {
                     ? 'sticky shadow-md'
                     : 'fixed'
             } ${
-                scrolled || ziggy.location.includes('productos/') || ziggy.location.includes('busqueda') || ziggy.location.includes('privada')
-                    ? 'bg-white shadow-md'
+                scrolled || ziggy.location.includes('nosotros') || ziggy.location.includes('busqueda') || ziggy.location.includes('privada')
+                    ? 'bg-black shadow-md'
                     : 'bg-transparent'
             }`}
         >
@@ -50,8 +52,8 @@ export default function NavBar() {
                 </Link>
 
                 {/* Desktop Navigation */}
-                <div className="hidden flex-row items-center gap-7 md:flex">
-                    <div className="flex flex-row gap-7">
+                <div className="hidden h-full flex-row items-center gap-7 md:flex">
+                    <div className="flex h-full flex-row items-center gap-5">
                         {ziggy.location.includes('privada')
                             ? privateLinks.map((link, index) => (
                                   <Link
@@ -73,7 +75,7 @@ export default function NavBar() {
                                   <Link
                                       key={index}
                                       href={link.href}
-                                      className={`text-[15px] ${ziggy.location.includes(link.title.toLowerCase()) ? 'font-bold' : ''} ${
+                                      className={`flex h-full items-center text-[15px] ${ziggy.location.includes(link.title.toLowerCase()) ? 'border-primary-color border-b-3 font-bold' : ''} ${
                                           scrolled ||
                                           ziggy.location.includes('productos/') ||
                                           ziggy.location.includes('privada') ||
