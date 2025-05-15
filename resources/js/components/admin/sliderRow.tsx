@@ -4,6 +4,7 @@ import { useForm } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import MediaDisplayAdvanced from './mediaDisplayAdvanced';
 
 export default function SliderRow({ sliderObject }) {
     const [edit, setEdit] = useState(false);
@@ -50,10 +51,12 @@ export default function SliderRow({ sliderObject }) {
             <td className="align-middle">{sliderObject?.order}</td>
             <td className="align-middle">{sliderObject?.title}</td>
 
-            <td className="h-[90px]">asd</td>
-            <td className="align-middle">asd</td>
+            <td className="h-[90px]">{sliderObject?.subtitle}</td>
+            <td className="align-middle">{sliderObject?.link}</td>
 
-            <td className="align-middle">asd</td>
+            <td className="align-middle">
+                <MediaDisplayAdvanced mediaPath={sliderObject?.media} />
+            </td>
 
             <td className="w-[140px] text-center">
                 <div className="flex flex-row justify-center gap-3">
@@ -108,9 +111,7 @@ export default function SliderRow({ sliderObject }) {
                                         value={updateForm?.data?.subtitle}
                                         onChange={(e) => updateForm.setData('subtitle', e.target.value)}
                                     />
-                                    <label htmlFor="link">
-                                        Link <span className="text-red-500">*</span>
-                                    </label>
+                                    <label htmlFor="link">Link</label>
                                     <input
                                         className="focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline"
                                         type="text"

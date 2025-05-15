@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\ContenidoInicioController;
 use App\Http\Controllers\LogosController;
 use App\Http\Controllers\MetadatosController;
 use App\Http\Controllers\SliderController;
@@ -68,4 +69,8 @@ Route::middleware('auth')->group(function () {
     Route::post('dashboard/slider/update', [SliderController::class, 'update'])->name('admin.slider.update');
     Route::delete('dashboard/slider/destroy', [SliderController::class, 'destroy'])->name('admin.slider.destroy');
     Route::post('dashboard/slider/store', [SliderController::class, 'store'])->name('admin.slider.store');
+
+    # Contenido Inicio
+    Route::get('dashboard/contenido', [ContenidoInicioController::class, 'indexAdmin'])->name('admin.contenidoInicio');
+    Route::post('dashboard/contenido/update', [ContenidoInicioController::class, 'update'])->name('admin.contenidoInicio.update');
 });

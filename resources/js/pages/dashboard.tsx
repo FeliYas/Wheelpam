@@ -49,8 +49,8 @@ export default function Dashboard({ children }) {
             icon: faHouse,
             href: '#',
             subHref: [
-                { title: 'Contenido', href: 'bannerportada' },
-                { title: 'Slider', href: 'slider' },
+                { title: 'Contenido', href: '/dashboard/contenido' },
+                { title: 'Slider', href: '/dashboard/slider' },
             ],
         },
         {
@@ -142,7 +142,7 @@ export default function Dashboard({ children }) {
             open: false,
             title: 'Metadatos',
             icon: faGear,
-            href: 'metadatos',
+            href: '/dashboard/metadatos',
             subHref: [],
         },
         {
@@ -150,7 +150,7 @@ export default function Dashboard({ children }) {
             open: false,
             title: 'Logos',
             icon: faImage,
-            href: 'dashboard/logos',
+            href: '/dashboard/logos',
             subHref: [],
         },
     ]);

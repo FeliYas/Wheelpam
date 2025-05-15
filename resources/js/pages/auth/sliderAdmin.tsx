@@ -9,7 +9,6 @@ export default function MarcasAdmin() {
     const { slider } = usePage().props;
 
     const { data, setData, post, reset, errors } = useForm({
-        order: '',
         title: '',
         subtitle: '',
     });
@@ -88,8 +87,19 @@ export default function MarcasAdmin() {
                                             onChange={(e) => setData('subtitle', e.target.value)}
                                         />
                                         {errors.subtitle && <p className="mt-1 text-xs text-red-500">{errors.subtitle}</p>}
-
-                                        <label htmlFor="imagenn">Multimedia</label>
+                                        <label htmlFor="link">Link</label>
+                                        <input
+                                            className="focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline"
+                                            type="text"
+                                            name="link"
+                                            id="link"
+                                            value={data?.link}
+                                            onChange={(e) => setData('link', e.target.value)}
+                                        />
+                                        {errors?.link && <p className="mt-1 text-xs text-red-500">{errors?.link}</p>}
+                                        <label htmlFor="imagenn">
+                                            Multimedia<span className="text-red-500">*</span>
+                                        </label>
                                         <span className="text-base font-normal">Resolucion recomendada: 501x181px</span>
                                         <div className="flex flex-col">
                                             <div className="flex flex-row">
