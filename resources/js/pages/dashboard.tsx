@@ -49,8 +49,9 @@ export default function Dashboard({ children }) {
             icon: faHouse,
             href: '#',
             subHref: [
-                { title: 'Contenido', href: '/dashboard/contenido' },
                 { title: 'Slider', href: '/dashboard/slider' },
+                { title: 'Contenido', href: '/dashboard/contenido' },
+                { title: 'Marcas', href: '/dashboard/marcas' },
             ],
         },
         {
@@ -60,8 +61,9 @@ export default function Dashboard({ children }) {
             icon: faUsers,
             href: 'nosotros',
             subHref: [
-                { title: 'Contenido', href: 'nosotros' },
-                { title: 'Valores', href: 'valores' },
+                { title: 'Banner', href: '/dashboard/nosotros-banner' },
+                { title: 'Contenido', href: '/dashboard/nosotros' },
+                { title: 'Valores', href: '/dashboard/valores' },
             ],
         },
         {
@@ -71,6 +73,8 @@ export default function Dashboard({ children }) {
             icon: faBoxArchive,
             href: '#',
             subHref: [
+                { title: 'Banner', href: '/dashboard/productosbanner' },
+
                 { title: 'Categorias', href: 'categorias' },
 
                 {
@@ -86,7 +90,10 @@ export default function Dashboard({ children }) {
             title: 'Servicios',
             icon: faBellConcierge,
             href: '#',
-            subHref: [],
+            subHref: [
+                { title: 'Banner', href: '/dashboard/serviciosbanner' },
+                { title: 'Contenido', href: '/dashboard/servicios' },
+            ],
         },
         {
             id: 'garantia',
@@ -94,7 +101,10 @@ export default function Dashboard({ children }) {
             title: 'Garantia',
             icon: faCircleCheck,
             href: '#',
-            subHref: [],
+            subHref: [
+                { title: 'Banner', href: '/dashboard/garantia-banner' },
+                { title: 'Contenido', href: '/dashboard/garantia' },
+            ],
         },
         {
             id: 'novedades',
@@ -103,8 +113,8 @@ export default function Dashboard({ children }) {
             icon: faNewspaper,
             href: 'novedades',
             subHref: [
-                { title: 'Banner', href: 'bannernovedades' },
-                { title: 'Contenido', href: 'novedades' },
+                { title: 'Banner', href: '/dashboard/novedades-banner' },
+                { title: 'Contenido', href: '/dashboard/novedades' },
             ],
         },
         {
@@ -114,7 +124,7 @@ export default function Dashboard({ children }) {
             icon: faMoneyCheckDollar,
             href: 'novedades',
             subHref: [
-                { title: 'Banner', href: 'bannernovedades' },
+                { title: 'Banner', href: '/dashboard/solicitudbanner' },
                 { title: 'Contenido', href: 'novedades' },
             ],
         },
@@ -125,7 +135,10 @@ export default function Dashboard({ children }) {
             title: 'Contacto',
             icon: faEnvelope,
             href: 'contacto',
-            subHref: [],
+            subHref: [
+                { title: 'Banner', href: '/dashboard/banner-contacto' },
+                { title: 'Contenido', href: '/dashboard/contacto' },
+            ],
         },
 
         {

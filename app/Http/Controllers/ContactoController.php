@@ -12,54 +12,54 @@ class ContactoController extends Controller
      */
     public function index()
     {
-        //
+        $contactos = Contacto::first();
+        return inertia('auth/contactoAdmin', [
+            'contacto' => $contactos
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function contactoBanner()
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Contacto $contacto)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Contacto $contacto)
-    {
-        //
+        $contactos = Contacto::first();
+        return inertia('auth/contactoBanner', [
+            'contacto' => $contactos
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Contacto $contacto)
+    public function update(Request $request)
     {
-        //
-    }
+        $data = $request->validate([
+            'banner' => 'sometimes|file',
+            'email' => 'sometimes|email',
+            'instagram' => 'sometimes|string',
+            'whatsapp' => 'sometimes|string',
+            'facebook' => 'sometimes|string',
+            'youtube' => 'sometimes|string',
+            'linkedin' => 'sometimes|string',
+            'location' => 'sometimes|string',
+            'phone' => 'sometimes|string'
+        ]);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Contacto $contacto)
-    {
-        //
+        $contacto = Contacto::first();
+        // Check if the request has a file and store it
+        if ($request->hasFile('banner')) {
+            // Delete the old banner if it exists
+            if ($contacto->banner) {
+                $absolutePath = public_path('storage/' . $contacto->banner);
+                if (file_exists($absolutePath)) {
+                    unlink($absolutePath);
+                }
+            }
+            $data['banner'] = $request->file('banner')->store('images', 'public');
+        }
+
+
+        $contacto->update($data);
+
+        return redirect()->back()->with('success', 'Contacto updated successfully');
     }
 }

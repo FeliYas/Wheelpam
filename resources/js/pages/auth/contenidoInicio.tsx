@@ -47,7 +47,7 @@ export default function ContenidoInicio() {
                         </label>
                         <div className="mt-2 flex justify-between rounded-lg border shadow-lg">
                             <div className="h-[200px] w-1/2 bg-[rgba(0,0,0,0.2)]">
-                                <img className="h-full w-full rounded-md object-cover" src={contenidoInicio?.nosotros_image} alt="" />
+                                <img className="h-full w-full rounded-md object-contain" src={contenidoInicio?.nosotros_image} alt="" />
                             </div>
                             <div className="flex w-1/2 items-center justify-center">
                                 <div className="h-fit items-center self-center text-center">
@@ -104,7 +104,7 @@ export default function ContenidoInicio() {
                         </label>
                         <div className="mt-2 flex justify-between rounded-lg border shadow-lg">
                             <div className="h-[200px] w-1/2 bg-[rgba(0,0,0,0.2)]">
-                                <img className="h-full w-full rounded-md object-cover" src={contenidoInicio?.garantia_image} alt="" />
+                                <img className="h-full w-full rounded-md object-contain" src={contenidoInicio?.garantia_image} alt="" />
                             </div>
                             <div className="flex w-1/2 items-center justify-center">
                                 <div className="h-fit items-center self-center text-center">

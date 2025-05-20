@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('servicios', function (Blueprint $table) {
             $table->id();
+            $table->string('order')->default("zzz");
+            $table->string('icon')->nullable();
+            $table->string('title');
+            $table->longText('text');
             $table->timestamps();
         });
     }

@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Servicios extends Model
+class Marca extends Model
 {
     protected $guarded = [];
 
-    public function getIconAttribute($value)
+    public function getImageAttribute($value)
     {
         return asset('storage/' . $value);
     }

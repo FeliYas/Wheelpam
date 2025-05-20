@@ -7,4 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Nosotros extends Model
 {
     protected $guarded = [];
+
+    public function getBannerAttribute($value)
+    {
+        return asset('storage/' . $value);
+    }
 }

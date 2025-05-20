@@ -4,17 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Garantia extends Model
+class ImagenesProducto extends Model
 {
     protected $guarded = [];
 
     public function getImageAttribute($value)
     {
-        return asset('storage/' . $value);
+        return asset("storage/" . $value);
     }
 
-    public function getBannerAttribute($value)
+    public function producto()
     {
-        return asset('storage/' . $value);
+        return $this->belongsTo(Producto::class);
     }
 }

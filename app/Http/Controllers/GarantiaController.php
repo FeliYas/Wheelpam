@@ -12,54 +12,68 @@ class GarantiaController extends Controller
      */
     public function index()
     {
-        //
+        $garantia = Garantia::first();
+        return inertia('auth/garantiaAdmin', [
+            'garantia' => $garantia,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function garantiaBanner()
     {
-        //
+        $garantia = Garantia::first();
+        return inertia('auth/garantiaBanner', [
+            'garantia' => $garantia,
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Garantia $garantia)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Garantia $garantia)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Garantia $garantia)
+    public function update(Request $request)
     {
-        //
-    }
+        $data = $request->validate([
+            'title' => 'sometimes|string|max:255',
+            'text' => 'sometimes|string',
+            'image' => 'sometimes|file|max:2048',
+            'banner' => 'sometimes|file|max:2048',
+        ]);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Garantia $garantia)
-    {
-        //
+        $garantia = Garantia::first();
+
+        // Check if the Garantia entry exists
+        if (!$garantia) {
+            return redirect()->back()->with('error', 'Garantia not found.');
+        }
+
+        // Handle file upload if image exists
+        if ($request->hasFile('image')) {
+            // Delete the old image if it exists
+            if ($garantia->image) {
+                $absolutePath = public_path('storage/' . $garantia->image);
+                if (file_exists($absolutePath)) {
+                    unlink($absolutePath);
+                }
+            }
+            // Store the new image
+            $data['image'] = $request->file('image')->store('images', 'public');
+        }
+
+        // Handle file upload if banner exists
+        if ($request->hasFile('banner')) {
+            // Delete the old banner if it exists
+            if ($garantia->banner) {
+                $absolutePath = public_path('storage/' . $garantia->banner);
+                if (file_exists($absolutePath)) {
+                    unlink($absolutePath);
+                }
+            }
+            // Store the new banner
+            $data['banner'] = $request->file('banner')->store('images', 'public');
+        }
+
+        $garantia->update($data);
+
+        return redirect()->back()->with('success', 'Garantia updated successfully.');
     }
 }

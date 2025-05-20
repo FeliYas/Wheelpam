@@ -6,5 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Novedad extends Model
 {
-    //
+    protected $guarded = [];
+
+    public function getImageAttribute($value)
+    {
+        return asset('storage/' . $value);
+    }
 }
