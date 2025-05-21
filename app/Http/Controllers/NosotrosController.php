@@ -18,6 +18,13 @@ class NosotrosController extends Controller
         return Inertia::render('auth/nosotrosAdmin', ['nosotros' => $nosotros]);
     }
 
+    public function indexInicio()
+    {
+        $nosotros = Nosotros::first();
+
+        return Inertia::render('nosotros', ['nosotros' => $nosotros]);
+    }
+
     public function nosotrosBanner()
     {
         $nosotros = Nosotros::first();

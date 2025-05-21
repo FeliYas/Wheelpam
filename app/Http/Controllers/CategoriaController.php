@@ -24,7 +24,7 @@ class CategoriaController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'order' => 'required|string',
+            'order' => 'sometimes|string',
             'title' => 'required|string|max:255',
             'image' => 'required|file',
             'featured' => 'sometimes|boolean'
@@ -54,11 +54,11 @@ class CategoriaController extends Controller
 
         $categoria = Categoria::find($request->id);
 
-        // Check if the request has a file and store it
+
         if ($request->hasFile('image')) {
-            // Delete the old image if it exists
-            if ($categoria->image) {
-                $absolutePath = public_path('storage/' . $categoria->image);
+
+            if ($categoria->getAttributes()['image']) {
+                $absolutePath = public_path('storage/' . $categoria->getAttributes()['image']);
                 if (file_exists($absolutePath)) {
                     unlink($absolutePath);
                 }
@@ -71,6 +71,15 @@ class CategoriaController extends Controller
         return redirect()->back()->with('success', 'Categoria updated successfully.');
     }
 
+    public function changeFeatured(Request $request)
+    {
+        $categoria = Categoria::find($request->id);
+        $categoria->featured = !$categoria->featured;
+        $categoria->save();
+
+        return redirect()->back()->with('success', 'Categoria updated successfully.');
+    }
+
     /**
      * Remove the specified resource from storage.
      */
@@ -78,9 +87,13 @@ class CategoriaController extends Controller
     {
         $categoria = Categoria::find($request->id);
 
+        // Check if the category exists
+        if (!$categoria) {
+            return redirect()->back()->with('error', 'Categoria not found.');
+        }
         // Delete the image if it exists
-        if ($categoria->image) {
-            $absolutePath = public_path('storage/' . $categoria->image);
+        if ($categoria->getAttributes()['image']) {
+            $absolutePath = public_path('storage/' . $categoria->getAttributes()['image']);
             if (file_exists($absolutePath)) {
                 unlink($absolutePath);
             }

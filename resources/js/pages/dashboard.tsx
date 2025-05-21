@@ -75,13 +75,13 @@ export default function Dashboard({ children }) {
             subHref: [
                 { title: 'Banner', href: '/dashboard/productosbanner' },
 
-                { title: 'Categorias', href: 'categorias' },
+                { title: 'Categorias', href: '/dashboard/categorias' },
+                { title: 'Sub-categorias', href: '/dashboard/sub-categorias' },
 
                 {
                     title: 'Productos',
-                    href: 'productos',
+                    href: '/dashboard/productos',
                 },
-                { title: 'Sub-productos', href: 'subproductos' },
             ],
         },
         {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categoria;
 use App\Models\SubCategoria;
 use Illuminate\Http\Request;
 
@@ -12,10 +13,12 @@ class SubCategoriaController extends Controller
      */
     public function index()
     {
+        $categorias = Categoria::select('id', 'title')->orderBy('order')->get();
         $subcategorias = SubCategoria::orderBy('order', 'asc')->get();
 
         return inertia('auth/subcategoriasAdmin', [
-            'subcategorias' => $subcategorias
+            'subcategorias' => $subcategorias,
+            'categorias' => $categorias,
         ]);
     }
 
@@ -25,7 +28,7 @@ class SubCategoriaController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'order' => 'required|string',
+            'order' => 'sometimes|string',
             'title' => 'required|string|max:255',
             'categoria_id' => 'required|exists:categorias,id',
         ]);

@@ -5,16 +5,17 @@ use App\Models\Logos;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
+Route::middleware(['shareDefaultLayoutData'])->group(function () {
+    Route::get('/', function () {
 
-    $logos = Logos::first();
 
-    return Inertia::render('home', [
-        'logos' => $logos
-    ]);
-})->name('home');
 
-Route::get('/nosotros', [NosotrosController::class, 'index']);
+        return Inertia::render('home');
+    })->name('home');
+
+    Route::get('/nosotros', [NosotrosController::class, 'indexInicio']);
+});
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {

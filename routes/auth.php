@@ -18,6 +18,7 @@ use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\MetadatosController;
 use App\Http\Controllers\NosotrosController;
 use App\Http\Controllers\NovedadController;
+use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ServiciosController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\SubCategoriaController;
@@ -127,10 +128,11 @@ Route::middleware('auth')->group(function () {
     Route::post('dashboard/categorias/store', [CategoriaController::class, 'store'])->name('admin.categorias.store');
     Route::post('dashboard/categorias/update', [CategoriaController::class, 'update'])->name('admin.categorias.update');
     Route::delete('dashboard/categorias/destroy', [CategoriaController::class, 'destroy'])->name('admin.categorias.destroy');
+    Route::post('dashboard/categorias/changeFeatured', [CategoriaController::class, 'changeFeatured'])->name('admin.categorias.changeFeatured');
 
     # Sub categorias
 
-    Route::get('dashboard/subcategorias', [SubCategoriaController::class, 'index'])->name('admin.subcategorias');
+    Route::get('dashboard/sub-categorias', [SubCategoriaController::class, 'index'])->name('admin.subcategorias');
     Route::post('dashboard/subcategorias/store', [SubCategoriaController::class, 'store'])->name('admin.subcategorias.store');
     Route::post('dashboard/subcategorias/update', [SubCategoriaController::class, 'update'])->name('admin.subcategorias.update');
     Route::delete('dashboard/subcategorias/destroy', [SubCategoriaController::class, 'destroy'])->name('admin.subcategorias.destroy');
@@ -140,4 +142,10 @@ Route::middleware('auth')->group(function () {
     Route::post('dashboard/imagenes/store', [ImagenesProductoController::class, 'store'])->name('admin.imagenes.store');
     Route::post('dashboard/imagenes/update', [ImagenesProductoController::class, 'update'])->name('admin.imagenes.update');
     Route::delete('dashboard/imagenes/destroy', [ImagenesProductoController::class, 'destroy'])->name('admin.imagenes.destroy');
+
+    # Productos
+    Route::get('dashboard/productos', [ProductoController::class, 'index'])->name('admin.productos');
+    Route::post('dashboard/productos/store', [ProductoController::class, 'store'])->name('admin.productos.store');
+    Route::post('dashboard/productos/update', [ProductoController::class, 'update'])->name('admin.productos.update');
+    Route::delete('dashboard/productos/destroy', [ProductoController::class, 'destroy'])->name('admin.productos.destroy');
 });

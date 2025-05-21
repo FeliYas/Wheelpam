@@ -75,7 +75,7 @@ export default function NavBar() {
                                   <Link
                                       key={index}
                                       href={link.href}
-                                      className={`flex h-full items-center text-[15px] ${ziggy.location.includes(link.title.toLowerCase()) ? 'border-primary-color border-b-3 font-bold' : ''} ${
+                                      className={`flex h-full items-center text-[15px] ${ziggy.location.includes(link.title.toLowerCase()) ? 'border-primary-color border-b-5 font-bold' : ''} ${
                                           scrolled ||
                                           ziggy.location.includes('productos/') ||
                                           ziggy.location.includes('privada') ||
