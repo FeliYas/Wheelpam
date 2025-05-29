@@ -8,8 +8,6 @@ use Inertia\Inertia;
 Route::middleware(['shareDefaultLayoutData'])->group(function () {
     Route::get('/', function () {
 
-
-
         return Inertia::render('home');
     })->name('home');
 

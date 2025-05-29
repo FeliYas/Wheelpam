@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ImagenesProducto;
+use App\Models\Caracteristicas;
 use Illuminate\Http\Request;
 
-class ImagenesProductoController extends Controller
+class CaracteristicasController extends Controller
 {
-
-
-
-
 
     /**
      * Store a newly created resource in storage.
@@ -26,14 +22,11 @@ class ImagenesProductoController extends Controller
         // Store the image
         $data['image'] = $request->file('image')->store('images', 'public');
 
-        // Create the image
-        ImagenesProducto::create($data);
+        // Create the characteristic
+        Caracteristicas::create($data);
 
-        return redirect()->back()->with('success', 'Imagen created successfully.');
+        return redirect()->back()->with('success', 'Característica created successfully.');
     }
-
-
-
 
 
     /**
@@ -41,20 +34,19 @@ class ImagenesProductoController extends Controller
      */
     public function update(Request $request)
     {
-
         $data = $request->validate([
             'order' => 'sometimes|string',
             'image' => 'sometimes|file',
             'producto_id' => 'required|exists:productos,id',
         ]);
 
-        $imagenesProducto = ImagenesProducto::find($request->id);
+        $caracteristicas = Caracteristicas::find($request->id);
 
         // Check if the request has a file and store it
         if ($request->hasFile('image')) {
             // Delete the old image if it exists
-            if ($imagenesProducto->image) {
-                $absolutePath = public_path('storage/' . $imagenesProducto->image);
+            if ($caracteristicas->image) {
+                $absolutePath = public_path('storage/' . $caracteristicas->image);
                 if (file_exists($absolutePath)) {
                     unlink($absolutePath);
                 }
@@ -63,10 +55,9 @@ class ImagenesProductoController extends Controller
             $data['image'] = $request->file('image')->store('images', 'public');
         }
 
-        // Update the image
-        $imagenesProducto->update($data);
+        $caracteristicas->update($data);
 
-        return redirect()->back()->with('success', 'Imagen updated successfully.');
+        return redirect()->back()->with('success', 'Característica updated successfully.');
     }
 
     /**
@@ -74,23 +65,21 @@ class ImagenesProductoController extends Controller
      */
     public function destroy(Request $request)
     {
-        $imagenesProducto = ImagenesProducto::find($request->id);
-
-        // Check if the image exists
-        if (!$imagenesProducto) {
-            return redirect()->back()->with('error', 'Imagen not found.');
+        $caracteristicas = Caracteristicas::find($request->id);
+        if (!$caracteristicas) {
+            return redirect()->back()->with('error', 'No se encontró la característica.');
         }
 
-        // Delete the image
-        if ($imagenesProducto->image) {
-            $absolutePath = public_path('storage/' . $imagenesProducto->image);
+        // Delete the image file if it exists
+        if ($caracteristicas->image) {
+            $absolutePath = public_path('storage/' . $caracteristicas->image);
             if (file_exists($absolutePath)) {
                 unlink($absolutePath);
             }
         }
 
-        $imagenesProducto->delete();
+        $caracteristicas->delete();
 
-        return redirect()->back()->with('success', 'Imagen deleted successfully.');
+        return redirect()->back()->with('success', 'Característica deleted successfully.');
     }
 }

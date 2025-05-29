@@ -211,9 +211,10 @@ export default function ProductosAdmin() {
                                 <tr>
                                     <td className="text-center">ORDEN</td>
                                     <td className="text-center">NOMBRE</td>
+                                    <td className="text-center">TIPO</td>
                                     <td className="w-[400px] px-3 py-2 text-center">IMAGEN</td>
-                                    <td className="text-center">NOMBRE</td>
                                     <td className="text-center">RECOMENDACIONES DE USO</td>
+                                    <td className="text-center">CARACTERISTICAS</td>
                                     <td className="text-center">TABLA DE MEDIDAS</td>
 
                                     <td className="text-center">EDITAR</td>

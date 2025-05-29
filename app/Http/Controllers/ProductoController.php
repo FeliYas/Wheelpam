@@ -16,7 +16,7 @@ class ProductoController extends Controller
     {
         $perPage = $request->input('per_page', 10);
 
-        $query = Producto::query()->orderBy('order', 'asc');
+        $query = Producto::query()->with('imagenes', 'caracteristicas')->orderBy('order', 'asc');
 
         if ($request->has('search') && !empty($request->search)) {
             $searchTerm = $request->search;

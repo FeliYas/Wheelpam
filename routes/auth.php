@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\CaracteristicasController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\ContenidoInicioController;
@@ -143,9 +144,16 @@ Route::middleware('auth')->group(function () {
     Route::post('dashboard/imagenes/update', [ImagenesProductoController::class, 'update'])->name('admin.imagenes.update');
     Route::delete('dashboard/imagenes/destroy', [ImagenesProductoController::class, 'destroy'])->name('admin.imagenes.destroy');
 
+
     # Productos
     Route::get('dashboard/productos', [ProductoController::class, 'index'])->name('admin.productos');
     Route::post('dashboard/productos/store', [ProductoController::class, 'store'])->name('admin.productos.store');
     Route::post('dashboard/productos/update', [ProductoController::class, 'update'])->name('admin.productos.update');
     Route::delete('dashboard/productos/destroy', [ProductoController::class, 'destroy'])->name('admin.productos.destroy');
+
+    Route::resource('dashboard/caracteristicasadmin', CaracteristicasController::class)->only(['store', 'update', 'destroy'])->names([
+        'store' => 'admin.caracteristicas.store',
+        'update' => 'admin.caracteristicas.update',
+        'destroy' => 'admin.caracteristicas.destroy',
+    ]);
 });

@@ -15,6 +15,11 @@ class Producto extends Model
 
     public function imagenes()
     {
-        return $this->hasMany(ImagenesProducto::class);
+        return $this->hasMany(ImagenesProducto::class)->orderBy('order', 'asc');
+    }
+
+    public function caracteristicas()
+    {
+        return $this->hasMany(Caracteristicas::class)->orderBy('order', 'asc');
     }
 }
