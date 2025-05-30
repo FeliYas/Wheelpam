@@ -150,6 +150,8 @@ Route::middleware('auth')->group(function () {
     Route::post('dashboard/productos/store', [ProductoController::class, 'store'])->name('admin.productos.store');
     Route::post('dashboard/productos/update', [ProductoController::class, 'update'])->name('admin.productos.update');
     Route::delete('dashboard/productos/destroy', [ProductoController::class, 'destroy'])->name('admin.productos.destroy');
+    Route::post('dashboard/producto/changeFeatured', [ProductoController::class, 'changeFeatured'])->name('admin.productos.changeFeatured');
+
 
     Route::resource('dashboard/caracteristicasadmin', CaracteristicasController::class)->only(['store', 'update', 'destroy'])->names([
         'store' => 'admin.caracteristicas.store',

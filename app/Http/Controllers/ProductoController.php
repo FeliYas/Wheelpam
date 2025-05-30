@@ -48,6 +48,7 @@ class ProductoController extends Controller
             'type' => 'required|string|max:255',
             'recomendaciones' => 'required|string',
             'archivo' => 'sometimes|file|max:2048',
+            'featured' => 'sometimes|boolean',
         ]);
 
         if ($request->hasFile('archivo')) {
@@ -68,6 +69,7 @@ class ProductoController extends Controller
             'type' => 'required|string|max:255',
             'recomendaciones' => 'required|string',
             'archivo' => 'sometimes|file|max:2048',
+            'featured' => 'sometimes|boolean',
         ]);
 
         $producto = Producto::find($request->id);
@@ -88,6 +90,15 @@ class ProductoController extends Controller
         $producto->update($data);
 
         return redirect()->back()->with('success', 'Producto actualizado correctamente.');
+    }
+
+    public function changeFeatured(Request $request)
+    {
+        $producto = Producto::find($request->id);
+        $producto->featured = !$producto->featured;
+        $producto->save();
+
+        return redirect()->back()->with('success', 'Producto updated successfully.');
     }
 
     /**

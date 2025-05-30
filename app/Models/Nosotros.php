@@ -12,4 +12,9 @@ class Nosotros extends Model
     {
         return asset('storage/' . $value);
     }
+
+    public function getImageAttribute($value)
+    {
+        return asset('storage/' . $value);
+    }
 }

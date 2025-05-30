@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('type');
             $table->longText('recomendaciones');
             $table->string('archivo')->nullable();
+            $table->boolean('featured')->default(false);
             $table->timestamps();
         });
     }

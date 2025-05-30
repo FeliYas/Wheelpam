@@ -1,4 +1,10 @@
-import Slider from '@/components/home/slider';
+import BannerInicio from '@/components/home/bannerInicio';
+import CategoriasInicio from '@/components/home/categoriasInicio';
+import MarcasSlider from '@/components/home/marcasSlider';
+import NosotrosInicio from '@/components/home/nosotrosInicio';
+import NovedadesInicio from '@/components/home/novedadesInicio';
+import NuestrosProductosInicio from '@/components/home/nuestrosProductosInicio';
+import SliderHome from '@/components/home/slider';
 import { Head } from '@inertiajs/react';
 import DefaultLayout from './defaultLayout';
 
@@ -8,7 +14,13 @@ export default function Home() {
             <Head>
                 <title>Inicio</title>
             </Head>
-            <Slider />
+            <SliderHome />
+            <CategoriasInicio />
+            <NuestrosProductosInicio />
+            <NosotrosInicio />
+            <BannerInicio />
+            <NovedadesInicio />
+            <MarcasSlider />
         </DefaultLayout>
     );
 }

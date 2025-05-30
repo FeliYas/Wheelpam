@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Nosotros;
+use App\Models\Valores;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -21,8 +22,12 @@ class NosotrosController extends Controller
     public function indexInicio()
     {
         $nosotros = Nosotros::first();
+        $valores = Valores::first();
 
-        return Inertia::render('nosotros', ['nosotros' => $nosotros]);
+        return Inertia::render('nosotros', [
+            'nosotros' => $nosotros,
+            'valores' => $valores
+        ]);
     }
 
     public function nosotrosBanner()

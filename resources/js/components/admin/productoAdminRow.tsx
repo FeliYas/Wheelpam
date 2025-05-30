@@ -5,11 +5,12 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import CustomReactQuill from '../customReactQuill';
+import Switch from '../switch';
 
 export default function ProductoAdminRow({ producto }) {
     const [edit, setEdit] = useState(false);
     const [imageView, setImageView] = useState(false);
-    const [text, setText] = useState();
+    const [text, setText] = useState(producto?.recomendaciones || '');
     const [caracteristicas, setCaracteristicas] = useState(false);
 
     const updateForm = useForm({
@@ -114,6 +115,10 @@ export default function ProductoAdminRow({ producto }) {
                 </button>
             </td>
 
+            <td className="flex h-[90px] items-center justify-center">
+                <Switch status={producto?.featured == 1} id={producto?.id} routeName={'admin.productos.changeFeatured'} />
+            </td>
+
             <td className="w-[140px] text-center">
                 <div className="flex flex-row justify-center gap-3">
                     <button onClick={() => setEdit(true)} className="h-10 w-10 rounded-md border border-blue-500 px-2 py-1 text-white">
@@ -142,6 +147,7 @@ export default function ProductoAdminRow({ producto }) {
                                         type="text"
                                         name="ordennn"
                                         id="ordennn"
+                                        value={updateForm?.data?.order}
                                         onChange={(e) => updateForm.setData('order', e.target.value)}
                                     />
                                     <label htmlFor="nombree">
@@ -152,6 +158,7 @@ export default function ProductoAdminRow({ producto }) {
                                         type="text"
                                         name="nombree"
                                         id="nombree"
+                                        value={updateForm?.data?.name}
                                         onChange={(e) => updateForm.setData('name', e.target.value)}
                                     />
 
@@ -163,6 +170,7 @@ export default function ProductoAdminRow({ producto }) {
                                         type="text"
                                         name="type"
                                         id="type"
+                                        value={updateForm?.data?.type}
                                         onChange={(e) => updateForm.setData('type', e.target.value)}
                                     />
                                     <label htmlFor="recom">

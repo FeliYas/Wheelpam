@@ -216,6 +216,7 @@ export default function ProductosAdmin() {
                                     <td className="text-center">RECOMENDACIONES DE USO</td>
                                     <td className="text-center">CARACTERISTICAS</td>
                                     <td className="text-center">TABLA DE MEDIDAS</td>
+                                    <td className="text-center">DESTACADO</td>
 
                                     <td className="text-center">EDITAR</td>
                                 </tr>

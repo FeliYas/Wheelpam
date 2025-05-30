@@ -37,11 +37,13 @@ export default function NavBar() {
     return (
         <div
             className={`fixed top-0 z-50 h-[70px] w-full transition-all duration-300 md:h-[100px] ${
-                ziggy.location.includes('productos/') || ziggy.location.includes('busqueda') || ziggy.location.includes('privada')
-                    ? 'sticky shadow-md'
-                    : 'fixed'
+                ziggy.location.split('/').length > 3 ? 'sticky shadow-md' : 'fixed'
             } ${
-                scrolled || ziggy.location.includes('nosotros') || ziggy.location.includes('busqueda') || ziggy.location.includes('privada')
+                scrolled ||
+                ziggy.location.includes('nosotros') ||
+                ziggy.location.includes('servicios') ||
+                ziggy.location.includes('busqueda') ||
+                ziggy.location.includes('privada')
                     ? 'bg-black shadow-md'
                     : 'bg-transparent'
             }`}
@@ -64,7 +66,7 @@ export default function NavBar() {
                                           ziggy.location.includes('productos/') ||
                                           ziggy.location.includes('privada') ||
                                           ziggy.location.includes('busqueda')
-                                              ? 'text-black hover:text-[#F2C94C]'
+                                              ? 'text-white hover:text-[#F2C94C]'
                                               : 'text-white hover:text-[#F2C94C]'
                                       }`}
                                   >
@@ -75,16 +77,19 @@ export default function NavBar() {
                                   <Link
                                       key={index}
                                       href={link.href}
-                                      className={`flex h-full items-center text-[15px] ${ziggy.location.includes(link.title.toLowerCase()) ? 'border-primary-color border-b-5 font-bold' : ''} ${
+                                      className={`relative flex h-full items-center text-[15px] ${
                                           scrolled ||
                                           ziggy.location.includes('productos/') ||
                                           ziggy.location.includes('privada') ||
                                           ziggy.location.includes('busqueda')
-                                              ? 'text-black hover:text-[#F2C94C]'
+                                              ? 'text-white hover:text-[#F2C94C]'
                                               : 'text-white hover:text-[#F2C94C]'
                                       }`}
                                   >
                                       {link.title}
+                                      {ziggy.location.includes(link.title.toLowerCase()) && (
+                                          <div className="bg-primary-color absolute bottom-0 h-[4px] w-full" />
+                                      )}
                                   </Link>
                               ))}
                     </div>

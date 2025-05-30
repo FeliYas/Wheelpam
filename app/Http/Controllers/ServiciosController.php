@@ -18,6 +18,16 @@ class ServiciosController extends Controller
         ]);
     }
 
+    public function indexInicio()
+    {
+        $servicios = Servicios::orderBy('order', 'asc')->get();
+        return inertia('servicios', [
+            'servicios' => $servicios,
+        ]);
+    }
+
+
+
     /**
      * Store a newly created resource in storage.
      */
@@ -27,7 +37,7 @@ class ServiciosController extends Controller
             'title' => 'required|string|max:255',
             'text' => 'required|string',
             'icon' => 'required|file',
-            'order' => 'somtimes|string',
+            'order' => 'sometimes|string',
         ]);
 
         // Handle file upload

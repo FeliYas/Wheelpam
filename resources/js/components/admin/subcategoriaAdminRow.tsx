@@ -13,6 +13,7 @@ export default function SubcategoriaAdminRow({ subcategoria }) {
     const updateForm = useForm({
         order: subcategoria?.order,
         title: subcategoria?.title,
+        categoria_id: subcategoria?.categoria_id,
         id: subcategoria?.id,
     });
 

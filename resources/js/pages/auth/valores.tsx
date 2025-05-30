@@ -95,7 +95,7 @@ export default function Valores() {
                     <div className="col-span-2 w-full">
                         <div className="mt-2 flex justify-between rounded-lg border shadow-lg">
                             <div className="h-[200px] w-2/3 bg-[rgba(0,0,0,0.2)]">
-                                <video className="h-full w-full object-contain" controls autoPlay src={valores?.video}></video>
+                                <video className="h-full w-full object-contain" controls muted autoPlay src={valores?.video}></video>
                             </div>
                             <div className="flex w-1/3 items-center justify-center">
                                 <div className="h-fit items-center self-center text-center">
