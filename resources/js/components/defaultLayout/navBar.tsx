@@ -38,15 +38,7 @@ export default function NavBar() {
         <div
             className={`fixed top-0 z-50 h-[70px] w-full transition-all duration-300 md:h-[100px] ${
                 ziggy.location.split('/').length > 3 ? 'sticky shadow-md' : 'fixed'
-            } ${
-                scrolled ||
-                ziggy.location.includes('nosotros') ||
-                ziggy.location.includes('servicios') ||
-                ziggy.location.includes('busqueda') ||
-                ziggy.location.includes('privada')
-                    ? 'bg-black shadow-md'
-                    : 'bg-transparent'
-            }`}
+            } ${scrolled || ziggy.location.split('/').length > 3 ? 'bg-black shadow-md' : 'bg-transparent'}`}
         >
             <div className="mx-auto flex h-full max-w-[1200px] items-center justify-between px-4 md:px-6 lg:px-0">
                 <Link href={'/'} className="h-12 md:h-auto">

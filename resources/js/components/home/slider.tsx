@@ -75,24 +75,25 @@ const SliderHome = () => {
                 ))}
             </div>
 
-            {/* Indicators */}
-            <div className="absolute bottom-46 left-30 flex space-x-2">
+            {/* Indicadores */}
+            <div className="absolute bottom-[200px] left-1/2 z-20 flex -translate-x-1/2 space-x-2">
                 {slider.map((_, index) => (
                     <button
                         key={index}
                         onClick={() => goToSlide(index)}
-                        className={`h-[4px] w-9 transition-all duration-300 ${
-                            index === currentSlide ? 'bg-white' : 'bg-opacity-50 hover:bg-opacity-75 bg-white'
+                        className={`h-[4px] w-9 rounded transition-all duration-300 ${
+                            index === currentSlide ? 'bg-white' : 'bg-white/50 hover:bg-white/75'
                         }`}
                     />
                 ))}
             </div>
 
-            <div className="bg-primary-color absolute bottom-10 left-30 mx-auto flex h-[100px] w-[1200px] items-center justify-center rounded-lg text-white">
+            {/* Barra de medidas */}
+            <div className="bg-primary-color absolute bottom-10 left-1/2 z-20 flex h-[100px] w-[1200px] -translate-x-1/2 items-center justify-center rounded-lg text-white shadow-lg">
                 <div className="flex w-full items-center justify-between px-24">
                     <p className="text-[20px] font-medium">Encuentre el neumático ideal para su vehículo</p>
-                    <select className="h-[45px] w-[392px] rounded-lg border px-4" name="" id="">
-                        <option className="" selected value="">
+                    <select className="h-[45px] w-[392px] rounded-lg border px-4 text-white" name="">
+                        <option value="" selected>
                             Seleccionar medida
                         </option>
                     </select>

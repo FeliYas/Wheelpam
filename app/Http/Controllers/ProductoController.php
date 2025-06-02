@@ -48,6 +48,46 @@ class ProductoController extends Controller
         ]);
     }
 
+    public function indexCategoria(Request $request, $id)
+    {
+        $categorias = Categoria::orderBy('order', 'asc')->with('subcategorias')->get();
+        $productos = Producto::when($request->subcategoria, function ($query) use ($request) {
+            // Si viene una subcategoría, filtra por esa directamente
+            $query->where('sub_categoria_id', $request->subcategoria);
+        }, function ($query) use ($id) {
+            // Si no viene subcategoría, filtra por la categoría a través de la relación
+            $query->whereHas('sub_categoria', function ($subQuery) use ($id) {
+                $subQuery->where('categoria_id', $id);
+            });
+        })
+            ->orderBy('order', 'asc')
+            ->with(['imagenes', 'sub_categoria'])
+            ->get();
+
+
+
+        return inertia('productosCategoria', [
+            'categorias' => $categorias,
+            'productos' => $productos,
+            'categoria_id' => $id,
+            'subcategoria_id' => $request->subcategoria,
+        ]);
+    }
+
+    public function showProducto($categoriaId, $productoId)
+    {
+        $producto = Producto::with(['imagenes', 'caracteristicas', 'sub_categoria'])->findOrFail($productoId);
+        $categorias = Categoria::orderBy('order', 'asc')->with('subcategorias')->get();
+
+        return inertia('productoShow', [
+            'producto' => $producto,
+            'categorias' => $categorias,
+
+            'categoria_id' => $categoriaId,
+            'subcategoria_id' => $producto->sub_categoria_id,
+        ]);
+    }
+
     public function productosBanner()
     {
         $productoBanner = Banner::where('name', 'productos')->first();
@@ -66,9 +106,9 @@ class ProductoController extends Controller
             'recomendaciones' => 'required|string',
             'archivo' => 'sometimes|file|max:2048',
             'featured' => 'sometimes|boolean',
-            'temperatura' => 'sometimes|string',
-            'desgaste' => 'sometimes|string',
-            'confort' => 'sometimes|string',
+            'temperatura' => 'sometimes',
+            'desgaste' => 'sometimes',
+            'confort' => 'sometimes',
             'description' => 'sometimes|string',
         ]);
 
@@ -90,9 +130,9 @@ class ProductoController extends Controller
             'recomendaciones' => 'required|string',
             'archivo' => 'sometimes|file|max:2048',
             'featured' => 'sometimes|boolean',
-            'temperatura' => 'sometimes|string',
-            'desgaste' => 'sometimes|string',
-            'confort' => 'sometimes|string',
+            'temperatura' => 'sometimes',
+            'desgaste' => 'sometimes',
+            'confort' => 'sometimes',
             'description' => 'sometimes|string',
         ]);
 

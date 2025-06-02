@@ -20,6 +20,16 @@ class ContactoController extends Controller
         ]);
     }
 
+    public function indexInicio()
+    {
+
+        $banner = Banner::where('name', 'contacto')->first();
+        return inertia('contacto', [
+
+            'banner' => $banner
+        ]);
+    }
+
 
     public function contactoBanner()
     {

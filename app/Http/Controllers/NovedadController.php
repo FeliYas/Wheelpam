@@ -19,6 +19,16 @@ class NovedadController extends Controller
         ]);
     }
 
+    public function indexInicio()
+    {
+        $novedades = Novedad::orderBy('order', 'asc')->get();
+        $banner = Banner::where('name', 'novedades')->first();
+        return inertia('novedades', [
+            'novedades' => $novedades,
+            'banner' => $banner
+        ]);
+    }
+
     public function novedadesBanner()
     {
         $novedades = Banner::where('name', 'novedades')->first();

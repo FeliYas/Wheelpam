@@ -5,7 +5,7 @@ export default function NovedadesInicio() {
 
     return (
         <div className="mx-auto flex w-[1200px] flex-col gap-5 pb-16">
-            <div className="flex flex-row justify-between">
+            <div className="flex flex-row items-center justify-between">
                 <h2 className="text-[35px] font-semibold">Enterate de las últimas novedades</h2>
                 <Link
                     href="/novedades"
@@ -17,7 +17,7 @@ export default function NovedadesInicio() {
 
             <div className="flex flex-row gap-5">
                 {novedades?.map((novedad) => (
-                    <div className="flex h-[488px] max-w-[392px] flex-col rounded-md border">
+                    <Link href={`/novedades/${novedad?.id}`} className="flex h-[488px] w-[392px] flex-col rounded-md border">
                         <div className="relative flex min-h-[260px] items-end justify-center">
                             <img src={novedad?.image} className="h-full w-full rounded-t-md object-cover" alt="" />
                         </div>
@@ -31,7 +31,7 @@ export default function NovedadesInicio() {
                                 Leer mas
                             </Link>
                         </div>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </div>

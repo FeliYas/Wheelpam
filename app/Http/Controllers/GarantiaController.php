@@ -19,6 +19,16 @@ class GarantiaController extends Controller
         ]);
     }
 
+    public function indexInicio()
+    {
+        $garantia = Garantia::first();
+        $banner = Banner::where('name', 'garantia')->first();
+        return inertia('garantia', [
+            'garantia' => $garantia,
+            'banner' => $banner
+        ]);
+    }
+
     public function garantiaBanner()
     {
         $garantia = Banner::where('name', 'garantia')->first();
