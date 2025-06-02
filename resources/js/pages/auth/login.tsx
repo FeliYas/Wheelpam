@@ -6,7 +6,7 @@ import { Head } from '@inertiajs/react';
 
 export default function AdminLogin() {
     const { data, setData, post, processing, errors } = useForm({
-        email: '',
+        name: '',
         password: '',
         remember: false,
     });
@@ -33,10 +33,10 @@ export default function AdminLogin() {
                                 Usuario
                             </label>
                             <input
-                                value={data.email}
-                                onChange={(e) => setData('email', e.target.value)}
+                                value={data.name}
+                                onChange={(e) => setData('name', e.target.value)}
                                 className={`h-[45px] w-full rounded-full pl-3 transition duration-300 ${
-                                    errors.email
+                                    errors.name
                                         ? 'border-red-500 outline outline-red-500 focus:outline-red-500'
                                         : 'focus:outline-primary-color outline outline-gray-300'
                                 }`}
@@ -44,7 +44,7 @@ export default function AdminLogin() {
                                 name="user"
                                 id="user"
                             />
-                            {errors.email && <div className="mt-1 pl-3 text-sm text-red-500">{errors.email}</div>}
+                            {errors.name && <div className="mt-1 pl-3 text-sm text-red-500">{errors.name}</div>}
                         </div>
 
                         <div className="flex flex-col gap-2">

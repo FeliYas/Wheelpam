@@ -2,11 +2,11 @@ import { useForm, usePage } from '@inertiajs/react';
 import toast from 'react-hot-toast';
 import Dashboard from '../dashboard';
 
-export default function ContactoBanner() {
-    const { contacto } = usePage().props;
+export default function NovedadesBanner() {
+    const { novedadesBanner } = usePage().props;
 
     const { data, setData, processing, post, reset } = useForm({
-        name: 'contacto',
+        name: 'novedades',
     });
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -38,7 +38,7 @@ export default function ContactoBanner() {
                     </label>
                     <div className="mt-2 flex justify-between rounded-lg border shadow-lg">
                         <div className="h-[200px] w-2/3 bg-[rgba(0,0,0,0.2)]">
-                            <img className="h-full w-full rounded-md object-cover" src={contacto?.image} alt="" />
+                            <img className="h-full w-full rounded-md object-cover" src={novedadesBanner?.image} alt="" />
                         </div>
                         <div className="flex w-1/3 items-center justify-center">
                             <div className="h-fit items-center self-center text-center">

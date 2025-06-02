@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
 use App\Models\Servicios;
 use Illuminate\Http\Request;
 
@@ -21,9 +22,17 @@ class ServiciosController extends Controller
     public function indexInicio()
     {
         $servicios = Servicios::orderBy('order', 'asc')->get();
+        $banner = Banner::where('name', 'servicios')->first();
         return inertia('servicios', [
             'servicios' => $servicios,
+            'banner' => $banner
         ]);
+    }
+
+    public function serviciosBanner()
+    {
+        $servicios = Banner::where('name', 'servicios')->first();
+        return inertia('auth/serviciosBanner', ['serviciosBanner' => $servicios]);
     }
 
 

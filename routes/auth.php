@@ -24,6 +24,8 @@ use App\Http\Controllers\ServiciosController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\SubCategoriaController;
 use App\Http\Controllers\ValoresController;
+use App\Models\Banner;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -106,6 +108,7 @@ Route::middleware('auth')->group(function () {
     Route::post('dashboard/servicios/store', [ServiciosController::class, 'store'])->name('admin.servicios.store');
     Route::post('dashboard/servicios/update', [ServiciosController::class, 'update'])->name('admin.servicios.update');
     Route::delete('dashboard/servicios/destroy', [ServiciosController::class, 'destroy'])->name('admin.servicios.destroy');
+    Route::get('dashboard/servicios-banner', [ServiciosController::class, 'serviciosBanner'])->name('admin.servicios.banner');
 
     # Garantia
     Route::get('dashboard/garantia', [GarantiaController::class, 'index'])->name('admin.garantia');
@@ -118,6 +121,7 @@ Route::middleware('auth')->group(function () {
     Route::post('dashboard/novedades/update', [NovedadController::class, 'update'])->name('admin.novedades.update');
     Route::delete('dashboard/novedades/destroy', [NovedadController::class, 'destroy'])->name('admin.novedades.destroy');
     Route::post('dashboard/novedades/changeFeatured', [NovedadController::class, 'changeFeatured'])->name('admin.novedades.changeFeatured');
+    Route::get('dashboard/novedades-banner', [NovedadController::class, 'novedadesBanner'])->name('admin.novedades.banner');
 
     # Contacto
     Route::get('dashboard/contacto', [ContactoController::class, 'index'])->name('admin.contacto');
@@ -151,6 +155,8 @@ Route::middleware('auth')->group(function () {
     Route::post('dashboard/productos/update', [ProductoController::class, 'update'])->name('admin.productos.update');
     Route::delete('dashboard/productos/destroy', [ProductoController::class, 'destroy'])->name('admin.productos.destroy');
     Route::post('dashboard/producto/changeFeatured', [ProductoController::class, 'changeFeatured'])->name('admin.productos.changeFeatured');
+    Route::get('dashboard/productos-banner', [ProductoController::class, 'productosBanner'])->name('admin.productos.banner');
+
 
 
     Route::resource('dashboard/caracteristicasadmin', CaracteristicasController::class)->only(['store', 'update', 'destroy'])->names([
@@ -158,4 +164,35 @@ Route::middleware('auth')->group(function () {
         'update' => 'admin.caracteristicas.update',
         'destroy' => 'admin.caracteristicas.destroy',
     ]);
+
+    # banner 
+    Route::post('dashboard/banners', function (Request $request) {
+        $banner = Banner::where('name', $request->name)->first();
+
+        $data = $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'image' => 'required|file',
+        ]);
+
+        if ($banner) {
+            // Delete the old image if it exists
+            if ($banner->image) {
+                $absolutePath = public_path('storage/' . $banner->image);
+                if (file_exists($absolutePath)) {
+                    unlink($absolutePath);
+                }
+            }
+            // Store the new image
+            $data['image'] = $request->file('image')->store('images', 'public');
+        }
+
+        $banner->update($data);
+    })->name('admin.banners.update');
+
+    # Solicitud de presupuesto
+
+    Route::get('dashboard/solicitud-banner', function () {
+        $solicitudBanner = Banner::where('name', 'solicitud')->first();
+        return inertia('auth/solicitudBanner', ['solicitudBanner' => $solicitudBanner]);
+    })->name('admin.solicitud.banner');
 });

@@ -3,14 +3,16 @@ import toast from 'react-hot-toast';
 import Dashboard from '../dashboard';
 
 export default function NosotrosBanner() {
-    const nosotrosInfo = usePage().props.nosotros;
+    const { nosotros } = usePage().props;
 
-    const { data, setData, processing, post, reset } = useForm();
+    const { data, setData, processing, post, reset } = useForm({
+        name: 'nosotros',
+    });
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        post(route('admin.nosotros.update'), {
+        post(route('admin.banners.update'), {
             preserveScroll: true,
             onSuccess: () => {
                 reset();
@@ -36,7 +38,7 @@ export default function NosotrosBanner() {
                     </label>
                     <div className="mt-2 flex justify-between rounded-lg border shadow-lg">
                         <div className="h-[200px] w-2/3 bg-[rgba(0,0,0,0.2)]">
-                            <img className="h-full w-full rounded-md object-cover" src={nosotrosInfo?.banner} alt="" />
+                            <img className="h-full w-full rounded-md object-cover" src={nosotros?.image} alt="" />
                         </div>
                         <div className="flex w-1/3 items-center justify-center">
                             <div className="h-fit items-center self-center text-center">
@@ -49,12 +51,12 @@ export default function NosotrosBanner() {
                                         <input
                                             id="bannerImage"
                                             name="bannerImage"
-                                            onChange={(e) => setData('banner', e.target.files[0])}
+                                            onChange={(e) => setData('image', e.target.files[0])}
                                             type="file"
                                             className="sr-only"
                                         />
                                     </label>
-                                    <p className="absolute top-10 max-w-[200px] break-words"> {data?.banner?.name}</p>
+                                    <p className="absolute top-10 max-w-[200px] break-words"> {data?.image?.name}</p>
                                 </div>
                             </div>
                         </div>

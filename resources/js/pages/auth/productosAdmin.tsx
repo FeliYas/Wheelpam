@@ -11,6 +11,9 @@ export default function ProductosAdmin() {
 
     const { data, setData, post, reset } = useForm({
         name: '',
+        desgaste: '0',
+        temperatura: '0',
+        confort: '0',
     });
 
     const [currentCategory, setCurrentCategory] = useState();
@@ -104,21 +107,52 @@ export default function ProductosAdmin() {
                                             onChange={(e) => setData('name', e.target.value)}
                                         />
 
-                                        <label htmlFor="type">
-                                            Tipo <span className="text-red-500">*</span>
+                                        <label htmlFor="descripcion">
+                                            Descripcion <span className="text-red-500">*</span>
                                         </label>
                                         <input
                                             className="focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline"
                                             type="text"
-                                            name="type"
-                                            id="type"
-                                            onChange={(e) => setData('type', e.target.value)}
+                                            name="descripcion"
+                                            id="descripcion"
+                                            onChange={(e) => setData('description', e.target.value)}
                                         />
+
                                         <label htmlFor="recom">
                                             Recomendaciones de uso <span className="text-red-500">*</span>
                                         </label>
 
                                         <CustomReactQuill value={text} onChange={setText} />
+
+                                        <label className="">Resistencia a la temperatura</label>
+                                        <input
+                                            type="range"
+                                            min={0}
+                                            max={10}
+                                            value={data.temperatura}
+                                            onChange={(e) => setData('temperatura', e.target.value)}
+                                            className="w-full cursor-pointer"
+                                        />
+
+                                        <label className="">Resistencia al desgaste</label>
+                                        <input
+                                            type="range"
+                                            min={0}
+                                            max={10}
+                                            value={data.desgaste}
+                                            onChange={(e) => setData('desgaste', e.target.value)}
+                                            className="w-full cursor-pointer"
+                                        />
+
+                                        <label className="">Confort durante la marcha</label>
+                                        <input
+                                            type="range"
+                                            min={0}
+                                            max={10}
+                                            value={data.confort}
+                                            onChange={(e) => setData('confort', e.target.value)}
+                                            className="w-full cursor-pointer"
+                                        />
 
                                         <label htmlFor="archivo">
                                             Tabla de medidas <span className="text-red-500">*</span>
@@ -211,11 +245,12 @@ export default function ProductosAdmin() {
                                 <tr>
                                     <td className="text-center">ORDEN</td>
                                     <td className="text-center">NOMBRE</td>
-                                    <td className="text-center">TIPO</td>
-                                    <td className="w-[400px] px-3 py-2 text-center">IMAGEN</td>
+                                    <td className="py-2 text-center">DESCRIPCION</td>
                                     <td className="text-center">RECOMENDACIONES DE USO</td>
                                     <td className="text-center">CARACTERISTICAS</td>
                                     <td className="text-center">TABLA DE MEDIDAS</td>
+                                    <td className="text-center">IMAGENES</td>
+
                                     <td className="text-center">DESTACADO</td>
 
                                     <td className="text-center">EDITAR</td>

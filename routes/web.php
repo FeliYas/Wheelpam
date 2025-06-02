@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\DescargarArchivo;
 use App\Http\Controllers\NosotrosController;
+use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ServiciosController;
 use App\Models\Categoria;
 use App\Models\ContenidoInicio;
@@ -41,8 +43,11 @@ Route::middleware(['shareDefaultLayoutData'])->group(function () {
 
     Route::get('/nosotros', [NosotrosController::class, 'indexInicio']);
     Route::get('/servicios', [ServiciosController::class, 'indexInicio']);
+    Route::get('/productos', [ProductoController::class, 'indexInicio']);
 });
 
+Route::get('/descargar/archivo/{id}', [DescargarArchivo::class, 'descargarArchivo'])
+    ->name('descargar.archivo');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {

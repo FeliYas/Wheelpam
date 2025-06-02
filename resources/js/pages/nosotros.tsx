@@ -4,7 +4,7 @@ import poster from '../../images/poster.png';
 import DefaultLayout from './defaultLayout';
 
 export default function Nosotros() {
-    const { valores, nosotros } = usePage().props;
+    const { valores, nosotros, banner } = usePage().props;
 
     const [isMobile, setIsMobile] = useState(false);
     const [isTablet, setIsTablet] = useState(false);
@@ -139,7 +139,7 @@ export default function Nosotros() {
                     </Link>{' '}
                     / <Link href={'/nosotros'}>Nosotros</Link>
                 </div>
-                <img className="absolute h-full w-full object-cover object-center" src={nosotros?.banner} alt="Banner nosotros" />
+                <img className="absolute h-full w-full object-cover object-center" src={banner?.image} alt="Banner nosotros" />
                 <h2 className="absolute z-10 mx-auto w-[1200px] pb-20 text-3xl font-bold text-white sm:text-4xl">Nosotros</h2>
             </div>
 

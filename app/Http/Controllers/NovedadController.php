@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
 use App\Models\Novedad;
 use Illuminate\Http\Request;
 
@@ -15,6 +16,14 @@ class NovedadController extends Controller
         $novedades = Novedad::orderBy('order', 'asc')->get();
         return inertia('auth/novedadesAdmin', [
             'novedades' => $novedades,
+        ]);
+    }
+
+    public function novedadesBanner()
+    {
+        $novedades = Banner::where('name', 'novedades')->first();
+        return inertia('auth/novedadesBanner', [
+            'novedadesBanner' => $novedades,
         ]);
     }
 

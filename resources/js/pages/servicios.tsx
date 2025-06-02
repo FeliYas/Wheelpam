@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import DefaultLayout from './defaultLayout';
 
 export default function Nosotros() {
-    const { servicios } = usePage().props;
+    const { servicios, banner } = usePage().props;
 
     const [isMobile, setIsMobile] = useState(false);
     const [isTablet, setIsTablet] = useState(false);
@@ -43,7 +43,7 @@ export default function Nosotros() {
                     </Link>{' '}
                     / <Link href={'/servicios'}>Servicios</Link>
                 </div>
-                <img className="absolute h-full w-full object-cover object-center" alt="Banner nosotros" />
+                <img className="absolute h-full w-full object-cover object-center" src={banner?.image} alt="Banner servicios" />
                 <h2 className="absolute z-10 mx-auto w-[1200px] pb-20 text-3xl font-bold text-white sm:text-4xl">Servicios</h2>
             </div>
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
 use App\Models\Nosotros;
 use App\Models\Valores;
 use Illuminate\Http\Request;
@@ -14,6 +15,7 @@ class NosotrosController extends Controller
      */
     public function index()
     {
+
         $nosotros = Nosotros::first();
 
         return Inertia::render('auth/nosotrosAdmin', ['nosotros' => $nosotros]);
@@ -23,16 +25,18 @@ class NosotrosController extends Controller
     {
         $nosotros = Nosotros::first();
         $valores = Valores::first();
+        $banner = Banner::where('name', 'nosotros')->first();
 
         return Inertia::render('nosotros', [
             'nosotros' => $nosotros,
-            'valores' => $valores
+            'valores' => $valores,
+            'banner' => $banner
         ]);
     }
 
     public function nosotrosBanner()
     {
-        $nosotros = Nosotros::first();
+        $nosotros = Banner::where('name', 'nosotros')->first();
 
         return Inertia::render('auth/nosotrosBanner', ['nosotros' => $nosotros]);
     }

@@ -73,7 +73,7 @@ export default function Dashboard({ children }) {
             icon: faBoxArchive,
             href: '#',
             subHref: [
-                { title: 'Banner', href: '/dashboard/productosbanner' },
+                { title: 'Banner', href: '/dashboard/productos-banner' },
 
                 { title: 'Categorias', href: '/dashboard/categorias' },
                 { title: 'Sub-categorias', href: '/dashboard/sub-categorias' },
@@ -91,7 +91,7 @@ export default function Dashboard({ children }) {
             icon: faBellConcierge,
             href: '#',
             subHref: [
-                { title: 'Banner', href: '/dashboard/serviciosbanner' },
+                { title: 'Banner', href: '/dashboard/servicios-banner' },
                 { title: 'Contenido', href: '/dashboard/servicios' },
             ],
         },
@@ -123,10 +123,7 @@ export default function Dashboard({ children }) {
             title: 'Solicitud de presupuesto',
             icon: faMoneyCheckDollar,
             href: 'novedades',
-            subHref: [
-                { title: 'Banner', href: '/dashboard/solicitudbanner' },
-                { title: 'Contenido', href: 'novedades' },
-            ],
+            subHref: [{ title: 'Banner', href: '/dashboard/solicitud-banner' }],
         },
 
         {

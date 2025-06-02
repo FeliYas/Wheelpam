@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
 use App\Models\Categoria;
 use App\Models\Producto;
 use App\Models\SubCategoria;
@@ -16,7 +17,7 @@ class ProductoController extends Controller
     {
         $perPage = $request->input('per_page', 10);
 
-        $query = Producto::query()->with('imagenes', 'caracteristicas')->orderBy('order', 'asc');
+        $query = Producto::query()->with(['imagenes', 'caracteristicas', 'sub_categoria'])->orderBy('order', 'asc');
 
         if ($request->has('search') && !empty($request->search)) {
             $searchTerm = $request->search;
@@ -36,6 +37,23 @@ class ProductoController extends Controller
         ]);
     }
 
+    public function indexInicio()
+    {
+        $categorias = Categoria::orderBy('order', 'asc')->get();
+        $banner = Banner::where('name', 'productos')->first();
+
+        return inertia('productos', [
+            'categorias' => $categorias,
+            'banner' => $banner
+        ]);
+    }
+
+    public function productosBanner()
+    {
+        $productoBanner = Banner::where('name', 'productos')->first();
+        return inertia('auth/productosBanner', ['productoBanner' => $productoBanner]);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -45,10 +63,13 @@ class ProductoController extends Controller
             'order' => 'sometimes|string',
             'sub_categoria_id' => 'required|exists:sub_categorias,id',
             'name' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
             'recomendaciones' => 'required|string',
             'archivo' => 'sometimes|file|max:2048',
             'featured' => 'sometimes|boolean',
+            'temperatura' => 'sometimes|string',
+            'desgaste' => 'sometimes|string',
+            'confort' => 'sometimes|string',
+            'description' => 'sometimes|string',
         ]);
 
         if ($request->hasFile('archivo')) {
@@ -66,10 +87,13 @@ class ProductoController extends Controller
             'order' => 'sometimes|string',
             'sub_categoria_id' => 'required|exists:sub_categorias,id',
             'name' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
             'recomendaciones' => 'required|string',
             'archivo' => 'sometimes|file|max:2048',
             'featured' => 'sometimes|boolean',
+            'temperatura' => 'sometimes|string',
+            'desgaste' => 'sometimes|string',
+            'confort' => 'sometimes|string',
+            'description' => 'sometimes|string',
         ]);
 
         $producto = Producto::find($request->id);

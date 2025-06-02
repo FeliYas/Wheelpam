@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
 use App\Models\Contacto;
 use Illuminate\Http\Request;
 
@@ -12,6 +13,7 @@ class ContactoController extends Controller
      */
     public function index()
     {
+
         $contactos = Contacto::first();
         return inertia('auth/contactoAdmin', [
             'contacto' => $contactos
@@ -21,7 +23,7 @@ class ContactoController extends Controller
 
     public function contactoBanner()
     {
-        $contactos = Contacto::first();
+        $contactos = Banner::where('name', 'contacto')->first();
         return inertia('auth/contactoBanner', [
             'contacto' => $contactos
         ]);

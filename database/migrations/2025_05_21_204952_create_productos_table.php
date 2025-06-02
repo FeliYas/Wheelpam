@@ -15,8 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('order')->default("zzz");
             $table->foreignId('sub_categoria_id')->constrained('sub_categorias')->cascadeOnDelete();
+            $table->string('description')->nullable();
+            $table->string('temperatura')->nullable();
+            $table->string('confort')->nullable();
+            $table->string('desgaste')->nullable();
             $table->string('name');
-            $table->string('type');
             $table->longText('recomendaciones');
             $table->string('archivo')->nullable();
             $table->boolean('featured')->default(false);

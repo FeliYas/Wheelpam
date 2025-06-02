@@ -8,7 +8,7 @@ class Banner extends Model
 {
     protected $guarded = [];
 
-    public function getBannerAttribute($value)
+    public function getImageAttribute($value)
     {
         return asset('storage/' . $value);
     }

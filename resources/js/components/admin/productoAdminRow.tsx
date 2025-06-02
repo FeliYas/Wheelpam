@@ -1,7 +1,9 @@
-import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faDownload, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
+import axios from 'axios';
 import { AnimatePresence, motion } from 'framer-motion';
+import { X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import CustomReactQuill from '../customReactQuill';
@@ -12,17 +14,57 @@ export default function ProductoAdminRow({ producto }) {
     const [imageView, setImageView] = useState(false);
     const [text, setText] = useState(producto?.recomendaciones || '');
     const [caracteristicas, setCaracteristicas] = useState(false);
+    const [currentCategory, setCurrentCategory] = useState(producto?.sub_categoria?.categoria_id || '');
+
+    const { categorias, sub_categorias } = usePage().props;
+
+    console.log(sub_categorias);
+
+    const handleDownload = async (producto) => {
+        try {
+            const filename = producto.archivo.split('/').pop();
+            // Make a GET request to the download endpoint
+            const response = await axios.get(`/descargar/archivo/${filename}`, {
+                responseType: 'blob', // Important for file downloads
+            });
+
+            // Create a link element to trigger the download
+            const fileType = response.headers['content-type'] || 'application/octet-stream';
+            const blob = new Blob([response.data], { type: fileType });
+            const url = window.URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename; // Descargar con el nombre original
+            document.body.appendChild(a);
+            a.click();
+
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('Download failed:', error);
+
+            // Optional: show user-friendly error message
+            alert('Failed to download the file. Please try again.');
+        }
+    };
 
     const updateForm = useForm({
         order: producto?.order,
         name: producto?.name,
-        type: producto?.type,
         recomendaciones: producto?.recomendaciones,
         sub_categoria_id: producto?.sub_categoria_id,
+        description: producto?.description,
+        temperatura: producto?.temperatura,
+        confort: producto?.confort,
+        desgaste: producto?.desgaste,
         id: producto?.id,
     });
 
     const imageForm = useForm({
+        producto_id: producto?.id,
+    });
+
+    const caracForm = useForm({
         producto_id: producto?.id,
     });
 
@@ -44,6 +86,8 @@ export default function ProductoAdminRow({ producto }) {
         updateForm.setData('recomendaciones', text);
     }, [text]);
 
+    console.log(producto);
+
     const handleUpdate = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         updateForm.post(route('admin.productos.update'), {
@@ -59,9 +103,9 @@ export default function ProductoAdminRow({ producto }) {
         });
     };
 
-    const deleteMarca = () => {
+    const deleteProducto = () => {
         if (confirm('¿Estas seguro de eliminar esta producto?')) {
-            updateForm.delete(route('admin.marcas.destroy'), {
+            updateForm.delete(route('admin.productos.destroy'), {
                 preserveScroll: true,
                 onSuccess: () => {
                     toast.success('Producto eliminada correctamente');
@@ -89,16 +133,26 @@ export default function ProductoAdminRow({ producto }) {
         }
     };
 
+    const agregarCarac = (e) => {
+        e.preventDefault();
+        caracForm.post(route('admin.caracteristicas.store'), {
+            preserveScroll: true,
+            onSuccess: () => {
+                toast.success('Característica agregada correctamente');
+            },
+            onError: (errors) => {
+                toast.error('Error al agregar característica');
+                console.log(errors);
+            },
+        });
+    };
+
     return (
         <tr className={`border text-black odd:bg-gray-100 even:bg-white`}>
             <td className="align-middle">{producto?.order}</td>
             <td className="align-middle">{producto?.name}</td>
-            <td className="align-middle">{producto?.type}</td>
-            <td className="h-[90px] w-[90px] px-8">
-                <button onClick={() => setImageView(true)} className="h-10 w-10 rounded-md border border-blue-500 px-2 py-1 text-white">
-                    <FontAwesomeIcon icon={faPen} size="lg" color="#3b82f6" />
-                </button>
-            </td>
+            <td>{producto?.description}</td>
+
             <td className="align-middle">
                 <div dangerouslySetInnerHTML={{ __html: producto?.recomendaciones }} />
             </td>
@@ -110,7 +164,17 @@ export default function ProductoAdminRow({ producto }) {
             </td>
 
             <td className="h-[90px] w-[90px] px-8">
-                <button onClick={() => set(true)} className="h-10 w-10 rounded-md border border-blue-500 px-2 py-1 text-white">
+                {producto?.archivo ? (
+                    <button onClick={() => handleDownload(producto)} className="h-10 w-10 rounded-md border border-blue-500 px-2 py-1 text-white">
+                        <FontAwesomeIcon icon={faDownload} size="lg" color="#3b82f6" />
+                    </button>
+                ) : (
+                    <span className="text-red-500">Sin archivo</span>
+                )}
+            </td>
+
+            <td className="h-[90px] w-[90px] px-8">
+                <button onClick={() => setImageView(true)} className="h-10 w-10 rounded-md border border-blue-500 px-2 py-1 text-white">
                     <FontAwesomeIcon icon={faPen} size="lg" color="#3b82f6" />
                 </button>
             </td>
@@ -124,7 +188,7 @@ export default function ProductoAdminRow({ producto }) {
                     <button onClick={() => setEdit(true)} className="h-10 w-10 rounded-md border border-blue-500 px-2 py-1 text-white">
                         <FontAwesomeIcon icon={faPen} size="lg" color="#3b82f6" />
                     </button>
-                    <button onClick={deleteMarca} className="h-10 w-10 rounded-md border border-red-500 px-2 py-1 text-white">
+                    <button onClick={deleteProducto} className="h-10 w-10 rounded-md border border-red-500 px-2 py-1 text-white">
                         <FontAwesomeIcon icon={faTrash} size="lg" color="#fb2c36" />
                     </button>
                 </div>
@@ -162,22 +226,53 @@ export default function ProductoAdminRow({ producto }) {
                                         onChange={(e) => updateForm.setData('name', e.target.value)}
                                     />
 
-                                    <label htmlFor="type">
-                                        Tipo <span className="text-red-500">*</span>
+                                    <label htmlFor="descripcion">
+                                        Descripcion <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         className="focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline"
                                         type="text"
-                                        name="type"
-                                        id="type"
-                                        value={updateForm?.data?.type}
-                                        onChange={(e) => updateForm.setData('type', e.target.value)}
+                                        name="descripcion"
+                                        id="descripcion"
+                                        value={updateForm?.data?.description}
+                                        onChange={(e) => updateForm.setData('description', e.target.value)}
                                     />
+
                                     <label htmlFor="recom">
                                         Recomendaciones de uso <span className="text-red-500">*</span>
                                     </label>
 
                                     <CustomReactQuill value={text} onChange={setText} />
+
+                                    <label className="">Resistencia a la temperatura</label>
+                                    <input
+                                        type="range"
+                                        min={0}
+                                        max={10}
+                                        value={updateForm.data.temperatura}
+                                        onChange={(e) => updateForm.setData('temperatura', e.target.value)}
+                                        className="w-full cursor-pointer"
+                                    />
+
+                                    <label className="">Resistencia al desgaste</label>
+                                    <input
+                                        type="range"
+                                        min={0}
+                                        max={10}
+                                        value={updateForm.data.desgaste}
+                                        onChange={(e) => updateForm.setData('desgaste', e.target.value)}
+                                        className="w-full cursor-pointer"
+                                    />
+
+                                    <label className="">Confort durante la marcha</label>
+                                    <input
+                                        type="range"
+                                        min={0}
+                                        max={10}
+                                        value={updateForm.data.confort}
+                                        onChange={(e) => updateForm.setData('confort', e.target.value)}
+                                        className="w-full cursor-pointer"
+                                    />
 
                                     <label htmlFor="archivo">
                                         Tabla de medidas <span className="text-red-500">*</span>
@@ -192,35 +287,37 @@ export default function ProductoAdminRow({ producto }) {
                                     />
 
                                     <label htmlFor="categoria">Categoria</label>
-                                    {/* <select
-                                    className="focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline"
-                                    onChange={(e) => setEdit(e.target.value)}
-                                    name=""
-                                    id=""
-                                >
-                                    <option value="">Seleccione una categoria</option>
-                                    {categorias?.map((categoria) => (
-                                        <option key={categoria.id} value={categoria.id}>
-                                            {categoria.title}
-                                        </option>
-                                    ))}
-                                </select>
-                                <label htmlFor="categoria">Sub-categoria</label>
-                                <select
-                                    className="focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline"
-                                    onChange={(e) => updateForm.setData('sub_categoria_id', e.target.value)}
-                                    name=""
-                                    id=""
-                                >
-                                    <option value="">Seleccione una sub-categoria</option>
-                                    {subcategorias
-                                        ?.filter((sub) => sub?.categoria_id == currentCategory)
-                                        ?.map((subcategoria) => (
-                                            <option key={subcategoria.id} value={subcategoria.id}>
-                                                {subcategoria.title}
+                                    <select
+                                        className="focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline"
+                                        value={currentCategory}
+                                        onChange={(e) => setCurrentCategory(e.target.value)}
+                                        name=""
+                                        id=""
+                                    >
+                                        <option value="">Seleccione una categoria</option>
+                                        {categorias?.map((categoria) => (
+                                            <option key={categoria.id} value={categoria.id}>
+                                                {categoria.title}
                                             </option>
                                         ))}
-                                </select> */}
+                                    </select>
+                                    <label htmlFor="categoria">Sub-categoria</label>
+                                    <select
+                                        className="focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline"
+                                        value={updateForm.data.sub_categoria_id}
+                                        onChange={(e) => updateForm.setData('sub_categoria_id', e.target.value)}
+                                        name=""
+                                        id=""
+                                    >
+                                        <option value="">Seleccione una sub-categoria</option>
+                                        {sub_categorias
+                                            ?.filter((sub) => sub?.categoria_id == currentCategory)
+                                            ?.map((subcategoria) => (
+                                                <option key={subcategoria.id} value={subcategoria.id}>
+                                                    {subcategoria.title}
+                                                </option>
+                                            ))}
+                                    </select>
 
                                     <div className="flex justify-end gap-4">
                                         <button
@@ -337,40 +434,68 @@ export default function ProductoAdminRow({ producto }) {
                         exit={{ opacity: 0 }}
                         className="fixed top-0 left-0 z-50 flex h-full w-full items-center justify-center bg-black/50 text-left"
                     >
-                        <div className="max-h-[90vh] w-fit overflow-y-auto rounded-md bg-white p-4">
+                        <div className="relative max-h-[90vh] w-fit overflow-y-auto rounded-md bg-white p-4">
+                            <button
+                                className="absolute top-0 right-0 m-2 rounded-md bg-red-500 p-2 text-white"
+                                onClick={() => setCaracteristicas(false)}
+                            >
+                                <X color="#fff" />
+                            </button>
+                            <h2 className="text-lg font-semibold">Características</h2>
                             {producto?.caracteristicas?.length > 0 ? (
-                                producto?.caracteristicas?.map((caracteristica) => (
-                                    <div key={caracteristica.id} className="mb-4 flex flex-col gap-2">
-                                        <h3 className="text-lg font-semibold">{caracteristica?.name}</h3>
-                                        <p className="text-sm">{caracteristica?.description}</p>
-                                        <button
-                                            onClick={() => deleteImage(caracteristica.id)}
-                                            className="self-end rounded-md bg-red-500 px-2 py-1 text-white"
-                                        >
-                                            Eliminar
-                                        </button>
-                                    </div>
-                                ))
+                                <table className="my-10 w-full border text-left text-sm text-gray-500 rtl:text-right dark:text-gray-400">
+                                    <thead className="bg-gray-300 text-sm font-medium text-black uppercase">
+                                        <tr>
+                                            <th className="px-4 py-2 text-center">Orden</th>
+                                            <th className="px-4 py-2 text-center">Imagen</th>
+                                            <th className="px-4 py-2 text-center">Operaciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {producto?.caracteristicas?.map((caracteristica) => (
+                                            <tr key={caracteristica.id}>
+                                                <td className="px-4 py-2 text-center">{caracteristica?.order}</td>
+                                                <td className="flex items-center justify-center px-4 py-2">
+                                                    <img src={caracteristica?.image} alt={caracteristica?.name} className="h-12 w-12 object-cover" />
+                                                </td>
+                                                <td className="px-4 py-2 text-center">
+                                                    <button
+                                                        onClick={() => deleteImage(caracteristica.id)}
+                                                        className="self-end rounded-md bg-red-500 px-2 py-1 text-white"
+                                                    >
+                                                        Eliminar
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
                             ) : (
-                                <p className="pb-5">Sin Caracteristicas</p>
+                                <div className="flex flex-col gap-2">
+                                    <p className="pb-5">Sin Caracteristicas</p>
+                                </div>
                             )}
-                            <form className="flex flex-row gap-10" action="">
+                            <form onSubmit={agregarCarac} className="flex flex-row gap-10" action="">
                                 <div className="flex flex-col">
                                     <label htmlFor="orden">Orden</label>
                                     <input
                                         className="focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline"
                                         type="text"
                                         id="orden"
+                                        value={caracForm.order}
+                                        onChange={(e) => caracForm.setData('order', e.target.value)}
                                     />
                                 </div>
                                 <div className="flex flex-col">
                                     <label htmlFor="imagen">Imagen</label>
                                     <input
-                                        className="file:bg-primary-color h-full file:rounded-md file:px-4 file:py-2 file:text-white"
+                                        className="file:bg-primary-color h-full file:cursor-pointer file:rounded-md file:px-4 file:py-2 file:text-white"
                                         type="file"
                                         id="imagen"
+                                        onChange={(e) => caracForm.setData('image', e.target.files[0])}
                                     />
                                 </div>
+                                <button className="bg-primary-color self-end rounded-md px-4 py-2 text-white">Agregar</button>
                             </form>
                         </div>
                     </motion.div>

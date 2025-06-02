@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
 use App\Models\Garantia;
 use Illuminate\Http\Request;
 
@@ -20,7 +21,7 @@ class GarantiaController extends Controller
 
     public function garantiaBanner()
     {
-        $garantia = Garantia::first();
+        $garantia = Banner::where('name', 'garantia')->first();
         return inertia('auth/garantiaBanner', [
             'garantia' => $garantia,
         ]);
