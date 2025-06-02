@@ -82,6 +82,10 @@ export default function Dashboard({ children }) {
                     title: 'Productos',
                     href: '/dashboard/productos',
                 },
+                {
+                    title: 'Medidas',
+                    href: '/dashboard/medidas',
+                },
             ],
         },
         {

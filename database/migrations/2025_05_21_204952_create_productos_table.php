@@ -23,6 +23,7 @@ return new class extends Migration
             $table->longText('recomendaciones');
             $table->string('archivo')->nullable();
             $table->boolean('featured')->default(false);
+            $table->foreignId('medida_id')->nullable()->constrained('medidas')->nullOnDelete();
             $table->timestamps();
         });
     }

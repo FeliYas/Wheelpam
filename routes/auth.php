@@ -16,6 +16,7 @@ use App\Http\Controllers\GarantiaController;
 use App\Http\Controllers\ImagenesProductoController;
 use App\Http\Controllers\LogosController;
 use App\Http\Controllers\MarcaController;
+use App\Http\Controllers\MedidaController;
 use App\Http\Controllers\MetadatosController;
 use App\Http\Controllers\NosotrosController;
 use App\Http\Controllers\NovedadController;
@@ -25,6 +26,7 @@ use App\Http\Controllers\SliderController;
 use App\Http\Controllers\SubCategoriaController;
 use App\Http\Controllers\ValoresController;
 use App\Models\Banner;
+use App\Models\Medida;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -158,6 +160,11 @@ Route::middleware('auth')->group(function () {
     Route::get('dashboard/productos-banner', [ProductoController::class, 'productosBanner'])->name('admin.productos.banner');
 
 
+    # Medidas
+    Route::get('dashboard/medidas', [MedidaController::class, 'index'])->name('admin.medidas');
+    Route::post('dashboard/medidas/store', [MedidaController::class, 'store'])->name('admin.medidas.store');
+    Route::post('dashboard/medidas/update', [MedidaController::class, 'update'])->name('admin.medidas.update');
+    Route::delete('dashboard/medidas/destroy', [MedidaController::class, 'destroy'])->name('admin.medidas.destroy');
 
     Route::resource('dashboard/caracteristicasadmin', CaracteristicasController::class)->only(['store', 'update', 'destroy'])->names([
         'store' => 'admin.caracteristicas.store',

@@ -9,12 +9,9 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ServiciosController;
 use App\Models\Banner;
 use App\Models\Categoria;
-use App\Models\Contacto;
 use App\Models\ContenidoInicio;
-use App\Models\Garantia;
-use App\Models\Logos;
 use App\Models\Marca;
-use App\Models\Nosotros;
+use App\Models\Medida;
 use App\Models\Novedad;
 use App\Models\Producto;
 use App\Models\Slider;
@@ -31,7 +28,8 @@ Route::middleware(['shareDefaultLayoutData'])->group(function () {
             ->orderBy('order', 'asc')
             ->with([
                 'imagenes',
-                'sub_categoria.categoria' // esto trae también la categoría
+                'sub_categoria.categoria',
+                'medidas' // esto trae también las medidas
             ])
             ->get();
 
@@ -70,9 +68,12 @@ Route::middleware(['shareDefaultLayoutData'])->group(function () {
     Route::get('/solicitud-de-presupuesto', function () {
 
         $banner = Banner::where('name', operator: 'solicitud')->first();
-
+        $productos = Producto::select('id', 'name')->orderBy('name', 'asc')->get();
+        $medidas = Medida::orderBy('order', 'asc')->get();
         return Inertia::render('solicitudPresupuesto', [
             'banner' => $banner,
+            'productos' => $productos,
+            'medidas' => $medidas,
         ]);
     })->name('solicitud.presupuesto');
 });

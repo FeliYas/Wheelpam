@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 import Dashboard from '../dashboard';
 
 export default function ProductosAdmin() {
-    const { productos, categorias, sub_categorias } = usePage().props;
+    const { productos, categorias, sub_categorias, medidas } = usePage().props;
 
     const { data, setData, post, reset } = useForm({
         name: '',
@@ -161,7 +161,7 @@ export default function ProductosAdmin() {
                                         <input
                                             onChange={(e) => setData('archivo', e.target.files[0])}
                                             type="file"
-                                            className="file:border"
+                                            className="file:bg-primary-color file:cursor-pointer file:rounded-full file:border file:px-2 file:py-1 file:text-white"
                                             name=""
                                             id=""
                                         />
@@ -195,6 +195,21 @@ export default function ProductosAdmin() {
                                                         {subcategoria.title}
                                                     </option>
                                                 ))}
+                                        </select>
+
+                                        <label htmlFor="medida">Medida</label>
+                                        <select
+                                            className="focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline"
+                                            onChange={(e) => setData('medida_id', e.target.value)}
+                                            name=""
+                                            id=""
+                                        >
+                                            <option value="">Seleccione una medida</option>
+                                            {medidas?.map((medida) => (
+                                                <option key={medida.id} value={medida.id}>
+                                                    {medida.name}
+                                                </option>
+                                            ))}
                                         </select>
 
                                         <div className="flex justify-end gap-4">
@@ -246,7 +261,7 @@ export default function ProductosAdmin() {
                                     <td className="text-center">ORDEN</td>
                                     <td className="text-center">NOMBRE</td>
                                     <td className="py-2 text-center">DESCRIPCION</td>
-                                    <td className="text-center">RECOMENDACIONES DE USO</td>
+                                    <td className="text-center">MEDIDA</td>
                                     <td className="text-center">CARACTERISTICAS</td>
                                     <td className="text-center">TABLA DE MEDIDAS</td>
                                     <td className="text-center">IMAGENES</td>

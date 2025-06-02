@@ -1,9 +1,10 @@
 import { Head, Link, usePage } from '@inertiajs/react';
 import { Upload } from 'lucide-react';
+import toast from 'react-hot-toast';
 import DefaultLayout from './defaultLayout';
 
 export default function SolicitudPresupuesto() {
-    const { banner } = usePage().props;
+    const { banner, productos, medidas } = usePage().props;
 
     return (
         <DefaultLayout>
@@ -58,14 +59,28 @@ export default function SolicitudPresupuesto() {
                     <div className="grid grid-cols-4 grid-rows-4 gap-x-6 gap-y-8">
                         <div className="col-span-2 flex flex-col gap-2">
                             <label htmlFor="producto">Producto *</label>
-                            <input type="text" id="producto" className="rounded-md border border-gray-300 p-2" />
+                            <select id="producto" className="rounded-md border border-gray-300 p-2">
+                                <option value="">Seleccione un producto</option>
+                                {productos?.map((producto) => (
+                                    <option key={producto.id} value={producto.id}>
+                                        {producto.name}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="medida">Medida*</label>
-                            <input type="text" id="medida" className="rounded-md border border-gray-300 p-2" />
+                            <label htmlFor="medida">Medida</label>
+                            <select id="medida" className="rounded-md border border-gray-300 p-2">
+                                <option value="">Seleccione una medida</option>
+                                {medidas?.map((medida) => (
+                                    <option key={medida.id} value={medida.id}>
+                                        {medida.name}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="cantidad">Cantidad*</label>
+                            <label htmlFor="cantidad">Cantidad</label>
                             <input type="text" id="cantidad" className="rounded-md border border-gray-300 p-2" />
                         </div>
                         <div className="col-span-2 row-span-3 flex flex-col gap-2">
@@ -80,11 +95,18 @@ export default function SolicitudPresupuesto() {
                             <label htmlFor="archivo">Adjuntar archivo</label>
                             <div className="flex flex-row justify-between rounded-md border border-gray-300 p-2">
                                 <input type="file" id="archivo" className="file:cursor-pointer" />
-                                <button>
+                                <label htmlFor="archivo" className="cursor-pointer">
                                     <Upload color="#1a181c" />
-                                </button>
+                                </label>
                             </div>
                         </div>
+                        <p className="self-end">*Campos obligatorios</p>
+                        <button
+                            onClick={() => toast.success('Solicitud enviada')}
+                            className="bg-primary-color h-[38px] w-full items-end self-end rounded-full font-bold text-white"
+                        >
+                            Enviar solicitud
+                        </button>
                     </div>
                 </div>
             </div>

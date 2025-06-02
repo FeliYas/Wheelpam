@@ -16,9 +16,7 @@ export default function ProductoAdminRow({ producto }) {
     const [caracteristicas, setCaracteristicas] = useState(false);
     const [currentCategory, setCurrentCategory] = useState(producto?.sub_categoria?.categoria_id || '');
 
-    const { categorias, sub_categorias } = usePage().props;
-
-    console.log(sub_categorias);
+    const { categorias, sub_categorias, medidas } = usePage().props;
 
     const handleDownload = async (producto) => {
         try {
@@ -57,6 +55,7 @@ export default function ProductoAdminRow({ producto }) {
         temperatura: producto?.temperatura,
         confort: producto?.confort,
         desgaste: producto?.desgaste,
+        medida_id: producto?.medida_id,
         id: producto?.id,
     });
 
@@ -153,9 +152,7 @@ export default function ProductoAdminRow({ producto }) {
             <td className="align-middle">{producto?.name}</td>
             <td>{producto?.description}</td>
 
-            <td className="align-middle">
-                <div dangerouslySetInnerHTML={{ __html: producto?.recomendaciones }} />
-            </td>
+            <td className="align-middle">{producto?.medida?.name || 'Sin medida'}</td>
 
             <td className="h-[90px] w-[90px] px-8">
                 <button onClick={() => setCaracteristicas(true)} className="h-10 w-10 rounded-md border border-blue-500 px-2 py-1 text-white">
@@ -317,6 +314,22 @@ export default function ProductoAdminRow({ producto }) {
                                                     {subcategoria.title}
                                                 </option>
                                             ))}
+                                    </select>
+
+                                    <label htmlFor="medida">Medida</label>
+                                    <select
+                                        className="focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline"
+                                        value={updateForm.data.medida_id}
+                                        onChange={(e) => updateForm.setData('medida_id', e.target.value)}
+                                        name=""
+                                        id=""
+                                    >
+                                        <option value="">Seleccione una medida</option>
+                                        {medidas?.map((medida) => (
+                                            <option key={medida.id} value={medida.id}>
+                                                {medida.name}
+                                            </option>
+                                        ))}
                                     </select>
 
                                     <div className="flex justify-end gap-4">

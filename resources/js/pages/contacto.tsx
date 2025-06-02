@@ -1,6 +1,7 @@
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { useRef, useState } from 'react';
+import toast from 'react-hot-toast';
 import DefaultLayout from './defaultLayout';
 
 export default function Contacto() {
@@ -216,7 +217,8 @@ export default function Contacto() {
                                 /> */}
                             </div>
                             <button
-                                type="submit"
+                                type="button"
+                                onClick={() => toast.success('Consulta enviada')}
                                 className="bg-primary-color text-bold min-h-[41px] w-[184px] rounded-full px-4 text-[16px] text-white"
                             >
                                 Enviar consulta

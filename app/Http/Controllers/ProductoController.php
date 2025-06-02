@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Banner;
 use App\Models\Categoria;
+use App\Models\Medida;
 use App\Models\Producto;
 use App\Models\SubCategoria;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class ProductoController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->input('per_page', 10);
-
+        $medidas = Medida::orderBy('order', 'asc')->get();
         $query = Producto::query()->with(['imagenes', 'caracteristicas', 'sub_categoria'])->orderBy('order', 'asc');
 
         if ($request->has('search') && !empty($request->search)) {
@@ -34,6 +35,7 @@ class ProductoController extends Controller
             'productos' => $productos,
             'categorias' => $categorias,
             'sub_categorias' => $sub_categorias,
+            'medidas' => $medidas,
         ]);
     }
 
@@ -110,6 +112,7 @@ class ProductoController extends Controller
             'desgaste' => 'sometimes',
             'confort' => 'sometimes',
             'description' => 'sometimes|string',
+            'medida_id' => 'sometimes|exists:medidas,id',
         ]);
 
         if ($request->hasFile('archivo')) {
@@ -134,6 +137,7 @@ class ProductoController extends Controller
             'desgaste' => 'sometimes',
             'confort' => 'sometimes',
             'description' => 'sometimes|string',
+            'medida_id' => 'sometimes|exists:medidas,id',
         ]);
 
         $producto = Producto::find($request->id);
