@@ -11,7 +11,7 @@ export default function BannerInicio() {
                     <div dangerouslySetInnerHTML={{ __html: contenido?.garantia_text }} />
                 </div>
                 <div className="flex w-1/3 flex-col items-center">
-                    <img src={contenido?.garantia_image} className="h-full w-full" alt="" />
+                    <img src={contenido?.garantia_image} className="h-[215px] w-[215px]" alt="" />
                     <Link href="/garantia" className="bg-primary-color flex h-[38px] w-[184px] items-center justify-center rounded-full">
                         Más info
                     </Link>

@@ -139,7 +139,7 @@ export default function ContenidoInicio() {
                             type="text"
                             name="garantia_title"
                             id="garantia_title"
-                            value={contenidoInicio?.garantia_title}
+                            defaultValue={contenidoInicio?.garantia_title}
                             onChange={(e) => setData('garantia_title', e.target.value)}
                         />
                         {errors.garantia_title && <p className="mt-1 text-xs text-red-500">{errors.garantia_title}</p>}
