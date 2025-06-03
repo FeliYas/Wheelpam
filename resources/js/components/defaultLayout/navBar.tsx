@@ -58,8 +58,8 @@ export default function NavBar() {
                                           ziggy.location.includes('productos/') ||
                                           ziggy.location.includes('privada') ||
                                           ziggy.location.includes('busqueda')
-                                              ? 'text-white hover:text-[#F2C94C]'
-                                              : 'text-white hover:text-[#F2C94C]'
+                                              ? 'hover:text-primary-color text-white'
+                                              : 'hover:text-primary-color text-white'
                                       }`}
                                   >
                                       {link.title}
@@ -74,12 +74,12 @@ export default function NavBar() {
                                           ziggy.location.includes('productos/') ||
                                           ziggy.location.includes('privada') ||
                                           ziggy.location.includes('busqueda')
-                                              ? 'text-white hover:text-[#F2C94C]'
-                                              : 'text-white hover:text-[#F2C94C]'
+                                              ? 'hover:text-primary-color text-white'
+                                              : 'hover:text-primary-color text-white'
                                       }`}
                                   >
                                       {link.title}
-                                      {ziggy.location.includes(link.title.toLowerCase()) ||  && (
+                                      {ziggy.location.includes(link.title.toLowerCase()) && (
                                           <div className="bg-primary-color absolute bottom-0 h-[4px] w-full" />
                                       )}
                                   </Link>
@@ -121,7 +121,7 @@ export default function NavBar() {
                                               href={link.href}
                                               className={`py-3 text-[16px] ${
                                                   ziggy.location.includes(link.title.toLowerCase()) ? 'font-bold' : ''
-                                              } text-black hover:text-[#F2C94C]`}
+                                              } hover:text-primary-color text-black`}
                                               onClick={() => setMobileMenuOpen(false)}
                                           >
                                               {link.title}
@@ -133,7 +133,7 @@ export default function NavBar() {
                                               href={link.href}
                                               className={`py-3 text-[16px] ${
                                                   ziggy.location.includes(link.title.toLowerCase()) ? 'font-bold' : ''
-                                              } text-black hover:text-[#F2C94C]`}
+                                              } hover:text-primary-color text-black`}
                                               onClick={() => setMobileMenuOpen(false)}
                                           >
                                               {link.title}

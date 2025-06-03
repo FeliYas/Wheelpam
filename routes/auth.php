@@ -31,10 +31,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
-    Route::get('register', [RegisteredUserController::class, 'create'])
-        ->name('register');
 
-    Route::post('register', [RegisteredUserController::class, 'store']);
+
+
+
+
 
     Route::get('adm', [AuthenticatedSessionController::class, 'create'])
         ->name('adm');
@@ -202,4 +203,9 @@ Route::middleware('auth')->group(function () {
         $solicitudBanner = Banner::where('name', 'solicitud')->first();
         return inertia('auth/solicitudBanner', ['solicitudBanner' => $solicitudBanner]);
     })->name('admin.solicitud.banner');
+
+    Route::post('dashboard/administradores/store', [RegisteredUserController::class, 'store'])->name('admin.administradores.store');
+    Route::get('dashboard/administradores', [RegisteredUserController::class, 'index'])->name('admin.administradores');
+    Route::post('dashboard/administradores/update', [RegisteredUserController::class, 'update'])->name('admin.administradores.update');
+    Route::delete('dashboard/administradores/destroy', [RegisteredUserController::class, 'destroy'])->name('admin.administradores.destroy');
 });

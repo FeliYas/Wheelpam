@@ -146,7 +146,7 @@ export default function Dashboard({ children }) {
             open: false,
             title: 'Administradores',
             icon: faShield,
-            href: 'administradores',
+            href: '/dashboard/administradores',
             barra: true,
             subHref: [],
         },

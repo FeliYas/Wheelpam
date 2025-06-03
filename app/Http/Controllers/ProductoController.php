@@ -76,6 +76,18 @@ class ProductoController extends Controller
         ]);
     }
 
+
+    public function productosPorMedida(Request $request)
+    {
+
+        $productos = Producto::with(['imagenes', 'sub_categoria'])->where('medida_id', $request->medida)->orderBy('order', 'asc')->get();
+
+        return inertia('productosPorMedida', [
+            'productos' => $productos,
+            'medida_id' => $request->medida,
+        ]);
+    }
+
     public function showProducto($categoriaId, $productoId)
     {
         $producto = Producto::with(['imagenes', 'caracteristicas', 'sub_categoria'])->findOrFail($productoId);

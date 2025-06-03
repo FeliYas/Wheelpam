@@ -18,9 +18,12 @@ class RegisteredUserController extends Controller
     /**
      * Show the registration page.
      */
-    public function create(): Response
+    public function index()
     {
-        return Inertia::render('auth/register');
+        $users = User::all();
+        return inertia('auth/administradores', [
+            'users' => $users,
+        ]);
     }
 
     /**
@@ -28,24 +31,43 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
             'name' => $request->name,
-            'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
         event(new Registered($user));
+    }
 
-        Auth::login($user);
+    public function update(Request $request)
+    {
 
-        return to_route('dashboard');
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
+        ]);
+
+        $user = User::findOrFail($request->id);
+
+        $user->name = $request->name;
+
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+    }
+
+    public function destroy(Request $request)
+    {
+        $user = User::findOrFail($request->id);
+        $user->delete();
     }
 }

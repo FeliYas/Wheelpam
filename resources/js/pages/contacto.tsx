@@ -81,7 +81,7 @@ export default function Contacto() {
                                 className="flex flex-row items-center gap-3 transition-opacity hover:opacity-80"
                             >
                                 {dato.icon}
-                                <p className="text-base text-[16px] text-[#74716A] sm:text-[18px]">{dato?.name}</p>
+                                <p className="max-w-[350px] text-base text-[16px] text-[#74716A] sm:text-[18px]">{dato?.name}</p>
                             </a>
                         ))}
                     </div>

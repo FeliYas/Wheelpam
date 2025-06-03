@@ -84,6 +84,9 @@ Route::middleware(['shareDefaultLayoutData'])->group(function () {
 
     Route::get('/novedades/{id}', [NovedadController::class, 'verNovedad'])
         ->name('novedades.ver');
+
+    Route::get('/medidas/{medida}', [ProductoController::class, 'productosPorMedida'])
+        ->name('productos.medida');
 });
 
 Route::post('/contacto/enviar', [ContactoController::class, 'enviar'])->name('contacto.enviar');

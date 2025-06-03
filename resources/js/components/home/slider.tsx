@@ -1,4 +1,4 @@
-import { usePage } from '@inertiajs/react';
+import { router, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 
 const SliderHome = () => {
@@ -33,6 +33,10 @@ const SliderHome = () => {
 
     const toggleAutoPlay = () => {
         setIsAutoPlaying(!isAutoPlaying);
+    };
+
+    const handleMedidaChange = (medida) => {
+        router.get(`/medidas/${medida}`);
     };
 
     return (
@@ -92,7 +96,11 @@ const SliderHome = () => {
             <div className="bg-primary-color absolute bottom-10 left-1/2 z-20 flex h-[100px] w-[1200px] -translate-x-1/2 items-center justify-center rounded-lg text-white shadow-lg">
                 <div className="flex w-full items-center justify-between px-24">
                     <p className="text-[20px] font-medium">Encuentre el neumático ideal para su vehículo</p>
-                    <select className="h-[45px] w-[392px] rounded-lg border px-4 text-white" name="">
+                    <select
+                        onChange={(e) => handleMedidaChange(e.target.value)}
+                        className="h-[45px] w-[392px] rounded-lg border px-4 text-white"
+                        name=""
+                    >
                         <option className="text-black" value="" selected>
                             Seleccionar medida
                         </option>
