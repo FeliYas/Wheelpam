@@ -58,6 +58,7 @@ export default function Nosotros() {
 
                         <Link
                             href="/contacto"
+                            data={{ servicio: servicio.title }}
                             className="border-primary-color text-primary-color mt-5 flex h-[38px] w-[187px] items-center justify-center rounded-full border text-[15px] font-medium"
                         >
                             Consultar

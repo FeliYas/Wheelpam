@@ -102,17 +102,17 @@ class ProductoController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'order' => 'sometimes|string',
+            'order' => 'sometimes|nullable|string',
             'sub_categoria_id' => 'required|exists:sub_categorias,id',
             'name' => 'required|string|max:255',
-            'recomendaciones' => 'required|string',
-            'archivo' => 'sometimes|file|max:2048',
-            'featured' => 'sometimes|boolean',
-            'temperatura' => 'sometimes',
-            'desgaste' => 'sometimes',
-            'confort' => 'sometimes',
-            'description' => 'sometimes|string',
-            'medida_id' => 'sometimes|exists:medidas,id',
+            'recomendaciones' => 'sometimes|nullable|string',
+            'archivo' => 'sometimes|nullable|file|max:2048',
+            'featured' => 'sometimes|nullable|boolean',
+            'temperatura' => 'sometimes|nullable',
+            'desgaste' => 'sometimes|nullable',
+            'confort' => 'sometimes|nullable',
+            'description' => 'sometimes|nullable|string',
+            'medida_id' => 'sometimes|nullable|exists:medidas,id',
         ]);
 
         if ($request->hasFile('archivo')) {
@@ -127,17 +127,17 @@ class ProductoController extends Controller
     public function update(Request $request)
     {
         $data = $request->validate([
-            'order' => 'sometimes|string',
+            'order' => 'sometimes|nullable|string',
             'sub_categoria_id' => 'required|exists:sub_categorias,id',
             'name' => 'required|string|max:255',
-            'recomendaciones' => 'required|string',
-            'archivo' => 'sometimes|file|max:2048',
-            'featured' => 'sometimes|boolean',
-            'temperatura' => 'sometimes',
-            'desgaste' => 'sometimes',
-            'confort' => 'sometimes',
-            'description' => 'sometimes|string',
-            'medida_id' => 'sometimes|exists:medidas,id',
+            'recomendaciones' => 'sometimes|nullable|string',
+            'archivo' => 'sometimes|nullable|file|max:2048',
+            'featured' => 'sometimes|nullable|boolean',
+            'temperatura' => 'sometimes|nullable',
+            'desgaste' => 'sometimes|nullable',
+            'confort' => 'sometimes|nullable',
+            'description' => 'sometimes|nullable|string',
+            'medida_id' => 'sometimes|nullable|exists:medidas,id',
         ]);
 
         $producto = Producto::find($request->id);

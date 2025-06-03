@@ -1,4 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
+import axios from 'axios';
 import { useState } from 'react';
 import circleCheck from '../../images/circle-check.png';
 import logoProdcuto from '../../images/logoproductos.png';
@@ -6,6 +7,34 @@ import DefaultLayout from './defaultLayout';
 
 export default function ProductoShow({ producto, categorias, subcategorias, categoria_id, subcategoria_id }) {
     const [currentImage, setCurrentImage] = useState(producto?.imagenes[0]?.image);
+
+    const handleDownload = async () => {
+        try {
+            const filename = producto.archivo.split('/').pop();
+            // Make a GET request to the download endpoint
+            const response = await axios.get(`/descargar/archivo/${filename}`, {
+                responseType: 'blob', // Important for file downloads
+            });
+
+            // Create a link element to trigger the download
+            const fileType = response.headers['content-type'] || 'application/octet-stream';
+            const blob = new Blob([response.data], { type: fileType });
+            const url = window.URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename; // Descargar con el nombre original
+            document.body.appendChild(a);
+            a.click();
+
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('Download failed:', error);
+
+            // Optional: show user-friendly error message
+            alert('Failed to download the file. Please try again.');
+        }
+    };
 
     return (
         <DefaultLayout>
@@ -77,41 +106,55 @@ export default function ProductoShow({ producto, categorias, subcategorias, cate
                                         </div>
                                     </div>
                                     <div className="flex flex-col gap-15">
-                                        <p className="text-[16px] font-bold">{producto?.description}</p>
-                                        <div className="flex flex-col gap-2">
-                                            <p className="text-[16px] font-bold">Dureza de banda de rodadura 65 shore +- 5</p>
-                                            <div className="grid grid-cols-2 grid-rows-3 items-center gap-y-2">
-                                                <p>Resistencia a la temperatura</p>
-                                                <div className="relative h-2 rounded bg-gray-200">
-                                                    <div
-                                                        className="absolute h-2 rounded bg-red-600 transition-all duration-300"
-                                                        style={{ width: `${Number(producto?.temperatura) * 10}%` }}
-                                                    ></div>
-                                                </div>
-                                                <p>Resistencia al desgaste</p>
-                                                <div className="relative h-2 rounded bg-gray-200">
-                                                    <div
-                                                        className="absolute h-2 rounded bg-red-600 transition-all duration-300"
-                                                        style={{ width: `${Number(producto?.desgaste) * 10}%` }}
-                                                    ></div>
-                                                </div>
-                                                <p>Confort durante la marcha</p>
-                                                <div className="relative h-2 rounded bg-gray-200">
-                                                    <div
-                                                        className="absolute h-2 rounded bg-red-600 transition-all duration-300"
-                                                        style={{ width: `${Number(producto?.confort) * 10}%` }}
-                                                    ></div>
+                                        {producto?.description && <p className="text-[16px] font-bold">{producto?.description}</p>}
+                                        {Number(producto?.confort) > 0 && Number(producto?.temperatura) > 0 && Number(producto?.desgaste) > 0 && (
+                                            <div className="flex flex-col gap-2">
+                                                <p className="text-[16px] font-bold">Dureza de banda de rodadura 65 shore +- 5</p>
+                                                <div className="grid grid-cols-2 grid-rows-3 items-center gap-y-2">
+                                                    <p>Resistencia a la temperatura</p>
+                                                    <div className="relative h-2 rounded bg-gray-200">
+                                                        <div
+                                                            className="absolute h-2 rounded bg-red-600 transition-all duration-300"
+                                                            style={{ width: `${Number(producto?.temperatura) * 10}%` }}
+                                                        ></div>
+                                                    </div>
+                                                    <p>Resistencia al desgaste</p>
+                                                    <div className="relative h-2 rounded bg-gray-200">
+                                                        <div
+                                                            className="absolute h-2 rounded bg-red-600 transition-all duration-300"
+                                                            style={{ width: `${Number(producto?.desgaste) * 10}%` }}
+                                                        ></div>
+                                                    </div>
+                                                    <p>Confort durante la marcha</p>
+                                                    <div className="relative h-2 rounded bg-gray-200">
+                                                        <div
+                                                            className="absolute h-2 rounded bg-red-600 transition-all duration-300"
+                                                            style={{ width: `${Number(producto?.confort) * 10}%` }}
+                                                        ></div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        )}
                                     </div>
                                 </div>
 
                                 <div className="flex h-[38px] w-full flex-row gap-5">
-                                    <button className="border-primary-color text-primary-color w-full rounded-full border font-bold">
-                                        Tabla de medidas
-                                    </button>
-                                    <button className="bg-primary-color w-full rounded-full font-bold text-white">Consultar</button>
+                                    {producto?.archivo && (
+                                        <button
+                                            onClick={handleDownload}
+                                            className="border-primary-color text-primary-color w-full rounded-full border font-bold"
+                                        >
+                                            Tabla de medidas
+                                        </button>
+                                    )}
+
+                                    <Link
+                                        href="/solicitud-de-presupuesto"
+                                        data={{ producto_id: producto?.name }}
+                                        className="bg-primary-color flex w-full items-center justify-center rounded-full font-bold text-white"
+                                    >
+                                        Consultar
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -119,46 +162,51 @@ export default function ProductoShow({ producto, categorias, subcategorias, cate
                             <style>
                                 {`
                                 .custom-list ul {
-  list-style: none;
-  padding-left: 0rem;
-}
+                                    list-style: none;
+                                    padding-left: 0rem;
+                                    }
 
-.custom-list ul li {
-  position: relative;
-  padding-left: 1.5rem;
-  margin-bottom: 0.2rem;
-}
+                                    .custom-list ul li {
+                                    position: relative;
+                                    padding-left: 1.5rem;
+                                    margin-bottom: 0.2rem;
+                                    }
 
-.custom-list ul li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0.4rem;
-  width: 16px;
-  height: 16px;
-  background-image: url(${circleCheck}); /* tu imagen */
-  background-size: contain;
-  background-repeat: no-repeat;
-}
-`}
+                                    .custom-list ul li::before {
+                                    content: '';
+                                    position: absolute;
+                                    left: 0;
+                                    top: 0.4rem;
+                                    width: 16px;
+                                    height: 16px;
+                                    background-image: url(${circleCheck}); /* tu imagen */
+                                    background-size: contain;
+                                    background-repeat: no-repeat;
+                                    }
+                                `}
                             </style>
-                            <div className="flex w-full flex-col">
-                                <h3 className="border-b pb-2 text-[30px] font-semibold">Recomendaciones de uso</h3>
-                                <div
-                                    className="custom-list prose prose-sm sm:prose lg:prose-lg xl:prose-xl pt-4"
-                                    dangerouslySetInnerHTML={{ __html: producto?.recomendaciones }}
-                                />
-                            </div>
-                            <div className="flex w-full flex-col">
-                                <h3 className="border-b pb-2 text-[30px] font-semibold">Características</h3>
-                                <div className="flex flex-row gap-5 pt-4">
-                                    {producto?.caracteristicas?.map((caracteristica, index) => (
-                                        <div key={index} className="h-[80px] w-[115px] rounded-md">
-                                            <img src={caracteristica?.image} className="h-full w-full rounded-md object-cover" alt="" />
-                                        </div>
-                                    ))}
+                            {producto?.recomendaciones && producto.recomendaciones.trim() !== '<p><br></p>' && (
+                                <div className="flex w-full flex-col">
+                                    <h3 className="border-b pb-2 text-[30px] font-semibold">Recomendaciones de uso</h3>
+                                    <div
+                                        className="custom-list prose prose-sm sm:prose lg:prose-lg xl:prose-xl pt-4"
+                                        dangerouslySetInnerHTML={{ __html: producto?.recomendaciones }}
+                                    />
                                 </div>
-                            </div>
+                            )}
+
+                            {producto?.caracteristicas != false && (
+                                <div className="flex w-full flex-col">
+                                    <h3 className="border-b pb-2 text-[30px] font-semibold">Características</h3>
+                                    <div className="flex flex-row gap-5 pt-4">
+                                        {producto?.caracteristicas?.map((caracteristica, index) => (
+                                            <div key={index} className="h-[80px] w-[115px] rounded-md">
+                                                <img src={caracteristica?.image} className="h-full w-full rounded-md object-cover" alt="" />
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

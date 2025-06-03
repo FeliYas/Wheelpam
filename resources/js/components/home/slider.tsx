@@ -5,7 +5,7 @@ const SliderHome = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
-    const { slider } = usePage().props;
+    const { slider, medidas } = usePage().props;
 
     // Datos de ejemplo - reemplaza con tus propios datos
 
@@ -93,9 +93,14 @@ const SliderHome = () => {
                 <div className="flex w-full items-center justify-between px-24">
                     <p className="text-[20px] font-medium">Encuentre el neumático ideal para su vehículo</p>
                     <select className="h-[45px] w-[392px] rounded-lg border px-4 text-white" name="">
-                        <option value="" selected>
+                        <option className="text-black" value="" selected>
                             Seleccionar medida
                         </option>
+                        {medidas.map((medida) => (
+                            <option className="text-black" key={medida.id} value={medida.id}>
+                                {medida.name}
+                            </option>
+                        ))}
                     </select>
                 </div>
             </div>

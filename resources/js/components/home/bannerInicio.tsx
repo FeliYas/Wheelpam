@@ -4,7 +4,7 @@ export default function BannerInicio() {
     const { contenido } = usePage().props;
 
     return (
-        <div className="mb-16 h-[513px] w-full bg-black/50">
+        <div style={{ backgroundImage: `url(${contenido?.garantia_bg})` }} className="mb-16 h-[513px] w-full bg-cover bg-center bg-no-repeat">
             <div className="mx-auto flex h-full w-[1200px] flex-row items-center text-white">
                 <div className="flex w-2/3 flex-col">
                     <h2 className="text-[35px] font-semibold">{contenido?.garantia_title}</h2>

@@ -33,6 +33,7 @@ class ContenidoInicioController extends Controller
             'garantia_image' => 'sometimes|file|max:2048',
             'garantia_text' => 'sometimes|string',
             'garantia_title' => 'sometimes|string',
+            'garantia_bg' => 'sometimes|file',
         ]);
 
         $contenidoInicio = ContenidoInicio::first();
@@ -61,6 +62,19 @@ class ContenidoInicioController extends Controller
 
             // Guardar el nuevo archivo
             $data['garantia_image'] = $request->file('garantia_image')->store('images', 'public');
+
+            // Eliminar el archivo antiguo si existe
+            if ($oldMediaPath && Storage::disk('public')->exists($oldMediaPath)) {
+                Storage::disk('public')->delete($oldMediaPath);
+            }
+        }
+
+        if ($request->hasFile('garantia_bg')) {
+            // Guardar la ruta del archivo antiguo para eliminarlo después
+            $oldMediaPath = $contenidoInicio->garantia_bg ?? null;
+
+            // Guardar el nuevo archivo
+            $data['garantia_bg'] = $request->file('garantia_bg')->store('images', 'public');
 
             // Eliminar el archivo antiguo si existe
             if ($oldMediaPath && Storage::disk('public')->exists($oldMediaPath)) {

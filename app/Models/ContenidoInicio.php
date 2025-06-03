@@ -16,4 +16,8 @@ class ContenidoInicio extends Model
     {
         return $value ? asset('storage/' . $value) : null;
     }
+    public function getGarantiaBgAttribute($value)
+    {
+        return $value ? asset('storage/' . $value) : null;
+    }
 }

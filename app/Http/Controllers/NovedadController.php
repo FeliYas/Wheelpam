@@ -37,6 +37,14 @@ class NovedadController extends Controller
         ]);
     }
 
+    public function verNovedad($id)
+    {
+        $novedad = Novedad::findOrFail($id);
+        return inertia('novedad', [
+            'novedad' => $novedad,
+        ]);
+    }
+
 
     /**
      * Store a newly created resource in storage.

@@ -1,10 +1,86 @@
 import { Head, Link, usePage } from '@inertiajs/react';
-import { Upload } from 'lucide-react';
-import toast from 'react-hot-toast';
+import axios from 'axios';
+import { useState } from 'react';
+import { toast } from 'react-hot-toast';
 import DefaultLayout from './defaultLayout';
 
 export default function SolicitudPresupuesto() {
-    const { banner, productos, medidas } = usePage().props;
+    const { banner, productos, medidas, producto_id } = usePage().props;
+
+    const [archivos, setArchivos] = useState([{ id: Date.now(), file: null }]);
+
+    const [formInfo, setFormInfo] = useState({
+        nombre: '',
+        email: '',
+        telefono: '',
+        razon: '',
+        producto: producto_id || '',
+        medida: '',
+        cantidad: '',
+        aclaraciones: '',
+        tipo: '',
+    });
+
+    const agregarArchivo = () => {
+        setArchivos([...archivos, { id: Date.now(), file: null }]);
+    };
+
+    const manejarCambioArchivo = (index, event) => {
+        const nuevosArchivos = [...archivos];
+        nuevosArchivos[index].file = event.target.files[0];
+        setArchivos(nuevosArchivos);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const formData = new FormData();
+
+        // Agregar campos normales (ajustá los valores según tu lógica)
+        formData.append('nombre', formInfo.nombre);
+        formData.append('email', formInfo.email);
+        formData.append('telefono', formInfo.telefono);
+        formData.append('razon', formInfo.razon);
+        formData.append('producto', formInfo.producto);
+        formData.append('medida', formInfo.medida);
+        formData.append('cantidad', formInfo.cantidad);
+        formData.append('aclaraciones', formInfo.aclaraciones);
+        formData.append('tipo', formInfo.tipo);
+
+        // ...
+
+        // Adjuntar archivos
+        archivos.forEach((archivo, index) => {
+            if (archivo.file) {
+                formData.append(`archivos[]`, archivo.file);
+            }
+        });
+
+        toast.promise(
+            axios.post(route('presupuesto.enviar'), formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            }),
+            {
+                loading: 'Enviando solicitud...',
+                success: () => {
+                    setFormInfo({
+                        nombre: '',
+                        email: '',
+                        telefono: '',
+                        razon: '',
+                        producto: producto_id || '',
+                        medida: '',
+                        cantidad: '',
+                        aclaraciones: '',
+                        tipo: '',
+                    });
+                    setArchivos([{ id: Date.now(), file: null }]); // Resetear archivos
+                    return 'Solicitud enviada';
+                },
+                error: 'Hubo un error al enviar',
+            },
+        );
+    };
 
     return (
         <DefaultLayout>
@@ -29,25 +105,53 @@ export default function SolicitudPresupuesto() {
                 <h2 className="absolute z-10 mx-auto w-[1200px] pb-20 text-3xl font-bold text-white sm:text-4xl">Solicitud de Presupuesto</h2>
             </div>
 
-            <div className="mx-auto my-20 flex w-[1200px] flex-col gap-20">
+            <form onSubmit={handleSubmit} className="mx-auto my-20 flex w-[1200px] flex-col gap-20">
                 <div className="flex flex-col gap-5">
                     <h2 className="col-span-2 text-[24px] font-bold">Datos personales</h2>
                     <div className="grid grid-cols-2 grid-rows-2 gap-x-6 gap-y-8">
                         <div className="flex flex-col gap-2">
                             <label htmlFor="nombre">Nombre y apellido *</label>
-                            <input type="text" id="nombre" className="rounded-md border border-gray-300 p-2" />
+                            <input
+                                value={formInfo.nombre}
+                                onChange={(e) => setFormInfo({ ...formInfo, nombre: e.target.value })}
+                                required
+                                type="text"
+                                id="nombre"
+                                className="rounded-md border border-gray-300 p-2"
+                            />
                         </div>
                         <div className="flex flex-col gap-2">
                             <label htmlFor="razon">Razón social *</label>
-                            <input type="text" id="razon" className="rounded-md border border-gray-300 p-2" />
+                            <input
+                                value={formInfo.razon}
+                                onChange={(e) => setFormInfo({ ...formInfo, razon: e.target.value })}
+                                required
+                                type="text"
+                                id="razon"
+                                className="rounded-md border border-gray-300 p-2"
+                            />
                         </div>
                         <div className="flex flex-col gap-2">
                             <label htmlFor="email">E-mail *</label>
-                            <input type="text" id="email" className="rounded-md border border-gray-300 p-2" />
+                            <input
+                                value={formInfo.email}
+                                onChange={(e) => setFormInfo({ ...formInfo, email: e.target.value })}
+                                required
+                                type="text"
+                                id="email"
+                                className="rounded-md border border-gray-300 p-2"
+                            />
                         </div>
                         <div className="flex flex-col gap-2">
                             <label htmlFor="telefono">Teléfono*</label>
-                            <input type="text" id="telefono" className="rounded-md border border-gray-300 p-2" />
+                            <input
+                                value={formInfo.telefono}
+                                onChange={(e) => setFormInfo({ ...formInfo, telefono: e.target.value })}
+                                required
+                                type="text"
+                                id="telefono"
+                                className="rounded-md border border-gray-300 p-2"
+                            />
                         </div>
                     </div>
                 </div>
@@ -59,10 +163,16 @@ export default function SolicitudPresupuesto() {
                     <div className="grid grid-cols-4 grid-rows-4 gap-x-6 gap-y-8">
                         <div className="col-span-2 flex flex-col gap-2">
                             <label htmlFor="producto">Producto *</label>
-                            <select id="producto" className="rounded-md border border-gray-300 p-2">
+                            <select
+                                required
+                                value={formInfo.producto}
+                                onChange={(e) => setFormInfo({ ...formInfo, producto: e.target.value })}
+                                id="producto"
+                                className="rounded-md border border-gray-300 p-2"
+                            >
                                 <option value="">Seleccione un producto</option>
                                 {productos?.map((producto) => (
-                                    <option key={producto.id} value={producto.id}>
+                                    <option key={producto.id} value={producto.name}>
                                         {producto.name}
                                     </option>
                                 ))}
@@ -70,10 +180,15 @@ export default function SolicitudPresupuesto() {
                         </div>
                         <div className="flex flex-col gap-2">
                             <label htmlFor="medida">Medida</label>
-                            <select id="medida" className="rounded-md border border-gray-300 p-2">
+                            <select
+                                value={formInfo.medida}
+                                onChange={(e) => setFormInfo({ ...formInfo, medida: e.target.value })}
+                                id="medida"
+                                className="rounded-md border border-gray-300 p-2"
+                            >
                                 <option value="">Seleccione una medida</option>
                                 {medidas?.map((medida) => (
-                                    <option key={medida.id} value={medida.id}>
+                                    <option key={medida.id} value={medida.name}>
                                         {medida.name}
                                     </option>
                                 ))}
@@ -81,35 +196,61 @@ export default function SolicitudPresupuesto() {
                         </div>
                         <div className="flex flex-col gap-2">
                             <label htmlFor="cantidad">Cantidad</label>
-                            <input type="text" id="cantidad" className="rounded-md border border-gray-300 p-2" />
+                            <input
+                                value={formInfo.cantidad}
+                                onChange={(e) => setFormInfo({ ...formInfo, cantidad: e.target.value })}
+                                type="text"
+                                id="cantidad"
+                                className="rounded-md border border-gray-300 p-2"
+                            />
                         </div>
                         <div className="col-span-2 row-span-3 flex flex-col gap-2">
                             <label htmlFor="aclaraciones">Aclaraciones*</label>
-                            <textarea id="aclaraciones" className="h-full w-full rounded-md border border-gray-300 p-2" />
+                            <textarea
+                                value={formInfo.aclaraciones}
+                                onChange={(e) => setFormInfo({ ...formInfo, aclaraciones: e.target.value })}
+                                required
+                                id="aclaraciones"
+                                className="h-full w-full rounded-md border border-gray-300 p-2"
+                            />
                         </div>
                         <div className="col-span-2 flex flex-col gap-2">
                             <label htmlFor="tipo">Tipo de uso</label>
-                            <input type="text" id="tipo" className="rounded-md border border-gray-300 p-2" />
+                            <input
+                                value={formInfo.tipo}
+                                onChange={(e) => setFormInfo({ ...formInfo, tipo: e.target.value })}
+                                type="text"
+                                id="tipo"
+                                className="rounded-md border border-gray-300 p-2"
+                            />
                         </div>
-                        <div className="col-span-2 flex flex-col gap-2">
-                            <label htmlFor="archivo">Adjuntar archivo</label>
-                            <div className="flex flex-row justify-between rounded-md border border-gray-300 p-2">
-                                <input type="file" id="archivo" className="file:cursor-pointer" />
-                                <label htmlFor="archivo" className="cursor-pointer">
-                                    <Upload color="#1a181c" />
-                                </label>
-                            </div>
+                        <div className={`col-span-2 row-span-2 flex flex-col gap-4`}>
+                            <label>Adjuntar archivo</label>
+
+                            {archivos.map((archivo, index) => (
+                                <div key={archivo.id} className="flex flex-row items-center justify-between rounded-md border border-gray-300 p-2">
+                                    <input
+                                        type="file"
+                                        name={`archivo_${index}`}
+                                        onChange={(e) => manejarCambioArchivo(index, e)}
+                                        className="w-full file:cursor-pointer"
+                                    />
+                                </div>
+                            ))}
+
+                            <button type="button" onClick={agregarArchivo} className="text-primary-color w-fit self-end text-sm hover:underline">
+                                + Adjuntar otro
+                            </button>
                         </div>
-                        <p className="self-end">*Campos obligatorios</p>
-                        <button
-                            onClick={() => toast.success('Solicitud enviada')}
-                            className="bg-primary-color h-[38px] w-full items-end self-end rounded-full font-bold text-white"
-                        >
-                            Enviar solicitud
-                        </button>
+                        <div className="col-span-2 col-start-3 w-full">
+                            <p className="self-end">*Campos obligatorios</p>
+                            <button type="submit" className="bg-primary-color h-[38px] w-full items-end self-end rounded-full font-bold text-white">
+                                Enviar solicitud
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </DefaultLayout>
     );
 }

@@ -128,6 +128,36 @@ export default function ContenidoInicio() {
                             </div>
                         </div>
                     </div>
+                    <div className="w-full">
+                        <label htmlFor="garantia_bg" className="block text-xl font-medium text-gray-900">
+                            Fondo Garantia
+                        </label>
+                        <div className="mt-2 flex justify-between rounded-lg border shadow-lg">
+                            <div className="h-[200px] w-1/2 bg-[rgba(0,0,0,0.2)]">
+                                <img className="h-full w-full rounded-md object-contain" src={contenidoInicio?.garantia_bg} alt="" />
+                            </div>
+                            <div className="flex w-1/2 items-center justify-center">
+                                <div className="h-fit items-center self-center text-center">
+                                    <div className="relative mt-4 flex flex-col items-center text-sm/6 text-gray-600">
+                                        <label
+                                            htmlFor="garantia_bg"
+                                            className="bg-primary-color relative cursor-pointer rounded-md px-2 py-1 font-semibold text-white"
+                                        >
+                                            <span>Cambiar Imagen</span>
+                                            <input
+                                                id="garantia_bg"
+                                                name="garantia_bg"
+                                                onChange={(e) => setData('garantia_bg', e.target.files[0])}
+                                                type="file"
+                                                className="sr-only"
+                                            />
+                                        </label>
+                                        <p className="absolute top-10 max-w-[200px] break-words"> {data?.garantia_bg?.name} </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div className="flex flex-col gap-2">
                         <label className="text-xl" htmlFor="garantia_title">
                             Titulo

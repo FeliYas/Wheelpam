@@ -7,16 +7,20 @@ use App\Http\Controllers\NosotrosController;
 use App\Http\Controllers\NovedadController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ServiciosController;
+use App\Mail\PresupuestoMail;
 use App\Models\Banner;
 use App\Models\Categoria;
+use App\Models\Contacto;
 use App\Models\ContenidoInicio;
 use App\Models\Marca;
 use App\Models\Medida;
 use App\Models\Novedad;
 use App\Models\Producto;
 use App\Models\Slider;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Mail;
 
 Route::middleware(['shareDefaultLayoutData'])->group(function () {
     Route::get('/', function () {
@@ -37,14 +41,14 @@ Route::middleware(['shareDefaultLayoutData'])->group(function () {
         $novedades = Novedad::where('featured', true)
             ->orderBy('order', 'asc')
             ->get();
-        $marcas = Marca::orderBy('order', 'asc')->get();
+        $medidas = Medida::orderBy('order', 'asc')->get();
         return Inertia::render('home', [
             'slider' => $slider,
             'categorias' => $categorias,
             'productos' => $productos,
             'contenido' => $contenido,
             'novedades' => $novedades,
-            'marcas' => $marcas,
+            'medidas' => $medidas,
 
         ]);
     })->name('home');
@@ -65,7 +69,7 @@ Route::middleware(['shareDefaultLayoutData'])->group(function () {
     Route::get('/contacto', [ContactoController::class, 'indexInicio'])
         ->name('contacto.index');
 
-    Route::get('/solicitud-de-presupuesto', function () {
+    Route::get('/solicitud-de-presupuesto', function (Request $request) {
 
         $banner = Banner::where('name', operator: 'solicitud')->first();
         $productos = Producto::select('id', 'name')->orderBy('name', 'asc')->get();
@@ -74,9 +78,36 @@ Route::middleware(['shareDefaultLayoutData'])->group(function () {
             'banner' => $banner,
             'productos' => $productos,
             'medidas' => $medidas,
+            'producto_id' => $request->producto_id
         ]);
     })->name('solicitud.presupuesto');
+
+    Route::get('/novedades/{id}', [NovedadController::class, 'verNovedad'])
+        ->name('novedades.ver');
 });
+
+Route::post('/contacto/enviar', [ContactoController::class, 'enviar'])->name('contacto.enviar');
+Route::post('/presupuesto/enviar', function (Request $request) {
+    $contacto = Contacto::first();
+    $validated = $request->validate([
+        'nombre' => 'required|string|max:255',
+        'email' => 'required|email',
+        'telefono' => 'required',
+        'razon' => 'required|string',
+        'producto' => 'nullable|string',
+        'medida' => 'nullable|string',
+        'cantidad' => 'nullable|string',
+        'aclaraciones' => 'nullable|string',
+        'tipo' => 'nullable|string',
+        'archivos.*' => 'nullable|file',
+    ]);
+
+    // Enviar mail con adjuntos
+    Mail::to($contacto->email)->send(new PresupuestoMail($validated, $request->file('archivos')));
+
+    return back()->with('success', 'Solicitud enviada correctamente');
+})->name('presupuesto.enviar');
+
 
 Route::get('/descargar/archivo/{id}', [DescargarArchivo::class, 'descargarArchivo'])
     ->name('descargar.archivo');

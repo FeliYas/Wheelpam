@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('garantia_image')->nullable();
             $table->longText('garantia_text')->nullable();
             $table->string('garantia_title')->nullable();
+            $table->string('garantia_bg')->nullable();
             $table->timestamps();
         });
     }

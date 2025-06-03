@@ -1,6 +1,5 @@
 import BannerInicio from '@/components/home/bannerInicio';
 import CategoriasInicio from '@/components/home/categoriasInicio';
-import MarcasSlider from '@/components/home/marcasSlider';
 import NosotrosInicio from '@/components/home/nosotrosInicio';
 import NovedadesInicio from '@/components/home/novedadesInicio';
 import NuestrosProductosInicio from '@/components/home/nuestrosProductosInicio';
@@ -20,7 +19,6 @@ export default function Home() {
             <NosotrosInicio />
             <BannerInicio />
             <NovedadesInicio />
-            <MarcasSlider />
         </DefaultLayout>
     );
 }

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('confort')->nullable();
             $table->string('desgaste')->nullable();
             $table->string('name');
-            $table->longText('recomendaciones');
+            $table->longText('recomendaciones')->nullable();
             $table->string('archivo')->nullable();
             $table->boolean('featured')->default(false);
             $table->foreignId('medida_id')->nullable()->constrained('medidas')->nullOnDelete();

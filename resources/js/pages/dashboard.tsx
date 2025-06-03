@@ -51,7 +51,6 @@ export default function Dashboard({ children }) {
             subHref: [
                 { title: 'Slider', href: '/dashboard/slider' },
                 { title: 'Contenido', href: '/dashboard/contenido' },
-                { title: 'Marcas', href: '/dashboard/marcas' },
             ],
         },
         {

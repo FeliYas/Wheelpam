@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ContactoMail;
 use App\Models\Banner;
 use App\Models\Contacto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ContactoController extends Controller
 {
@@ -20,14 +22,31 @@ class ContactoController extends Controller
         ]);
     }
 
-    public function indexInicio()
+    public function indexInicio(Request $request)
     {
 
         $banner = Banner::where('name', 'contacto')->first();
         return inertia('contacto', [
-
+            'servicio' => $request->servicio,
             'banner' => $banner
         ]);
+    }
+
+    public function enviar(Request $request)
+    {
+
+        $contacto = Contacto::first();
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'celular' => 'required|string',
+            'empresa' => 'required|string',
+            'mensaje' => 'required|string',
+        ]);
+
+        Mail::to($contacto->email)->send(new ContactoMail($validated));
+
+        return back()->with('success', 'Consulta enviada');
     }
 
 
@@ -45,15 +64,15 @@ class ContactoController extends Controller
     public function update(Request $request)
     {
         $data = $request->validate([
-            'banner' => 'sometimes|file',
-            'email' => 'sometimes|email',
-            'instagram' => 'sometimes|string',
-            'whatsapp' => 'sometimes|string',
-            'facebook' => 'sometimes|string',
-            'youtube' => 'sometimes|string',
-            'linkedin' => 'sometimes|string',
-            'location' => 'sometimes|string',
-            'phone' => 'sometimes|string'
+            'banner' => 'nullable|sometimes|file',
+            'email' => 'nullable|sometimes|email',
+            'instagram' => 'nullable|sometimes|string',
+            'whatsapp' => 'nullable|sometimes|string',
+            'facebook' => 'nullable|sometimes|string',
+            'youtube' => 'nullable|sometimes|string',
+            'linkedin' => 'nullable|sometimes|string',
+            'location' => 'nullable|sometimes|string',
+            'phone' => 'nullable|sometimes|string'
         ]);
 
         $contacto = Contacto::first();

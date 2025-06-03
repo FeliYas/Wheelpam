@@ -6,7 +6,7 @@ export default function ProductosCategoria() {
 
     return (
         <DefaultLayout>
-            <div className="mx-auto w-[1200px] py-20">
+            <div className="mx-auto min-h-[60vh] w-[1200px] py-20">
                 <div className="flex w-full flex-row gap-20">
                     <div className="flex w-1/3 flex-col">
                         {categorias?.map((categoria) => (
@@ -40,7 +40,11 @@ export default function ProductosCategoria() {
                         {productos?.map((producto) => (
                             <Link href={`/productos/${categoria_id}/${producto.id}`} className="flex h-[375px] flex-col rounded-md border">
                                 <div className="relative flex h-[286px] items-end justify-center">
-                                    <img src={producto?.imagenes[0]?.image} className="h-full min-h-[286px] w-full rounded-md object-cover" alt="" />
+                                    <img
+                                        src={producto?.imagenes[0]?.image}
+                                        className="h-full min-h-[286px] w-full rounded-t-md object-cover"
+                                        alt=""
+                                    />
                                     <div className="bg-primary-color absolute -bottom-[2px] h-[2px] w-[25px]"></div>
                                 </div>
                                 <div className="flex h-full flex-col items-center justify-center">

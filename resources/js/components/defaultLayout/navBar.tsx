@@ -79,7 +79,7 @@ export default function NavBar() {
                                       }`}
                                   >
                                       {link.title}
-                                      {ziggy.location.includes(link.title.toLowerCase()) && (
+                                      {ziggy.location.includes(link.title.toLowerCase()) ||  && (
                                           <div className="bg-primary-color absolute bottom-0 h-[4px] w-full" />
                                       )}
                                   </Link>

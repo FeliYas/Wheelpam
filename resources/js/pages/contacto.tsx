@@ -1,72 +1,27 @@
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { Mail, MapPin, Phone } from 'lucide-react';
-import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import DefaultLayout from './defaultLayout';
 
 export default function Contacto() {
-    const { contacto, metadatos, banner } = usePage().props;
-    const [captchaToken, setCaptchaToken] = useState(null);
+    const { contacto, metadatos, banner, servicio } = usePage().props;
 
-    /*  const { data, setData, post, processing, errors, reset } = useForm({
+    const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
         celular: '',
         empresa: '',
-        mensaje: producto || '',
-    }); */
+        mensaje: '',
+    });
 
-    const recaptchaRef = useRef(null);
-
-    const completeContent = useForm();
-
-    /* const handleSubmit = (e) => {
+    const handleMail = (e) => {
         e.preventDefault();
-
-        // Verificar si el captcha ha sido completado
-        if (!captchaToken) {
-            toast.error('Por favor, complete el captcha');
-            return;
-        }
-
-        // Renderiza el template de email
-        const htmlContent = ReactDOMServer.renderToString(
-            <EmailTemplate
-                info={{
-                    name: data.name,
-                    email: data.email,
-                    celular: data.celular,
-                    empresa: data.empresa,
-                    mensaje: data.mensaje,
-                }}
-            />,
-        );
-
-        // Preparar los datos completos con el token de reCAPTCHA
-        completeContent.data.html = htmlContent;
-        completeContent.data.recaptchaToken = captchaToken;
-
-        // Enviar el formulario
-        completeContent.post(route('send.contact'), {
+        post(route('contacto.enviar'), {
             onSuccess: () => {
-                toast.success('Consulta enviada correctamente');
+                toast.success('Consulta enviada');
                 reset();
-                // Reset the reCAPTCHA
-                recaptchaRef.current.reset();
-                setCaptchaToken(null);
-            },
-            onError: () => {
-                toast.error('Error al enviar la consulta');
-                // Reset the reCAPTCHA on error as well
-                recaptchaRef.current.reset();
-                setCaptchaToken(null);
             },
         });
-    }; */
-
-    const onReCAPTCHAChange = (captchaCode) => {
-        // Guardar el token del captcha para usarlo cuando se envíe el formulario
-        setCaptchaToken(captchaCode);
     };
 
     const datos = [
@@ -132,15 +87,15 @@ export default function Contacto() {
                     </div>
 
                     {/* Contact form - responsive grid */}
-                    <form /* onSubmit={handleSubmit} */ className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-x-5 sm:gap-y-10 md:w-2/3">
+                    <form onSubmit={handleMail} className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-x-5 sm:gap-y-10 md:w-2/3">
                         <div className="flex flex-col gap-2 sm:gap-3">
                             <label htmlFor="name" className="text-base text-[#74716A]">
                                 Nombre y Apellido*
                             </label>
                             <input
                                 required
-                                /* value={data.name}
-                                onChange={(e) => setData('name', e.target.value)} */
+                                value={data.name}
+                                onChange={(e) => setData('name', e.target.value)}
                                 type="text"
                                 id="name"
                                 className="h-[44px] w-full rounded-md border border-[#EEEEEE] pl-3"
@@ -152,9 +107,9 @@ export default function Contacto() {
                                 Email*
                             </label>
                             <input
-                                /* value={data.email}
+                                value={data.email}
                                 required
-                                onChange={(e) => setData('email', e.target.value)} */
+                                onChange={(e) => setData('email', e.target.value)}
                                 type="text"
                                 id="email"
                                 className="h-[44px] w-full rounded-md border border-[#EEEEEE] pl-3"
@@ -166,9 +121,9 @@ export default function Contacto() {
                                 Celular*
                             </label>
                             <input
-                                /* value={data.celular}
+                                value={data.celular}
                                 required
-                                onChange={(e) => setData('celular', e.target.value)} */
+                                onChange={(e) => setData('celular', e.target.value)}
                                 type="text"
                                 id="celular"
                                 className="h-[44px] w-full rounded-md border border-[#EEEEEE] pl-3"
@@ -180,9 +135,9 @@ export default function Contacto() {
                                 Empresa*
                             </label>
                             <input
-                                /* value={data.empresa}
+                                value={data.empresa}
                                 required
-                                onChange={(e) => setData('empresa', e.target.value)} */
+                                onChange={(e) => setData('empresa', e.target.value)}
                                 type="text"
                                 id="empresa"
                                 className="h-[44px] w-full rounded-md border border-[#EEEEEE] pl-3"
@@ -196,9 +151,10 @@ export default function Contacto() {
                             </label>
                             <textarea
                                 rows={6}
-                                /*  value={data.mensaje}
+                                defaultValue={servicio}
+                                value={data.mensaje}
                                 required
-                                onChange={(e) => setData('mensaje', e.target.value)} */
+                                onChange={(e) => setData('mensaje', e.target.value)}
                                 id="Mensaje"
                                 className="h-[150px] w-full rounded-md border border-[#EEEEEE] pt-2 pl-3 sm:h-full"
                             />
@@ -207,20 +163,8 @@ export default function Contacto() {
                         {/* Submit section - spans full width on mobile, row-span-2 on larger screens */}
                         <div className="flex flex-col justify-end gap-3 sm:col-span-2 sm:row-span-2 md:col-span-1">
                             <p className="text-base text-[#74716A]">*Campos obligatorios</p>
-                            {/* ReCAPTCHA - responsive sizing */}
-                            <div className="flex justify-center sm:justify-start">
-                                {/* <ReCAPTCHA
-                                    ref={recaptchaRef}
-                                    sitekey={'6LeSHDArAAAAAD-dTLNBiKw16dZyaJiA3TrSnM6r'} // Replace with your actual site key
-                                    onChange={onReCAPTCHAChange}
-                                    size="normal"
-                                /> */}
-                            </div>
-                            <button
-                                type="button"
-                                onClick={() => toast.success('Consulta enviada')}
-                                className="bg-primary-color text-bold min-h-[41px] w-[184px] rounded-full px-4 text-[16px] text-white"
-                            >
+
+                            <button className="bg-primary-color rounded-full py-2 font-bold text-white" type="submit" disabled={processing}>
                                 Enviar consulta
                             </button>
                         </div>

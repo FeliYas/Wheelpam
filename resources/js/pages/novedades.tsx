@@ -27,9 +27,9 @@ export default function Novedades() {
                 <h2 className="absolute z-10 mx-auto w-[1200px] pb-20 text-3xl font-bold text-white sm:text-4xl">Novedades</h2>
             </div>
 
-            <div className="mx-auto my-20 w-[1200px]">
+            <div className="mx-auto my-20 grid w-[1200px] grid-cols-3 gap-5">
                 {novedades?.map((novedad) => (
-                    <Link href={`/novedades/${novedad?.id}`} className="flex h-[488px] max-w-[392px] flex-col rounded-md border">
+                    <Link href={`/novedades/${novedad?.id}`} className="flex h-[488px] w-full max-w-[392px] flex-col rounded-md border">
                         <div className="relative flex min-h-[260px] items-end justify-center">
                             <img src={novedad?.image} className="h-full w-full rounded-t-md object-cover" alt="" />
                         </div>
