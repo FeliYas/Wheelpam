@@ -64,7 +64,7 @@ export default function Contacto() {
                     / <Link href={'/contacto'}>Contacto</Link>
                 </div>
                 <img className="absolute h-full w-full object-cover object-center" src={banner?.image} alt="Banner contacto" />
-                <h2 className="absolute z-10 mx-auto w-[1200px] pb-20 text-3xl font-bold text-white sm:text-4xl">Contacto</h2>
+                <h2 className="absolute z-10 mx-auto w-[1200px] pb-20 text-3xl font-bold text-white max-sm:max-w-[1200px] sm:text-4xl">Contacto</h2>
             </div>
 
             {/* Main content - responsive container */}

@@ -7,7 +7,7 @@ export default function CategoriasInicio() {
     const [hoveredId, setHoveredId] = useState(null);
 
     return (
-        <div className="flex w-full flex-row py-16">
+        <div className="flex w-full flex-row py-16 max-sm:flex-col">
             {categorias?.map((categoria) => (
                 <Link
                     href={`/productos/${categoria.id}`}

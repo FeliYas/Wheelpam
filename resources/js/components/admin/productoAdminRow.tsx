@@ -146,6 +146,8 @@ export default function ProductoAdminRow({ producto }) {
         });
     };
 
+    console.log(producto);
+
     return (
         <tr className={`border text-black odd:bg-gray-100 even:bg-white`}>
             <td className="align-middle">{producto?.order}</td>

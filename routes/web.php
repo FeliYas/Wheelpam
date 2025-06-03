@@ -33,7 +33,7 @@ Route::middleware(['shareDefaultLayoutData'])->group(function () {
             ->with([
                 'imagenes',
                 'sub_categoria.categoria',
-                'medidas' // esto trae también las medidas
+                'medida' // esto trae también las medidas
             ])
             ->get();
 

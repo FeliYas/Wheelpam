@@ -24,10 +24,10 @@ export default function Novedades() {
                     / <Link href={'/novedades'}>Novedades</Link>
                 </div>
                 <img className="absolute h-full w-full object-cover object-center" src={banner?.image} alt="Banner nosotros" />
-                <h2 className="absolute z-10 mx-auto w-[1200px] pb-20 text-3xl font-bold text-white sm:text-4xl">Novedades</h2>
+                <h2 className="absolute z-10 mx-auto w-[1200px] pb-20 text-3xl font-bold text-white max-sm:max-w-[1200px] sm:text-4xl">Novedades</h2>
             </div>
 
-            <div className="mx-auto my-20 grid w-[1200px] grid-cols-3 gap-5">
+            <div className="mx-auto my-20 grid max-w-[1200px] grid-cols-3 gap-5 max-sm:grid-cols-1 max-sm:items-center">
                 {novedades?.map((novedad) => (
                     <Link href={`/novedades/${novedad?.id}`} className="flex h-[488px] w-full max-w-[392px] flex-col rounded-md border">
                         <div className="relative flex min-h-[260px] items-end justify-center">

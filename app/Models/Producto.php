@@ -23,7 +23,7 @@ class Producto extends Model
         return $this->hasMany(Caracteristicas::class)->orderBy('order', 'asc');
     }
 
-    public function medidas()
+    public function medida()
     {
         return $this->belongsTo(Medida::class);
     }

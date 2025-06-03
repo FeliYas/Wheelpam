@@ -18,7 +18,7 @@ class ProductoController extends Controller
     {
         $perPage = $request->input('per_page', 10);
         $medidas = Medida::orderBy('order', 'asc')->get();
-        $query = Producto::query()->with(['imagenes', 'caracteristicas', 'sub_categoria'])->orderBy('order', 'asc');
+        $query = Producto::query()->with(['imagenes', 'caracteristicas', 'sub_categoria', 'medida'])->orderBy('order', 'asc');
 
         if ($request->has('search') && !empty($request->search)) {
             $searchTerm = $request->search;
@@ -143,7 +143,7 @@ class ProductoController extends Controller
             'sub_categoria_id' => 'required|exists:sub_categorias,id',
             'name' => 'required|string|max:255',
             'recomendaciones' => 'sometimes|nullable|string',
-            'archivo' => 'sometimes|nullable|file|max:2048',
+            'archivo' => 'sometimes|nullable|file',
             'featured' => 'sometimes|nullable|boolean',
             'temperatura' => 'sometimes|nullable',
             'desgaste' => 'sometimes|nullable',
