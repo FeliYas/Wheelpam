@@ -1,7 +1,10 @@
 import { Head, Link } from '@inertiajs/react';
+import { useState } from 'react';
 import DefaultLayout from './defaultLayout';
 
 export default function Productos({ categorias, banner }) {
+    const [hover, setHover] = useState(null);
+
     return (
         <DefaultLayout>
             <Head title="Productos" />
@@ -26,12 +29,16 @@ export default function Productos({ categorias, banner }) {
                 <div className="grid grid-cols-3 gap-5">
                     {categorias?.map((categoria) => (
                         <Link
+                            onMouseEnter={() => setHover(categoria.id)}
+                            onMouseLeave={() => setHover(null)}
                             href={`/productos/${categoria.id}`}
                             key={categoria.id}
                             className="relative flex h-[300px] w-full max-w-[392px] justify-center"
                         >
                             <img src={categoria?.image} className="h-full w-full object-cover" alt="" />
-                            <div className="absolute inset-0 h-full w-full bg-black/50"></div>
+                            <div
+                                className={`absolute inset-0 h-full w-full transition duration-300 ${hover === categoria.id ? '' : 'bg-black/50'}`}
+                            ></div>
                             <h2 className="absolute bottom-5 z-30 text-[25px] font-semibold text-white">{categoria?.title}</h2>
                         </Link>
                     ))}

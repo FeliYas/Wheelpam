@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('order')->default("zzz");
             $table->string('title');
+            $table->string('image')->nullable();
             $table->foreignIdFor(Categoria::class, 'categoria_id')->constrained('categorias')->cascadeOnDelete();
             $table->timestamps();
         });

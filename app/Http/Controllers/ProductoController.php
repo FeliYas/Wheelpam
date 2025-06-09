@@ -50,6 +50,35 @@ class ProductoController extends Controller
         ]);
     }
 
+    public function subproductosProductos($categoriaId, $subcategoriaId)
+    {
+        $productos = Producto::with(['imagenes', 'caracteristicas', 'sub_categoria'])
+            ->where('sub_categoria_id', $subcategoriaId)
+            ->get();
+
+        $categorias = Categoria::orderBy('order', 'asc')->with('subcategorias')->get();
+
+        return inertia('subproductosProductos', [
+            'productos' => $productos,
+            'categorias' => $categorias,
+            'categoria_id' => $categoriaId,
+            'subcategoria_id' => $subcategoriaId,
+        ]);
+    }
+
+    public function showProducto($categoriaId, $subcategoriaId, $productoId)
+    {
+        $producto = Producto::with(['imagenes', 'caracteristicas', 'sub_categoria'])->findOrFail($productoId);
+        $categorias = Categoria::orderBy('order', 'asc')->with('subcategorias')->get();
+
+        return inertia('productoShow', [
+            'producto' => $producto,
+            'categorias' => $categorias,
+            'categoria_id' => $categoriaId,
+            'subcategoria_id' => $subcategoriaId,
+        ]);
+    }
+
     public function indexCategoria(Request $request, $id)
     {
         $categorias = Categoria::orderBy('order', 'asc')->with('subcategorias')->get();
@@ -88,19 +117,7 @@ class ProductoController extends Controller
         ]);
     }
 
-    public function showProducto($categoriaId, $productoId)
-    {
-        $producto = Producto::with(['imagenes', 'caracteristicas', 'sub_categoria'])->findOrFail($productoId);
-        $categorias = Categoria::orderBy('order', 'asc')->with('subcategorias')->get();
 
-        return inertia('productoShow', [
-            'producto' => $producto,
-            'categorias' => $categorias,
-
-            'categoria_id' => $categoriaId,
-            'subcategoria_id' => $producto->sub_categoria_id,
-        ]);
-    }
 
     public function productosBanner()
     {

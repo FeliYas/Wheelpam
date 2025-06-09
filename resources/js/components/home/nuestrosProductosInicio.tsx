@@ -20,7 +20,7 @@ export default function NuestrosProductosInicio() {
             <div className="flex flex-row gap-5">
                 {productos?.map((producto) => (
                     <Link
-                        href={`/productos/${producto.sub_categoria.categoria_id}/${producto?.id}`}
+                        href={`/productos/${producto.sub_categoria.categoria_id}/${producto.sub_categoria.id}/${producto?.id}`}
                         className="flex h-[375px] min-w-[288px] flex-col rounded-md border"
                     >
                         <div className="relative flex h-[286px] items-end justify-center">

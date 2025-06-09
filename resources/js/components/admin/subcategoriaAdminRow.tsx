@@ -51,6 +51,13 @@ export default function SubcategoriaAdminRow({ subcategoria }) {
         <tr className={`border text-black odd:bg-gray-100 even:bg-white`}>
             <td className="align-middle">{subcategoria?.order}</td>
             <td className="align-middle">{subcategoria?.title}</td>
+            <td className="h-[90px] align-middle">
+                {subcategoria?.image ? (
+                    <img src={subcategoria?.image} alt={subcategoria?.title} className="h-full w-full object-cover" />
+                ) : (
+                    <span>No hay imagen</span>
+                )}
+            </td>
             <td className="h-[90px] align-middle">{categorias?.find((categoria) => categoria?.id == subcategoria?.categoria_id)?.title}</td>
 
             <td className="w-[140px] text-center">
@@ -95,6 +102,23 @@ export default function SubcategoriaAdminRow({ subcategoria }) {
                                         defaultValue={subcategoria?.title}
                                         onChange={(e) => updateForm.setData('title', e.target.value)}
                                     />
+                                    <span className="text-base font-normal">Resolucion recomendada: 501x181px</span>
+                                    <div className="flex flex-row">
+                                        <input
+                                            type="file"
+                                            name="imagen"
+                                            id="imagenn"
+                                            onChange={(e) => updateForm.setData('image', e.target.files[0])}
+                                            className="hidden"
+                                        />
+                                        <label
+                                            className="border-primary-color text-primary-color hover:bg-primary-color cursor-pointer rounded-md border px-2 py-1 transition duration-300 hover:text-white"
+                                            htmlFor="imagenn"
+                                        >
+                                            Elegir imagen
+                                        </label>
+                                        <p className="self-center px-2">{updateForm?.data?.image?.name}</p>
+                                    </div>
                                     <label htmlFor="categoria">
                                         Categoria <span className="text-red-500">*</span>
                                     </label>

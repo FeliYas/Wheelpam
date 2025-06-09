@@ -57,7 +57,8 @@ Route::middleware(['shareDefaultLayoutData'])->group(function () {
     Route::get('/servicios', [ServiciosController::class, 'indexInicio']);
     Route::get('/productos', [ProductoController::class, 'indexInicio']);
     Route::get('/productos/{id}', [ProductoController::class, 'indexCategoria'])->name('productos.categoria');
-    Route::get('/productos/{categoriaId}/{productoId}', [ProductoController::class, 'showProducto'])->name('productos.show');
+    Route::get('/productos/{categoriaId}/{subcategoriaId}', [ProductoController::class, 'subproductosProductos']);
+    Route::get('/productos/{categoriaId}/{subcategoriaId}/{productoId}', [ProductoController::class, 'showProducto'])->name('productos.show');
     Route::get('/garantia', [GarantiaController::class, 'indexInicio'])
         ->name('garantia.index');
 

@@ -31,7 +31,14 @@ class SubCategoriaController extends Controller
             'order' => 'sometimes|string',
             'title' => 'required|string|max:255',
             'categoria_id' => 'required|exists:categorias,id',
+            'image' => 'nullable|file', // Validate image if provided
         ]);
+        // Handle image upload if provided
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('subcategorias', 'public');
+        } else {
+            $data['image'] = null; // Set to null if no image is provided
+        }
 
 
         // Create the subcategory
@@ -50,7 +57,15 @@ class SubCategoriaController extends Controller
             'order' => 'sometimes|string',
             'title' => 'required|string|max:255',
             'categoria_id' => 'required|exists:categorias,id',
+            'image' => 'nullable|file', // Validate image if provided
         ]);
+
+        // Handle image upload if provided
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('subcategorias', 'public');
+        } else {
+            $data['image'] = null; // Set to null if no image is provided
+        }
 
         $subcategoria = SubCategoria::find($request->id);
 
@@ -67,10 +82,14 @@ class SubCategoriaController extends Controller
     {
         $subcategoria = SubCategoria::find($request->id);
 
+
+
         // Check if the subcategory exists
         if (!$subcategoria) {
             return redirect()->back()->with('error', 'Subcategoria not found.');
         }
+
+
 
         // Delete the subcategory
         $subcategoria->delete();

@@ -64,6 +64,23 @@ export default function SubcategoriasAdmin() {
                                             id="nombree"
                                             onChange={(e) => setData('title', e.target.value)}
                                         />
+                                        <span className="text-base font-normal">Resolucion recomendada: 501x181px</span>
+                                        <div className="flex flex-row">
+                                            <input
+                                                type="file"
+                                                name="imagen"
+                                                id="imagenn"
+                                                onChange={(e) => setData('image', e.target.files[0])}
+                                                className="hidden"
+                                            />
+                                            <label
+                                                className="border-primary-color text-primary-color hover:bg-primary-color cursor-pointer rounded-md border px-2 py-1 transition duration-300 hover:text-white"
+                                                htmlFor="imagenn"
+                                            >
+                                                Elegir imagen
+                                            </label>
+                                            <p className="self-center px-2">{data?.image?.name}</p>
+                                        </div>
                                         <label htmlFor="categoria">
                                             Categoria <span className="text-red-500">*</span>
                                         </label>
@@ -119,7 +136,7 @@ export default function SubcategoriasAdmin() {
                                 <tr>
                                     <td className="text-center">ORDEN</td>
                                     <td className="text-center">TITULO</td>
-
+                                    <td className="w-[400px] px-3 py-2 text-center">IMAGEN</td>
                                     <td className="px-3 py-2 text-center">CATEGORIA</td>
                                     <td className="text-center">EDITAR</td>
                                 </tr>

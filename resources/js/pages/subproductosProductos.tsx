@@ -2,7 +2,7 @@ import { Head, Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import DefaultLayout from './defaultLayout';
 
-export default function ProductosCategoria() {
+export default function SubproductosProductos() {
     const { categorias, productos, categoria_id, subcategoria_id } = usePage().props;
 
     const [hover, setHover] = useState(null);
@@ -42,23 +42,27 @@ export default function ProductosCategoria() {
                         ))}
                     </div>
                     <div className="grid w-full grid-cols-3 gap-5">
-                        {categorias
-                            ?.find((categoria) => categoria?.id == categoria_id)
-                            ?.subcategorias?.map((subcategoria) => (
-                                <Link
-                                    onMouseEnter={() => setHover(subcategoria.id)}
-                                    onMouseLeave={() => setHover(null)}
-                                    href={`/productos/${subcategoria.categoria_id}/${subcategoria.id}`}
-                                    key={subcategoria.id}
-                                    className="relative flex h-[300px] w-full max-w-[392px] justify-center"
-                                >
-                                    <img src={subcategoria?.image} className="h-full w-full object-cover" alt="" />
-                                    <div
-                                        className={`absolute inset-0 h-full w-full transition duration-300 ${hover === subcategoria.id ? '' : 'bg-black/50'}`}
-                                    ></div>
-                                    <h2 className="absolute bottom-5 z-30 text-[25px] font-semibold text-white">{subcategoria?.title}</h2>
-                                </Link>
-                            ))}
+                        {productos?.map((producto) => (
+                            <Link
+                                href={`/productos/${categoria_id}/${subcategoria_id}/${producto.id}`}
+                                className="flex h-[375px] flex-col rounded-md border"
+                            >
+                                <div className="relative flex min-h-[286px] items-end justify-center overflow-hidden rounded-t-md">
+                                    <img
+                                        src={producto?.imagenes[0]?.image}
+                                        className={`h-full min-h-[286px] w-full rounded-t-md object-cover transition duration-300 ${hover === producto.id ? 'scale-105' : ''}`}
+                                        alt=""
+                                        onMouseEnter={() => setHover(producto.id)}
+                                        onMouseLeave={() => setHover(null)}
+                                    />
+                                    <div className="bg-primary-color absolute -bottom-[2px] h-[2px] w-[25px]"></div>
+                                </div>
+                                <div className="flex h-full flex-col items-center justify-center">
+                                    <h3 className="text-primary-color text-[14px] font-semibold uppercase">{producto?.sub_categoria?.title}</h3>
+                                    <h2 className="text-[18px] text-black">{producto?.name}</h2>
+                                </div>
+                            </Link>
+                        ))}
                     </div>
                 </div>
             </div>
