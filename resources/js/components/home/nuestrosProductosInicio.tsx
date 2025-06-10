@@ -1,9 +1,10 @@
 import { Link, usePage } from '@inertiajs/react';
+import { useState } from 'react';
 
 export default function NuestrosProductosInicio() {
     const { productos } = usePage().props;
 
-    console.log(productos);
+    const [hover, setHover] = useState(null);
 
     return (
         <div className="mx-auto flex w-[1200px] flex-col gap-5 pb-16">
@@ -21,10 +22,16 @@ export default function NuestrosProductosInicio() {
                 {productos?.map((producto) => (
                     <Link
                         href={`/productos/${producto.sub_categoria.categoria_id}/${producto.sub_categoria.id}/${producto?.id}`}
-                        className="flex h-[375px] min-w-[288px] flex-col rounded-md border"
+                        className="flex h-[375px] w-[288px] flex-col rounded-md border"
                     >
-                        <div className="relative flex h-[286px] items-end justify-center">
-                            <img src={producto?.imagenes[0]?.image} className="h-full w-full rounded-t-md object-cover" alt="" />
+                        <div className="relative flex min-h-[286px] items-end justify-center overflow-hidden rounded-t-md">
+                            <img
+                                src={producto?.imagenes[0]?.image}
+                                className={`h-full w-full rounded-t-md object-cover transition duration-300 ${hover === producto.id ? 'scale-105' : ''}`}
+                                alt=""
+                                onMouseEnter={() => setHover(producto.id)}
+                                onMouseLeave={() => setHover(null)}
+                            />
                             <div className="bg-primary-color absolute -bottom-[2px] h-[2px] w-[25px]"></div>
                         </div>
                         <div className="flex h-full flex-col items-center justify-center">
