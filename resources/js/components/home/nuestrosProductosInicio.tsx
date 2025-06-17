@@ -18,7 +18,7 @@ export default function NuestrosProductosInicio() {
                 </Link>
             </div>
 
-            <div className="flex flex-row gap-5">
+            <div className="grid grid-cols-4 gap-5">
                 {productos?.map((producto) => (
                     <Link
                         href={`/productos/${producto.sub_categoria.categoria_id}/${producto.sub_categoria.id}/${producto?.id}`}

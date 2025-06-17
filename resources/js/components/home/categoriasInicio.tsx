@@ -18,7 +18,7 @@ export default function CategoriasInicio() {
                 >
                     <img
                         src={categoria?.image}
-                        className={`absolute inset-0 h-full w-full object-cover object-center transition duration-300 ${hoveredId === categoria.id ? 'scale-105' : ''}`}
+                        className={`absolute inset-0 h-full w-full object-cover object-center transition duration-300 ${hoveredId === categoria.id ? 'scale-110' : ''}`}
                         alt=""
                     />
                     <div className={`absolute z-10 h-full w-full transition-all duration-300 ${hoveredId === categoria.id ? '' : 'bg-black/50'}`} />

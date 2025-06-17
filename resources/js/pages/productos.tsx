@@ -33,9 +33,13 @@ export default function Productos({ categorias, banner }) {
                             onMouseLeave={() => setHover(null)}
                             href={`/productos/${categoria.id}`}
                             key={categoria.id}
-                            className="relative flex h-[300px] w-full max-w-[392px] justify-center"
+                            className="relative flex h-[300px] w-full max-w-[392px] justify-center overflow-hidden"
                         >
-                            <img src={categoria?.image} className="h-full w-full object-cover" alt="" />
+                            <img
+                                src={categoria?.image}
+                                className={`h-full w-full object-cover transition duration-300 ${hover === categoria.id ? 'scale-110' : ''}`}
+                                alt=""
+                            />
                             <div
                                 className={`absolute inset-0 h-full w-full transition duration-300 ${hover === categoria.id ? '' : 'bg-black/50'}`}
                             ></div>

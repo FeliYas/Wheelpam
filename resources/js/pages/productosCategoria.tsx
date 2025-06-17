@@ -50,12 +50,14 @@ export default function ProductosCategoria() {
                                     onMouseLeave={() => setHover(null)}
                                     href={`/productos/${subcategoria.categoria_id}/${subcategoria.id}`}
                                     key={subcategoria.id}
-                                    className="relative flex h-[300px] w-full max-w-[392px] justify-center"
+                                    className="relative flex h-[300px] w-full max-w-[392px] justify-center overflow-hidden"
                                 >
-                                    <img src={subcategoria?.image} className="h-full w-full object-cover" alt="" />
-                                    <div
-                                        className={`absolute inset-0 h-full w-full transition duration-300 ${hover === subcategoria.id ? '' : 'bg-black/50'}`}
-                                    ></div>
+                                    <img
+                                        src={subcategoria?.image}
+                                        className={`duratyion-300 h-full w-full object-cover transition ${hover === subcategoria.id ? 'scale-110' : ''}`}
+                                        alt=""
+                                    />
+                                    <div className={`absolute h-full w-full bg-black/50 transition duration-300`}></div>
                                     <h2 className="absolute bottom-5 z-30 text-[25px] font-semibold text-white">{subcategoria?.title}</h2>
                                 </Link>
                             ))}
