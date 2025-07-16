@@ -13,13 +13,10 @@ return new class extends Migration
     {
         Schema::create('valores', function (Blueprint $table) {
             $table->id();
-            $table->string('first_title')->nullable();
-            $table->string('second_title')->nullable();
-            $table->string('third_title')->nullable();
-            $table->longText('first_text')->nullable();
-            $table->longText('second_text')->nullable();
-            $table->longText('third_text')->nullable();
-            $table->string('video')->nullable();
+            $table->string('order')->default('zzz');
+            $table->string('title')->nullable();
+            $table->longText('text')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

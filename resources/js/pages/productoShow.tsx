@@ -111,21 +111,21 @@ export default function ProductoShow({ producto, categorias, subcategorias, cate
                                             <div className="flex flex-col gap-2">
                                                 <p className="text-[16px] font-bold">Dureza de banda de rodadura 65 shore +- 5</p>
                                                 <div className="grid grid-cols-2 grid-rows-3 items-center gap-y-2">
-                                                    <p>Resistencia a la temperatura</p>
+                                                    <p>{producto?.barra_uno || 'Resistencia a la temperatura'}</p>
                                                     <div className="relative h-2 rounded bg-gray-200">
                                                         <div
                                                             className="absolute h-2 rounded bg-red-600 transition-all duration-300"
                                                             style={{ width: `${Number(producto?.temperatura) * 10}%` }}
                                                         ></div>
                                                     </div>
-                                                    <p>Resistencia al desgaste</p>
+                                                    <p>{producto?.barra_dos || 'Resistencia al desgaste'}</p>
                                                     <div className="relative h-2 rounded bg-gray-200">
                                                         <div
                                                             className="absolute h-2 rounded bg-red-600 transition-all duration-300"
                                                             style={{ width: `${Number(producto?.desgaste) * 10}%` }}
                                                         ></div>
                                                     </div>
-                                                    <p>Confort durante la marcha</p>
+                                                    <p>{producto?.barra_tres || 'Confort durante la marcha'}</p>
                                                     <div className="relative h-2 rounded bg-gray-200">
                                                         <div
                                                             className="absolute h-2 rounded bg-red-600 transition-all duration-300"

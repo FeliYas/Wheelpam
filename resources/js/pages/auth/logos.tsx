@@ -30,6 +30,7 @@ export default function Logos() {
                             <label htmlFor="logoprincipal" className="block text-xl font-medium text-gray-900">
                                 Logo principal
                             </label>
+                            <span>Resolucion recomendada: 342x72 px</span>
                             <div className="mt-2 flex justify-between rounded-lg border shadow-lg">
                                 <div className="h-[200px] w-1/2 bg-[rgba(0,0,0,0.2)]">
                                     <img className="h-full w-full rounded-md object-contain" src={logos?.logo_principal} alt="" />

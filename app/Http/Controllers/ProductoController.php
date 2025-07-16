@@ -142,6 +142,9 @@ class ProductoController extends Controller
             'confort' => 'sometimes|nullable',
             'description' => 'sometimes|nullable|string',
             'medida_id' => 'sometimes|nullable|exists:medidas,id',
+            'barra_uno' => 'sometimes|nullable|string',
+            'barra_dos' => 'sometimes|nullable|string',
+            'barra_tres' => 'sometimes|nullable|string',
         ]);
 
         if ($request->hasFile('archivo')) {
@@ -167,6 +170,9 @@ class ProductoController extends Controller
             'confort' => 'sometimes|nullable',
             'description' => 'sometimes|nullable|string',
             'medida_id' => 'sometimes|nullable|exists:medidas,id',
+            'barra_uno' => 'sometimes|nullable|string',
+            'barra_dos' => 'sometimes|nullable|string',
+            'barra_tres' => 'sometimes|nullable|string',
         ]);
 
         $producto = Producto::find($request->id);

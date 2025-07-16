@@ -17,4 +17,9 @@ class Nosotros extends Model
     {
         return asset('storage/' . $value);
     }
+
+    public function getVideoAttribute($value)
+    {
+        return asset('storage/' . $value);
+    }
 }

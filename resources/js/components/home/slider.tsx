@@ -65,7 +65,7 @@ const SliderHome = () => {
                             <div className="flex flex-col gap-8 text-white sm:gap-12 md:gap-16 lg:gap-20">
                                 <div className="flex flex-col gap-2">
                                     <h1 className="text-2xl leading-tight font-semibold sm:text-3xl md:text-4xl lg:text-5xl xl:text-[64px]">
-                                        {slide.title}
+                                        JUNTOS <span className="text-primary-color">MOVEMOS INDUSTRIAS</span>
                                     </h1>
                                     <p className="max-w-[280px] text-sm leading-tight sm:max-w-[350px] sm:text-base md:max-w-[450px] md:text-lg lg:max-w-[560px] lg:text-xl xl:text-[24px]">
                                         {slide.subtitle}

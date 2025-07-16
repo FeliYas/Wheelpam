@@ -57,7 +57,7 @@ export default function Footer() {
             <div className="mx-auto flex h-full w-full max-w-[1200px] flex-col items-center justify-between gap-10 px-4 py-10 lg:flex-row lg:items-start lg:gap-0 lg:px-0 lg:py-26">
                 {/* logo redes */}
                 <div className="flex h-full flex-col items-center gap-4">
-                    <img src={logos?.logo_principal} alt="Logo secundario" className="max-w-[200px] sm:max-w-full" />
+                    <img src={logos?.logo_principal} alt="Logo secundario" className="max-h-[72px] max-w-[200px] sm:max-w-full" />
                     <div className="flex flex-row items-center justify-center gap-4 sm:gap-2">
                         {contacto?.instagram && (
                             <a target="_blank" rel="noopener noreferrer" href={contacto?.instagram} aria-label="Facebook">

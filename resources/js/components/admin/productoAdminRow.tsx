@@ -56,6 +56,9 @@ export default function ProductoAdminRow({ producto }) {
         confort: producto?.confort,
         desgaste: producto?.desgaste,
         medida_id: producto?.medida_id,
+        barra_uno: producto?.barra_uno,
+        barra_dos: producto?.barra_dos,
+        barra_tres: producto?.barra_tres,
         id: producto?.id,
     });
 
@@ -243,7 +246,16 @@ export default function ProductoAdminRow({ producto }) {
 
                                     <CustomReactQuill value={text} onChange={setText} />
 
-                                    <label className="">Resistencia a la temperatura</label>
+                                    <label className="">Barra 1</label>
+                                    <input
+                                        className="focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline"
+                                        type="text"
+                                        placeholder="Introduzca el nombre de la barra 1"
+                                        name="barra_uno"
+                                        id="barra_uno"
+                                        value={updateForm.data.barra_uno}
+                                        onChange={(e) => updateForm.setData('barra_uno', e.target.value)}
+                                    />
                                     <input
                                         type="range"
                                         min={0}
@@ -253,7 +265,16 @@ export default function ProductoAdminRow({ producto }) {
                                         className="w-full cursor-pointer"
                                     />
 
-                                    <label className="">Resistencia al desgaste</label>
+                                    <label className="">Barra 2</label>
+                                    <input
+                                        className="focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline"
+                                        type="text"
+                                        placeholder="Introduzca el nombre de la barra 2"
+                                        name="barra_dos"
+                                        id="barra_dos"
+                                        onChange={(e) => updateForm.setData('barra_dos', e.target.value)}
+                                        value={updateForm.data.barra_dos}
+                                    />
                                     <input
                                         type="range"
                                         min={0}
@@ -263,7 +284,16 @@ export default function ProductoAdminRow({ producto }) {
                                         className="w-full cursor-pointer"
                                     />
 
-                                    <label className="">Confort durante la marcha</label>
+                                    <label className="">Barra 3</label>
+                                    <input
+                                        className="focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline"
+                                        type="text"
+                                        placeholder="Introduzca el nombre de la barra 3"
+                                        name="barra_tres"
+                                        id="barra_tres"
+                                        value={updateForm.data.barra_tres}
+                                        onChange={(e) => updateForm.setData('barra_tres', e.target.value)}
+                                    />
                                     <input
                                         type="range"
                                         min={0}

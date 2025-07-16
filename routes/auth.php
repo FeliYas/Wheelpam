@@ -105,6 +105,8 @@ Route::middleware('auth')->group(function () {
     # Valores
     Route::get('dashboard/valores', [ValoresController::class, 'index'])->name('admin.valores');
     Route::post('dashboard/valores/update', [ValoresController::class, 'update'])->name('admin.valores.update');
+    Route::post('dashboard/valores/store', [ValoresController::class, 'store'])->name('admin.valores.store');
+    Route::delete('dashboard/valores/destroy', [ValoresController::class, 'destroy'])->name('admin.valores.destroy');
 
     # Servicios
     Route::get('dashboard/servicios', [ServiciosController::class, 'index'])->name('admin.servicios');

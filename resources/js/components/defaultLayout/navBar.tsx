@@ -41,8 +41,8 @@ export default function NavBar() {
             } ${scrolled || ziggy.location.split('/').length > 3 ? 'bg-black shadow-md' : 'bg-transparent'}`}
         >
             <div className="mx-auto flex h-full max-w-[1200px] items-center justify-between px-4 md:px-6 lg:px-0">
-                <Link href={'/'} className="h-12 md:h-auto">
-                    <img src={logos?.logo_principal} alt="" className="h-full object-contain" />
+                <Link href={'/'} className="h-12 max-h-[72px] md:h-auto">
+                    <img src={logos?.logo_principal} alt="" className="object-contain" />
                 </Link>
 
                 {/* Desktop Navigation */}

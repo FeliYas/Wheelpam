@@ -124,7 +124,15 @@ export default function ProductosAdmin() {
 
                                         <CustomReactQuill value={text} onChange={setText} />
 
-                                        <label className="">Resistencia a la temperatura</label>
+                                        <label className="">Barra 1</label>
+                                        <input
+                                            className="focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline"
+                                            type="text"
+                                            placeholder="Introduzca el nombre de la barra 1"
+                                            name="barra_uno"
+                                            id="barra_uno"
+                                            onChange={(e) => setData('barra_uno', e.target.value)}
+                                        />
                                         <input
                                             type="range"
                                             min={0}
@@ -134,7 +142,15 @@ export default function ProductosAdmin() {
                                             className="w-full cursor-pointer"
                                         />
 
-                                        <label className="">Resistencia al desgaste</label>
+                                        <label className="">Barra 2</label>
+                                        <input
+                                            className="focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline"
+                                            type="text"
+                                            placeholder="Introduzca el nombre de la barra 2"
+                                            name="barra_dos"
+                                            id="barra_dos"
+                                            onChange={(e) => setData('barra_dos', e.target.value)}
+                                        />
                                         <input
                                             type="range"
                                             min={0}
@@ -144,7 +160,15 @@ export default function ProductosAdmin() {
                                             className="w-full cursor-pointer"
                                         />
 
-                                        <label className="">Confort durante la marcha</label>
+                                        <label className="">Barra 3</label>
+                                        <input
+                                            className="focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline"
+                                            type="text"
+                                            name="barra_tres"
+                                            placeholder="Introduzca el nombre de la barra 3"
+                                            id="barra_tres"
+                                            onChange={(e) => setData('barra_tres', e.target.value)}
+                                        />
                                         <input
                                             type="range"
                                             min={0}

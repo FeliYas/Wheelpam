@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('temperatura')->nullable();
             $table->string('confort')->nullable();
             $table->string('desgaste')->nullable();
+            $table->string('barra_uno')->default('Resistencia a la temperatura');
+            $table->string('barra_dos')->default('Resistencia al desgaste');
+            $table->string('barra_tres')->default('Confort durante la marcha');
             $table->string('name');
             $table->longText('recomendaciones')->nullable();
             $table->string('archivo')->nullable();

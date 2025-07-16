@@ -8,7 +8,7 @@ class Valores extends Model
 {
     protected $guarded = [];
 
-    public function getVideoAttribute($value)
+    public function getImageAttribute($value)
     {
         return asset('storage/' . $value);
     }

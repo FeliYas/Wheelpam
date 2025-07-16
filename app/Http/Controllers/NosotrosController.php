@@ -24,7 +24,7 @@ class NosotrosController extends Controller
     public function indexInicio()
     {
         $nosotros = Nosotros::first();
-        $valores = Valores::first();
+        $valores = Valores::orderBy('order')->get();
         $banner = Banner::where('name', 'nosotros')->first();
 
         return Inertia::render('nosotros', [
@@ -62,6 +62,7 @@ class NosotrosController extends Controller
             'text' => 'sometimes',
             'image' => 'sometimes|file',
             'banner' => 'sometimes|file',
+            'video' => 'sometimes|file',
         ]);
 
         // Handle file upload if image exists
@@ -75,6 +76,20 @@ class NosotrosController extends Controller
             }
             // Store the new image
             $data['image'] = $request->file('image')->store('images', 'public');
+        }
+
+
+        // Handle file upload if video exists
+        if ($request->hasFile('video')) {
+            // Delete the old video if it exists
+            if ($nosotros->video) {
+                $absolutePath = public_path('storage/' . $nosotros->video);
+                if (file_exists($absolutePath)) {
+                    unlink($absolutePath);
+                }
+            }
+            // Store the new video
+            $data['video'] = $request->file('video')->store('videos', 'public');
         }
 
         // Handle file upload if banner exists

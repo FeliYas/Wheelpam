@@ -58,7 +58,7 @@ export default function ProductosCategoria() {
                                         alt=""
                                     />
                                     <div className={`absolute h-full w-full bg-black/50 transition duration-300`}></div>
-                                    <h2 className="absolute bottom-5 z-30 text-[25px] font-semibold text-white">{subcategoria?.title}</h2>
+                                    <h2 className="absolute bottom-5 z-30 text-[25px] font-semibold text-black">{subcategoria?.title}</h2>
                                 </Link>
                             ))}
                     </div>
