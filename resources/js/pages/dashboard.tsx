@@ -101,7 +101,7 @@ export default function Dashboard({ children }) {
         {
             id: 'garantia',
             open: false,
-            title: 'Garantia',
+            title: 'Calidad',
             icon: faCircleCheck,
             href: '#',
             subHref: [
@@ -123,10 +123,14 @@ export default function Dashboard({ children }) {
         {
             id: 'solicitud',
             open: false,
-            title: 'Solicitud de presupuesto',
+            title: 'Ser distribuidor',
             icon: faMoneyCheckDollar,
             href: 'novedades',
-            subHref: [{ title: 'Banner', href: '/dashboard/solicitud-banner' }],
+            subHref: [
+                { title: 'Contenido', href: '/dashboard/solicitud' },
+
+                { title: 'Banner', href: '/dashboard/solicitud-banner' },
+            ],
         },
 
         {
@@ -296,7 +300,6 @@ export default function Dashboard({ children }) {
                         <button onClick={() => setSidebar(!sidebar)}>
                             <FontAwesomeIcon icon={faBars} size="lg" color="#000" />
                         </button>
-                        <h1 className="text-2xl">{finalPath.charAt(0).toUpperCase() + finalPath.slice(1) || 'Bienvenido al Dashboard'}</h1>
                     </div>
 
                     <div className="flex flex-row gap-3">

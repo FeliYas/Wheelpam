@@ -2,6 +2,7 @@ import { Link, usePage } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import flag from '../../../images/argentina.png';
 
 export default function NavBar() {
     const [scrolled, setScrolled] = useState(false);
@@ -28,9 +29,9 @@ export default function NavBar() {
         { title: 'Nosotros', href: '/nosotros' },
         { title: 'Productos', href: '/productos' },
         { title: 'Servicios', href: '/servicios' },
-        { title: 'Garantia', href: '/garantia' },
+        { title: 'Calidad', href: '/garantia' },
         { title: 'Novedades', href: '/novedades' },
-        { title: 'Solicitud de presupuesto', href: '/solicitud-de-presupuesto' },
+        { title: 'Ser distribuidor', href: '/solicitud-de-presupuesto' },
         { title: 'Contacto', href: '/contacto' },
     ];
 
@@ -41,8 +42,9 @@ export default function NavBar() {
             } ${scrolled || ziggy.location.split('/').length > 3 ? 'bg-black shadow-md' : 'bg-transparent'}`}
         >
             <div className="mx-auto flex h-full max-w-[1200px] items-center justify-between px-4 md:px-6 lg:px-0">
-                <Link href={'/'} className="h-12 max-h-[72px] md:h-auto">
+                <Link href={'/'} className="flex h-12 max-h-[72px] flex-row items-center md:h-auto">
                     <img src={logos?.logo_principal} alt="" className="object-contain" />
+                    <img src={flag} alt="Argentina" className="h-5 w-5" />
                 </Link>
 
                 {/* Desktop Navigation */}

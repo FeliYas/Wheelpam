@@ -18,10 +18,9 @@
 
                 <hr>
 
-                <p><strong>Producto:</strong> {{ $datos['producto'] ?? '---' }}</p>
-                <p><strong>Medida:</strong> {{ $datos['medida'] ?? '---' }}</p>
-                <p><strong>Cantidad:</strong> {{ $datos['cantidad'] ?? '---' }}</p>
-                <p><strong>Tipo de uso:</strong> {{ $datos['tipo'] ?? '---' }}</p>
+                <p><strong>Rubro principal:</strong> {{ $datos['rubro'] ?? '---' }}</p>
+                <p><strong>Provincia:</strong> {{ $datos['provincia'] ?? '---' }}</p>
+                <p><strong>Localidad:</strong> {{ $datos['localidad'] ?? '---' }}</p>
 
                 <p><strong>Aclaraciones:</strong></p>
                 <p>{{ $datos['aclaraciones'] ?? '---' }}</p>

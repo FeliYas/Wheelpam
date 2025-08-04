@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Novedad;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,12 +12,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('garantias', function (Blueprint $table) {
+        Schema::create('imagenes_novedads', function (Blueprint $table) {
             $table->id();
-            $table->string('banner');
-            $table->string('title');
-            $table->longText('text');
-            $table->longText('more_text');
+            $table->foreignIdFor(Novedad::class, 'novedad_id')->constrained()->cascadeOnDelete();
             $table->string('image');
             $table->timestamps();
         });
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('garantias');
+        Schema::dropIfExists('imagenes_novedads');
     }
 };

@@ -1,13 +1,18 @@
+import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Head, Link, usePage } from '@inertiajs/react';
+import { useState } from 'react';
 import DefaultLayout from './defaultLayout';
 
 export default function Garantia() {
     const { banner, garantia } = usePage().props;
 
+    const [showMore, setShowMore] = useState(false);
+
     return (
         <DefaultLayout>
             <Head>
-                <title>Garantia</title>
+                <title>Calidad</title>
             </Head>
             <div
                 style={{
@@ -21,10 +26,10 @@ export default function Garantia() {
                     <Link className="font-bold" href={'/'}>
                         Inicio
                     </Link>{' '}
-                    / <Link href={'/garantia'}>Garantia</Link>
+                    / <Link href={'/garantia'}>Calidad</Link>
                 </div>
-                <img className="absolute h-full w-full object-cover object-center" src={banner?.image} alt="Banner garantia" />
-                <h2 className="absolute z-10 mx-auto w-[1200px] pb-20 text-3xl font-bold text-white max-sm:max-w-[1200px] sm:text-4xl">Garantia</h2>
+                <img className="absolute h-full w-full object-cover object-center" src={banner?.image} alt="Banner calidad" />
+                <h2 className="absolute z-10 mx-auto w-[1200px] pb-20 text-3xl font-bold text-white max-sm:max-w-[1200px] sm:text-4xl">Calidad</h2>
             </div>
 
             <div className="mx-auto my-20 flex h-[564px] max-w-[1200px] flex-row gap-10 max-sm:flex-col max-sm:items-center">
@@ -35,6 +40,26 @@ export default function Garantia() {
                 <div className="h-full w-full rounded-md">
                     <img src={garantia?.image} className="h-full w-full rounded-md object-cover" alt="Imagen de garantia" />
                 </div>
+            </div>
+            <div className="flex flex-col">
+                <button
+                    onClick={() => setShowMore(!showMore)}
+                    className="border-primary-color mx-auto my-10 flex w-[1200px] flex-row items-center justify-between border-b-2 text-left"
+                >
+                    <h2 className="text-bold text-primary-color w-full text-2xl">Garantia</h2>
+
+                    <FontAwesomeIcon
+                        icon={faChevronUp}
+                        color="#ef3620"
+                        size="sm"
+                        className={`transition-transform duration-300 ${showMore ? 'rotate-180' : ''}`}
+                    />
+                </button>
+                {showMore && (
+                    <div className={`mx-auto mb-20 h-0 w-[1200px] text-[16px] transition-all duration-300 ${showMore ? 'h-auto' : 'h-0'}`}>
+                        <div dangerouslySetInnerHTML={{ __html: garantia?.more_text }} />
+                    </div>
+                )}
             </div>
         </DefaultLayout>
     );

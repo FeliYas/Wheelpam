@@ -22,10 +22,10 @@ export default function NovedadesInicio() {
                         href={`/novedades/${novedad?.id}`}
                         className="group flex h-auto min-h-[400px] w-full flex-col rounded-md border transition-shadow duration-300 hover:shadow-lg sm:min-h-[450px] lg:min-h-[488px]"
                     >
-                        <div className="relative flex min-h-[200px] items-end justify-center overflow-hidden sm:min-h-[220px] lg:min-h-[260px]">
+                        <div className="relative flex h-fit items-end justify-center overflow-hidden sm:min-h-[220px] lg:min-h-[260px]">
                             <img
-                                src={novedad?.image}
-                                className="h-full w-full rounded-t-md object-cover transition-transform duration-300 group-hover:scale-105"
+                                src={novedad?.imagenes[0]?.image}
+                                className="h-full max-h-[273px] w-full overflow-hidden rounded-t-md object-cover transition-transform duration-300 group-hover:scale-105"
                                 alt={novedad?.title || 'Novedad'}
                             />
                         </div>

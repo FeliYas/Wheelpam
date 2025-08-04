@@ -8,15 +8,18 @@ export default function GarantiaAdmin() {
     const { garantia } = usePage().props;
 
     const [garantiaText, setGarantiaText] = useState(garantia?.text || '');
+    const [garantiaMoreText, setGarantiaMoreText] = useState(garantia?.more_text || '');
 
     const { data, setData, post, reset, errors, processing } = useForm({
         title: garantia?.title,
         text: garantia?.text || '',
+        more_text: garantia?.more_text || '',
     });
 
     useEffect(() => {
         setData('text', garantiaText);
-    }, [garantiaText]);
+        setData('more_text', garantiaMoreText);
+    }, [garantiaText, garantiaMoreText]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -38,7 +41,7 @@ export default function GarantiaAdmin() {
         <Dashboard>
             <form onSubmit={handleSubmit} className="flex w-full flex-col gap-5 p-6">
                 <div className="flex w-full flex-col gap-4">
-                    <h2 className="border-primary-color text-primary-color text-bold w-full border-b-2 text-2xl">Garantia</h2>
+                    <h2 className="border-primary-color text-primary-color text-bold w-full border-b-2 text-2xl">Calidad</h2>
                     <div className="w-full">
                         <label htmlFor="nosotros_image" className="block text-xl font-medium text-gray-900">
                             Imagen
@@ -92,6 +95,13 @@ export default function GarantiaAdmin() {
                         <CustomReactQuill value={garantiaText} onChange={setGarantiaText} />
                         {errors.text && <p className="mt-1 text-xs text-red-500">{errors.text}</p>}
                     </div>
+                </div>
+                <div className="flex flex-col gap-5">
+                    <h2 className="border-primary-color text-primary-color text-bold w-full border-b-2 text-2xl">Garantia</h2>
+                    <label className="text-xl" htmlFor="">
+                        Informacion garantia
+                    </label>
+                    <CustomReactQuill value={garantiaMoreText} onChange={setGarantiaMoreText} />
                 </div>
                 <div>
                     <button

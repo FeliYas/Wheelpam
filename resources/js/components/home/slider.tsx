@@ -1,4 +1,4 @@
-import { Link, router, usePage } from '@inertiajs/react';
+import { router, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 
 const SliderHome = () => {
@@ -71,13 +71,6 @@ const SliderHome = () => {
                                         {slide.subtitle}
                                     </p>
                                 </div>
-
-                                <Link
-                                    href={slide.link}
-                                    className="bg-primary-color flex h-[32px] w-[140px] items-center justify-center rounded-full text-sm font-semibold text-white transition-colors duration-300 hover:bg-red-600 sm:h-[35px] sm:w-[160px] sm:text-base md:h-[38px] md:w-[185px]"
-                                >
-                                    Mas info
-                                </Link>
                             </div>
                         </div>
                     </div>

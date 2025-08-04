@@ -81,7 +81,7 @@ export default function Nosotros() {
                     </div>
 
                     <div className="h-full w-full">
-                        <video className="h-[690px]" src={nosotros?.video} controls poster={poster}></video>
+                        <video className="h-[690px]" src={nosotros?.video} controls muted autoPlay poster={poster}></video>
                     </div>
                 </div>
             </div>

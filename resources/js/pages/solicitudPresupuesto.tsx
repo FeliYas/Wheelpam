@@ -5,7 +5,7 @@ import { toast } from 'react-hot-toast';
 import DefaultLayout from './defaultLayout';
 
 export default function SolicitudPresupuesto() {
-    const { banner, productos, medidas, producto_id } = usePage().props;
+    const { banner, informacion, provincias } = usePage().props;
 
     const [archivos, setArchivos] = useState([{ id: Date.now(), file: null }]);
 
@@ -14,11 +14,10 @@ export default function SolicitudPresupuesto() {
         email: '',
         telefono: '',
         razon: '',
-        producto: producto_id || '',
-        medida: '',
-        cantidad: '',
         aclaraciones: '',
-        tipo: '',
+        rubro: '',
+        provincia: '',
+        localidad: '',
     });
 
     const agregarArchivo = () => {
@@ -41,11 +40,10 @@ export default function SolicitudPresupuesto() {
         formData.append('email', formInfo.email);
         formData.append('telefono', formInfo.telefono);
         formData.append('razon', formInfo.razon);
-        formData.append('producto', formInfo.producto);
-        formData.append('medida', formInfo.medida);
-        formData.append('cantidad', formInfo.cantidad);
         formData.append('aclaraciones', formInfo.aclaraciones);
-        formData.append('tipo', formInfo.tipo);
+        formData.append('rubro', formInfo.rubro);
+        formData.append('provincia', formInfo.provincia);
+        formData.append('localidad', formInfo.localidad);
 
         // ...
 
@@ -68,11 +66,10 @@ export default function SolicitudPresupuesto() {
                         email: '',
                         telefono: '',
                         razon: '',
-                        producto: producto_id || '',
-                        medida: '',
-                        cantidad: '',
+                        rubro: '',
+                        provincia: '',
+                        localidad: '',
                         aclaraciones: '',
-                        tipo: '',
                     });
                     setArchivos([{ id: Date.now(), file: null }]); // Resetear archivos
                     return 'Solicitud enviada';
@@ -85,7 +82,7 @@ export default function SolicitudPresupuesto() {
     return (
         <DefaultLayout>
             <Head>
-                <title>Solicitud De presupuesto</title>
+                <title>Ser distribuidor</title>
             </Head>
             <div
                 style={{
@@ -99,14 +96,16 @@ export default function SolicitudPresupuesto() {
                     <Link className="font-bold" href={'/'}>
                         Inicio
                     </Link>{' '}
-                    / <Link href={'/solicitud-de-presupuesto'}>Solicitud de Presupuesto</Link>
+                    / <Link href={'/solicitud-de-presupuesto'}>Ser distribuidor</Link>
                 </div>
                 <img className="absolute h-full w-full object-cover object-center" src={banner?.image} alt="Banner nosotros" />
-                <h2 className="absolute z-10 mx-auto w-[1200px] pb-20 text-3xl font-bold text-white sm:text-4xl">Solicitud de Presupuesto</h2>
+                <h2 className="absolute z-10 mx-auto w-[1200px] pb-20 text-3xl font-bold text-white sm:text-4xl">Ser distribuidor</h2>
             </div>
 
             <form onSubmit={handleSubmit} className="mx-auto my-20 flex w-[1200px] flex-col gap-20">
                 <div className="flex flex-col gap-5">
+                    <h2 className="col-span-2 text-[24px] font-bold">Informacion Importante</h2>
+                    <div dangerouslySetInnerHTML={{ __html: informacion?.text || '' }} className="break-words" />
                     <h2 className="col-span-2 text-[24px] font-bold">Datos personales</h2>
                     <div className="grid grid-cols-2 grid-rows-2 gap-x-6 gap-y-8">
                         <div className="flex flex-col gap-2">
@@ -159,50 +158,56 @@ export default function SolicitudPresupuesto() {
                 <div className="h-[1px] w-full bg-gray-200" />
 
                 <div className="flex flex-col gap-5">
-                    <h2 className="col-span-2 text-[24px] font-bold">Consulta</h2>
+                    <h2 className="col-span-2 text-[24px] font-bold">Sobre tu negocio</h2>
                     <div className="grid grid-cols-4 grid-rows-4 gap-x-6 gap-y-8">
                         <div className="col-span-2 flex flex-col gap-2">
-                            <label htmlFor="producto">Producto *</label>
+                            <label htmlFor="producto">Rubro principal *</label>
                             <select
+                                onChange={(e) => setFormInfo({ ...formInfo, rubro: e.target.value })}
                                 required
-                                value={formInfo.producto}
-                                onChange={(e) => setFormInfo({ ...formInfo, producto: e.target.value })}
                                 id="producto"
                                 className="rounded-md border border-gray-300 p-2"
                             >
-                                <option value="">Seleccione un producto</option>
-                                {productos?.map((producto) => (
-                                    <option key={producto.id} value={producto.name}>
-                                        {producto.name}
-                                    </option>
-                                ))}
+                                <option value="">Seleccione un rubro</option>
+                                <option value="Venta de neumáticos">Venta de neumáticos</option>
+                                <option value="Alquiler de Autoelevadores">Alquiler de Autoelevadores</option>
+                                <option value="Venta de repuestos">Venta de repuestos</option>
+                                <option value="Reparación de Autoelevadores">Reparación de Autoelevadores</option>
                             </select>
                         </div>
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="medida">Medida</label>
+                            <label htmlFor="provincia">Provincia</label>
                             <select
-                                value={formInfo.medida}
-                                onChange={(e) => setFormInfo({ ...formInfo, medida: e.target.value })}
-                                id="medida"
+                                value={formInfo?.provincia}
+                                onChange={(e) => setFormInfo({ ...formInfo, provincia: e.target.value })}
+                                id="provincia"
                                 className="rounded-md border border-gray-300 p-2"
                             >
-                                <option value="">Seleccione una medida</option>
-                                {medidas?.map((medida) => (
-                                    <option key={medida.id} value={medida.name}>
-                                        {medida.name}
+                                <option value="">Seleccione una provincia</option>
+                                {provincias?.map((provincia) => (
+                                    <option key={provincia?.id} value={provincia?.name}>
+                                        {provincia?.name}
                                     </option>
                                 ))}
                             </select>
                         </div>
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="cantidad">Cantidad</label>
-                            <input
-                                value={formInfo.cantidad}
-                                onChange={(e) => setFormInfo({ ...formInfo, cantidad: e.target.value })}
-                                type="text"
-                                id="cantidad"
+                            <label htmlFor="localidad">Localidad</label>
+                            <select
+                                value={formInfo?.localidad}
+                                onChange={(e) => setFormInfo({ ...formInfo, localidad: e.target.value })}
+                                id="localidad"
                                 className="rounded-md border border-gray-300 p-2"
-                            />
+                            >
+                                <option value="">Seleccione una localidad</option>
+                                {provincias
+                                    ?.find((provincia) => provincia?.name == formInfo?.provincia)
+                                    ?.localidades?.map((localidad) => (
+                                        <option key={localidad?.id} value={localidad?.name}>
+                                            {localidad?.name}
+                                        </option>
+                                    ))}
+                            </select>
                         </div>
                         <div className="col-span-2 row-span-3 flex flex-col gap-2">
                             <label htmlFor="aclaraciones">Aclaraciones*</label>
@@ -214,18 +219,9 @@ export default function SolicitudPresupuesto() {
                                 className="h-full w-full rounded-md border border-gray-300 p-2"
                             />
                         </div>
-                        <div className="col-span-2 flex flex-col gap-2">
-                            <label htmlFor="tipo">Tipo de uso</label>
-                            <input
-                                value={formInfo.tipo}
-                                onChange={(e) => setFormInfo({ ...formInfo, tipo: e.target.value })}
-                                type="text"
-                                id="tipo"
-                                className="rounded-md border border-gray-300 p-2"
-                            />
-                        </div>
+
                         <div className={`col-span-2 row-span-2 flex flex-col gap-4`}>
-                            <label>Adjuntar archivo</label>
+                            <label>Adjuntar fotos o videos de su empresa</label>
 
                             {archivos.map((archivo, index) => (
                                 <div key={archivo.id} className="flex flex-row items-center justify-between rounded-md border border-gray-300 p-2">

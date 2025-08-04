@@ -16,7 +16,9 @@ use App\Models\Marca;
 use App\Models\Medida;
 use App\Models\Novedad;
 use App\Models\Producto;
+use App\Models\Provincia;
 use App\Models\Slider;
+use App\Models\Solicitud;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -38,9 +40,7 @@ Route::middleware(['shareDefaultLayoutData'])->group(function () {
             ->get();
 
         $contenido = ContenidoInicio::first();
-        $novedades = Novedad::where('featured', true)
-            ->orderBy('order', 'asc')
-            ->get();
+        $novedades = Novedad::where('featured', true)->with('imagenes')->orderBy('order', 'asc')->get();
         $medidas = Medida::orderBy('order', 'asc')->get();
         return Inertia::render('home', [
             'slider' => $slider,
@@ -73,13 +73,17 @@ Route::middleware(['shareDefaultLayoutData'])->group(function () {
     Route::get('/solicitud-de-presupuesto', function (Request $request) {
 
         $banner = Banner::where('name', operator: 'solicitud')->first();
-        $productos = Producto::select('id', 'name')->orderBy('name', 'asc')->get();
-        $medidas = Medida::orderBy('order', 'asc')->get();
+
+
+        $informacion = Solicitud::first();
+        $provincias = Provincia::orderBy('name', 'asc')->with('localidades')->get();
         return Inertia::render('solicitudPresupuesto', [
             'banner' => $banner,
-            'productos' => $productos,
-            'medidas' => $medidas,
-            'producto_id' => $request->producto_id
+
+            'producto_id' => $request->producto_id,
+
+            'provincias' => $provincias,
+            'informacion' => $informacion,
         ]);
     })->name('solicitud.presupuesto');
 
@@ -98,11 +102,10 @@ Route::post('/presupuesto/enviar', function (Request $request) {
         'email' => 'required|email',
         'telefono' => 'required',
         'razon' => 'required|string',
-        'producto' => 'nullable|string',
-        'medida' => 'nullable|string',
-        'cantidad' => 'nullable|string',
         'aclaraciones' => 'nullable|string',
-        'tipo' => 'nullable|string',
+        'provincia' => 'nullable|string',
+        'localidad' => 'nullable|string',
+        'rubro' => 'nullable|string',
         'archivos.*' => 'nullable|file',
     ]);
 

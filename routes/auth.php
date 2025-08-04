@@ -23,6 +23,7 @@ use App\Http\Controllers\NovedadController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ServiciosController;
 use App\Http\Controllers\SliderController;
+use App\Http\Controllers\SolicitudController;
 use App\Http\Controllers\SubCategoriaController;
 use App\Http\Controllers\ValoresController;
 use App\Models\Banner;
@@ -168,6 +169,10 @@ Route::middleware('auth')->group(function () {
     Route::post('dashboard/medidas/store', [MedidaController::class, 'store'])->name('admin.medidas.store');
     Route::post('dashboard/medidas/update', [MedidaController::class, 'update'])->name('admin.medidas.update');
     Route::delete('dashboard/medidas/destroy', [MedidaController::class, 'destroy'])->name('admin.medidas.destroy');
+
+    # Solicitud
+    Route::get('dashboard/solicitud', [SolicitudController::class, 'index'])->name('admin.solicitud');
+    Route::post('dashboard/solicitud/update', [SolicitudController::class, 'update'])->name('admin.solicitud.update');
 
     Route::resource('dashboard/caracteristicasadmin', CaracteristicasController::class)->only(['store', 'update', 'destroy'])->names([
         'store' => 'admin.caracteristicas.store',

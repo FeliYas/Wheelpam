@@ -80,7 +80,7 @@ export default function ServiciosAdminRow({ servicio }) {
                         exit={{ opacity: 0 }}
                         className="fixed top-0 left-0 z-50 flex h-full w-full items-center justify-center bg-black/50 text-left"
                     >
-                        <form onSubmit={handleUpdate} method="POST" className="text-black">
+                        <form onSubmit={handleUpdate} method="POST" className="max-h-[90vh] overflow-y-auto text-black">
                             <div className="w-[500px] rounded-md bg-white p-4">
                                 <h2 className="mb-4 text-2xl font-semibold">Actualizar Servicio</h2>
                                 <div className="flex flex-col gap-4">

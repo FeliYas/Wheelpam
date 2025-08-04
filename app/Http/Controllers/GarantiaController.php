@@ -46,6 +46,7 @@ class GarantiaController extends Controller
         $data = $request->validate([
             'title' => 'sometimes|string|max:255',
             'text' => 'sometimes|string',
+            'more_text' => 'sometimes|string',
             'image' => 'sometimes|file|max:2048',
             'banner' => 'sometimes|file|max:2048',
         ]);

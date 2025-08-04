@@ -9,18 +9,52 @@ import Dashboard from '../dashboard';
 export default function NovedadesAdmin() {
     const { novedades } = usePage().props;
 
-    const { data, setData, post, reset } = useForm({
+    const { data, setData, post, reset, errors } = useForm({
         title: '',
         type: '',
+        images: [],
     });
 
     const [text, setText] = useState();
+    const [imagePreviews, setImagePreviews] = useState([]);
+    const [createView, setCreateView] = useState(false);
+
+    const handleFileChange = (e) => {
+        const files = Array.from(e.target.files);
+
+        // Actualizar el form data con los archivos
+        setData('images', files);
+
+        // Crear previews de las imágenes
+        const previews = files.map((file) => {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) =>
+                    resolve({
+                        file: file,
+                        url: e.target.result,
+                        name: file.name,
+                        size: file.size,
+                    });
+                reader.readAsDataURL(file);
+            });
+        });
+
+        // Actualizar el estado de previews
+        Promise.all(previews).then(setImagePreviews);
+    };
+
+    const removeImage = (indexToRemove) => {
+        const newImages = data.images.filter((_, index) => index !== indexToRemove);
+        const newPreviews = imagePreviews.filter((_, index) => index !== indexToRemove);
+
+        setData('images', newImages);
+        setImagePreviews(newPreviews);
+    };
 
     useEffect(() => {
         setData('text', text);
     }, [text]);
-
-    const [createView, setCreateView] = useState(false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -86,25 +120,43 @@ export default function NovedadesAdmin() {
                                             Texto <span className="text-red-500">*</span>
                                         </label>
                                         <CustomReactQuill value={text} onChange={setText} />
-                                        <label htmlFor="imagenn">Imagen</label>
+                                        <label>Imágenes de la novedad</label>
+                                        <input
+                                            type="file"
+                                            multiple
+                                            accept="image/*"
+                                            onChange={handleFileChange}
+                                            className="file:bg-primary-color w-full rounded border p-2 file:cursor-pointer file:rounded-full file:px-4 file:py-2 file:text-white"
+                                        />
+                                        {errors.images && <span className="text-red-500">{errors.images}</span>}
+                                        {errors['images.*'] && <span className="text-red-500">{errors['images.*']}</span>}
 
-                                        <span className="text-base font-normal">Resolucion recomendada: 501x181px</span>
-                                        <div className="flex flex-row">
-                                            <input
-                                                type="file"
-                                                name="imagen"
-                                                id="imagenn"
-                                                onChange={(e) => setData('image', e.target.files[0])}
-                                                className="hidden"
-                                            />
-                                            <label
-                                                className="border-primary-color text-primary-color hover:bg-primary-color cursor-pointer rounded-md border px-2 py-1 transition duration-300 hover:text-white"
-                                                htmlFor="imagenn"
-                                            >
-                                                Elegir imagen
-                                            </label>
-                                            <p className="self-center px-2">{data?.image?.name}</p>
-                                        </div>
+                                        {/* Preview de imágenes */}
+                                        {imagePreviews.length > 0 && (
+                                            <div className="space-y-2">
+                                                <h4>Imágenes seleccionadas ({imagePreviews.length})</h4>
+                                                <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                                                    {imagePreviews.map((preview, index) => (
+                                                        <div key={index} className="relative">
+                                                            <img
+                                                                src={preview.url}
+                                                                alt={preview.name}
+                                                                className="h-32 w-full rounded border object-cover"
+                                                            />
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => removeImage(index)}
+                                                                className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-sm text-white hover:bg-red-600"
+                                                            >
+                                                                ×
+                                                            </button>
+                                                            <p className="mt-1 truncate text-xs text-gray-600">{preview.name}</p>
+                                                            <p className="text-xs text-gray-500">{(preview.size / 1024 / 1024).toFixed(2)} MB</p>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
 
                                         <div className="flex justify-end gap-4">
                                             <button

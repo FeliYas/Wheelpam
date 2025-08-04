@@ -29,18 +29,34 @@ export default function Novedades() {
 
             <div className="mx-auto my-20 grid max-w-[1200px] grid-cols-3 gap-5 max-sm:grid-cols-1 max-sm:items-center">
                 {novedades?.map((novedad) => (
-                    <Link href={`/novedades/${novedad?.id}`} className="flex h-[488px] w-full max-w-[392px] flex-col rounded-md border">
-                        <div className="relative flex min-h-[260px] items-end justify-center">
-                            <img src={novedad?.image} className="h-full w-full rounded-t-md object-cover" alt="" />
+                    <Link
+                        key={novedad.id}
+                        href={`/novedades/${novedad?.id}`}
+                        className="group flex h-auto min-h-[400px] w-full flex-col rounded-md border transition-shadow duration-300 hover:shadow-lg sm:min-h-[450px] lg:min-h-[488px]"
+                    >
+                        <div className="relative flex h-fit items-end justify-center overflow-hidden sm:min-h-[220px] lg:min-h-[260px]">
+                            <img
+                                src={novedad?.imagenes[0]?.image}
+                                className="h-full max-h-[273px] w-full overflow-hidden rounded-t-md object-cover transition-transform duration-300 group-hover:scale-105"
+                                alt={novedad?.title || 'Novedad'}
+                            />
                         </div>
-                        <div className="flex h-full flex-col justify-between p-5">
-                            <div className="flex flex-col">
-                                <p className="text-primary-color text-[16px] font-bold uppercase">{novedad?.type}</p>
-                                <h2 className="text-[25px] font-medium">{novedad?.title}</h2>
+                        <div className="flex h-full flex-col justify-between p-4 sm:p-5">
+                            <div className="mb-3 flex flex-col">
+                                <p className="text-primary-color mb-1 text-sm font-bold uppercase sm:text-[16px]">{novedad?.type}</p>
+                                <h2 className="mb-2 text-lg leading-tight font-medium sm:text-xl lg:text-[25px]">{novedad?.title}</h2>
                             </div>
-                            <div className="overflow-hidden" dangerouslySetInnerHTML={{ __html: novedad?.text }} />
-                            <Link href={`/novedades/${novedad?.slug}`} className="text-[16px] font-medium">
-                                Leer mas
+
+                            <div
+                                className="mb-4 line-clamp-3 flex-1 text-sm leading-relaxed text-gray-600 sm:text-base"
+                                dangerouslySetInnerHTML={{ __html: novedad?.text }}
+                            />
+
+                            <Link
+                                href={`/novedades/${novedad?.id}`}
+                                className="text-primary-color self-start text-sm font-medium hover:underline sm:text-[16px]"
+                            >
+                                Leer más
                             </Link>
                         </div>
                     </Link>

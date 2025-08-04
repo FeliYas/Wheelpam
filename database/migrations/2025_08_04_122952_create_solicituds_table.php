@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('garantias', function (Blueprint $table) {
+        Schema::create('solicituds', function (Blueprint $table) {
             $table->id();
-            $table->string('banner');
-            $table->string('title');
-            $table->longText('text');
-            $table->longText('more_text');
-            $table->string('image');
+            $table->longText('text')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('garantias');
+        Schema::dropIfExists('solicituds');
     }
 };

@@ -12,4 +12,9 @@ class Novedad extends Model
     {
         return asset('storage/' . $value);
     }
+
+    public function imagenes()
+    {
+        return $this->hasMany(ImagenesNovedad::class);
+    }
 }

@@ -18,6 +18,9 @@ export default function NovedadesAdminRow({ novedad }) {
     });
 
     const [text, setText] = useState(novedad?.text || '');
+    const [existingImages, setExistingImages] = useState(novedad.imagenes || []);
+    const [newImagePreviews, setNewImagePreviews] = useState([]);
+    const [imagesToDelete, setImagesToDelete] = useState([]);
 
     useEffect(() => {
         updateForm.setData('text', text);
@@ -53,6 +56,53 @@ export default function NovedadesAdminRow({ novedad }) {
         }
     };
 
+    const handleFileChange = (e) => {
+        const files = Array.from(e.target.files);
+
+        // Actualizar el form data con los archivos nuevos
+        updateForm.setData('new_images', files);
+
+        // Crear previews de las nuevas imágenes
+        const previews = files.map((file) => {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) =>
+                    resolve({
+                        file: file,
+                        url: e.target.result,
+                        name: file.name,
+                        size: file.size,
+                        isNew: true,
+                    });
+                reader.readAsDataURL(file);
+            });
+        });
+
+        Promise.all(previews).then(setNewImagePreviews);
+    };
+
+    const removeExistingImage = (indexToRemove) => {
+        const imageToDelete = existingImages[indexToRemove];
+
+        // Agregar al array de imágenes a eliminar
+        setImagesToDelete((prev) => [...prev, imageToDelete.id]);
+
+        // Remover de imágenes existentes
+        const newExistingImages = existingImages.filter((_, index) => index !== indexToRemove);
+        setExistingImages(newExistingImages);
+
+        // Actualizar form data
+        updateForm.setData('images_to_delete', [...imagesToDelete, imageToDelete.id]);
+    };
+
+    const removeNewImage = (indexToRemove) => {
+        const newImages = updateForm.data.new_images?.filter((_, index) => index !== indexToRemove) || [];
+        const newPreviews = newImagePreviews.filter((_, index) => index !== indexToRemove);
+
+        updateForm.setData('new_images', newImages);
+        setNewImagePreviews(newPreviews);
+    };
+
     return (
         <tr className={`border text-black odd:bg-gray-100 even:bg-white`}>
             <td className="align-middle">{novedad?.order}</td>
@@ -63,7 +113,7 @@ export default function NovedadesAdminRow({ novedad }) {
             </td>
 
             <td className="h-[90px] w-[90px] px-8">
-                <img className="h-full w-full object-contain" src={novedad?.image} alt="" />
+                <img className="h-full w-full object-contain" src={novedad?.imagenes[0]?.image} alt="" />
             </td>
 
             <td className="flex h-[90px] items-center justify-center">
@@ -130,21 +180,77 @@ export default function NovedadesAdminRow({ novedad }) {
                                     <label htmlFor="imagenn">Imagen</label>
 
                                     <span className="text-base font-normal">Resolucion recomendada: 501x181px</span>
-                                    <div className="flex flex-row">
-                                        <input
-                                            type="file"
-                                            name="imagen"
-                                            id="imagenn"
-                                            onChange={(e) => updateForm.setData('image', e.target.files[0])}
-                                            className="hidden"
-                                        />
-                                        <label
-                                            className="border-primary-color text-primary-color hover:bg-primary-color cursor-pointer rounded-md border px-2 py-1 transition duration-300 hover:text-white"
-                                            htmlFor="imagenn"
-                                        >
-                                            Elegir imagen
-                                        </label>
-                                        <p className="self-center px-2">{updateForm.data?.image?.name}</p>
+                                    <label>Imágenes del Producto</label>
+                                    <input
+                                        type="file"
+                                        multiple
+                                        accept="image/*"
+                                        onChange={handleFileChange}
+                                        className="file:bg-primary-color w-full rounded border p-2 file:cursor-pointer file:rounded-full file:px-4 file:py-2 file:text-white"
+                                    />
+
+                                    {/* Mostrar imágenes existentes */}
+                                    {existingImages.length > 0 && (
+                                        <div className="mt-4 space-y-2">
+                                            <h4>Imágenes actuales ({existingImages.length})</h4>
+                                            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                                                {existingImages.map((image, index) => (
+                                                    <div key={image.id} className="relative">
+                                                        <img
+                                                            src={image.image || image.path} // Ajusta según tu estructura
+                                                            alt={image.name || `Imagen ${index + 1}`}
+                                                            className="h-32 w-full rounded border object-cover"
+                                                        />
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => removeExistingImage(index)}
+                                                            className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-sm text-white hover:bg-red-600"
+                                                        >
+                                                            ×
+                                                        </button>
+                                                        <p className="mt-1 truncate text-xs text-gray-600">{image.name || `Imagen ${index + 1}`}</p>
+                                                        <span className="inline-block rounded bg-blue-100 px-2 py-1 text-xs text-blue-800">
+                                                            Existente
+                                                        </span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Mostrar nuevas imágenes */}
+                                    {newImagePreviews.length > 0 && (
+                                        <div className="mt-4 space-y-2">
+                                            <h4>Nuevas imágenes ({newImagePreviews.length})</h4>
+                                            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                                                {newImagePreviews.map((preview, index) => (
+                                                    <div key={index} className="relative">
+                                                        <img
+                                                            src={preview.url}
+                                                            alt={preview.name}
+                                                            className="h-32 w-full rounded border object-cover"
+                                                        />
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => removeNewImage(index)}
+                                                            className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-sm text-white hover:bg-red-600"
+                                                        >
+                                                            ×
+                                                        </button>
+                                                        <p className="mt-1 truncate text-xs text-gray-600">{preview.name}</p>
+                                                        <p className="text-xs text-gray-500">{(preview.size / 1024 / 1024).toFixed(2)} MB</p>
+                                                        <span className="inline-block rounded bg-green-100 px-2 py-1 text-xs text-green-800">
+                                                            Nueva
+                                                        </span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Mostrar total de imágenes */}
+                                    <div className="mt-2 text-sm text-gray-600">
+                                        Total de imágenes: {existingImages.length + newImagePreviews.length}
                                     </div>
 
                                     <div className="flex justify-end gap-4">

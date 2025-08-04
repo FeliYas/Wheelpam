@@ -1,8 +1,10 @@
 <?php
 
+use App\Models\Provincia;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use PHPUnit\Framework\Constraint\Constraint;
 
 return new class extends Migration
 {
@@ -11,13 +13,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('garantias', function (Blueprint $table) {
+        Schema::create('localidads', function (Blueprint $table) {
             $table->id();
-            $table->string('banner');
-            $table->string('title');
-            $table->longText('text');
-            $table->longText('more_text');
-            $table->string('image');
+            $table->string('name');
+            $table->foreignIdFor(Provincia::class, "provincia_id")->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('garantias');
+        Schema::dropIfExists('localidads');
     }
 };
