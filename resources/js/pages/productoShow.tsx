@@ -36,6 +36,8 @@ export default function ProductoShow({ producto, categorias, subcategorias, cate
         }
     };
 
+    console.log(producto);
+
     return (
         <DefaultLayout>
             <Head>
@@ -43,7 +45,14 @@ export default function ProductoShow({ producto, categorias, subcategorias, cate
                 <meta name="description" content={producto?.description} />
                 <meta property="og:title" content={producto?.name} />
             </Head>
-            <div className="mx-auto flex w-[1200px] flex-col py-20">
+            <div className="mx-auto flex w-[1200px] flex-row gap-2 py-10">
+                <Link href="/productos">Productos</Link> /<Link href={`/productos/${categoria_id}`}>{producto?.sub_categoria?.categoria?.title}</Link>
+                /<Link href={`/productos/${categoria_id}/${subcategoria_id}`}>{producto?.sub_categoria?.title}</Link>/
+                <Link className="font-bold" href={`/productos/${categoria_id}/${subcategoria_id}/${producto?.id}`}>
+                    {producto?.name}
+                </Link>
+            </div>
+            <div className="mx-auto flex w-[1200px] flex-col">
                 <div className="flex w-full flex-row gap-10">
                     <div className="flex w-1/4 flex-col">
                         {categorias?.map((categoria) => (

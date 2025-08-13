@@ -44,30 +44,26 @@ class ImagenesProductoController extends Controller
 
         $data = $request->validate([
             'order' => 'sometimes|string',
-            'image' => 'sometimes|file',
-            'producto_id' => 'required|exists:productos,id',
         ]);
 
         $imagenesProducto = ImagenesProducto::find($request->id);
-
-        // Check if the request has a file and store it
-        if ($request->hasFile('image')) {
-            // Delete the old image if it exists
-            if ($imagenesProducto->image) {
-                $absolutePath = public_path('storage/' . $imagenesProducto->image);
-                if (file_exists($absolutePath)) {
-                    unlink($absolutePath);
-                }
-            }
-            // Store the new image
-            $data['image'] = $request->file('image')->store('images', 'public');
-        }
 
         // Update the image
         $imagenesProducto->update($data);
 
         return redirect()->back()->with('success', 'Imagen updated successfully.');
     }
+
+    public function changePortada(Request $request)
+    {
+        $imagen = ImagenesProducto::find($request->id);
+        $imagen->portada = !$imagen->portada;
+        $imagen->save();
+
+        return redirect()->back()->with('success', 'Imagen updated successfully.');
+    }
+
+
 
     /**
      * Remove the specified resource from storage.

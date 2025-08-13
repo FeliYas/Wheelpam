@@ -59,8 +59,11 @@ class NosotrosController extends Controller
 
         $data = $request->validate([
             'title' => 'sometimes|string|max:255',
+            'aditional_title' => 'sometimes|string|max:255',
             'text' => 'sometimes',
+            'aditional_text' => 'sometimes',
             'image' => 'sometimes|file',
+            'aditional_image' => 'sometimes|file',
             'banner' => 'sometimes|file',
             'video' => 'sometimes|file',
         ]);
@@ -78,6 +81,18 @@ class NosotrosController extends Controller
             $data['image'] = $request->file('image')->store('images', 'public');
         }
 
+        // Handle file upload if additional image exists
+        if ($request->hasFile('aditional_image')) {
+            // Delete the old additional image if it exists
+            if ($nosotros->aditional_image) {
+                $absolutePath = public_path('storage/' . $nosotros->aditional_image);
+                if (file_exists($absolutePath)) {
+                    unlink($absolutePath);
+                }
+            }
+            // Store the new additional image
+            $data['aditional_image'] = $request->file('aditional_image')->store('images', 'public');
+        }
 
         // Handle file upload if video exists
         if ($request->hasFile('video')) {

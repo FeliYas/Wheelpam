@@ -48,15 +48,27 @@ export default function Nosotros() {
                 <h2 className="absolute z-10 mx-auto w-[1200px] pb-20 text-3xl font-bold text-white sm:text-4xl">Nosotros</h2>
             </div>
 
-            <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-6 px-4 py-10 sm:gap-8 sm:py-16 lg:flex-row lg:gap-10 lg:px-0 lg:py-20">
+            <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-6 px-4 pt-10 sm:gap-8 sm:pt-16 lg:flex-row lg:gap-10 lg:px-0 lg:pt-20">
                 <div className="h-auto w-full lg:h-[476px]">
-                    <img className="h-full w-full object-cover" src={nosotros?.image} alt="Imagen nosotros" />
+                    <img className="h-full w-full rounded-sm object-cover" src={nosotros?.image} alt="Imagen nosotros" />
                 </div>
                 <div className="h-full w-full py-4 lg:py-10">
                     <div className="flex flex-col gap-4 lg:gap-6">
                         <h2 className="text-2xl font-bold sm:text-3xl">{nosotros?.title}</h2>
                         <div className="" dangerouslySetInnerHTML={{ __html: nosotros?.text }} />
                     </div>
+                </div>
+            </div>
+
+            <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-6 px-4 py-10 sm:gap-8 sm:py-16 lg:flex-row lg:gap-10 lg:px-0 lg:py-20">
+                <div className="h-full w-full py-4 lg:py-10">
+                    <div className="flex flex-col gap-4 lg:gap-6">
+                        <h2 className="text-2xl font-bold sm:text-3xl">{nosotros?.aditional_title}</h2>
+                        <div className="" dangerouslySetInnerHTML={{ __html: nosotros?.aditional_text }} />
+                    </div>
+                </div>
+                <div className="h-auto w-full lg:h-[476px]">
+                    <img className="h-full w-full rounded-sm object-cover" src={nosotros?.aditional_image} alt="Imagen nosotros" />
                 </div>
             </div>
 

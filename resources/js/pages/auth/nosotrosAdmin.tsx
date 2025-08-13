@@ -8,10 +8,13 @@ export default function NosotrosAdmin() {
     const nosotrosInfo = usePage().props.nosotros;
 
     const [text, setText] = useState(nosotrosInfo?.text || '');
+    const [aditionalText, setAdditionalText] = useState(nosotrosInfo?.aditional_text || '');
 
     const { data, setData, processing, post, reset } = useForm({
         title: '',
         text: '',
+        aditional_text: '',
+        aditional_title: '',
     });
 
     useEffect(() => {
@@ -19,8 +22,14 @@ export default function NosotrosAdmin() {
     }, [text]);
 
     useEffect(() => {
+        setData('aditional_text', aditionalText);
+    }, [aditionalText]);
+
+    useEffect(() => {
         setData('title', nosotrosInfo?.title);
         setData('text', nosotrosInfo?.text);
+        setData('aditional_text', nosotrosInfo?.aditional_text);
+        setData('aditional_title', nosotrosInfo?.aditional_title);
     }, [nosotrosInfo]);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -123,6 +132,61 @@ export default function NosotrosAdmin() {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <h2 className="border-primary-color text-primary-color text-bold w-full border-b-2 text-2xl">Contenido Adicional</h2>
+                <div className="grid h-fit grid-cols-2 items-center gap-5">
+                    <div className="col-span-2 flex flex-col">
+                        <label className="font-semibold" htmlFor="aditional_title">
+                            Titulo:
+                        </label>
+                        <input
+                            onChange={(e) => setData('aditional_title', e.target.value)}
+                            value={data?.aditional_title}
+                            type="text"
+                            className="rounded-md border py-1 pl-2"
+                            name="aditional_title"
+                            id="aditional_title"
+                        />
+                    </div>
+                    <div className="w-full">
+                        <label htmlFor="aditional_image" className="block font-semibold text-gray-900">
+                            Imagen principal:
+                            <br />
+                            <span className="text-base font-normal">Resolucion recomendada: 1654x216 px</span>
+                        </label>
+                        <div className="mt-2 flex justify-between rounded-lg border shadow-lg">
+                            <div className="h-[200px] w-2/3 bg-[rgba(0,0,0,0.2)]">
+                                <img className="h-full w-full rounded-md object-cover" src={nosotrosInfo?.aditional_image} alt="" />
+                            </div>
+                            <div className="flex w-1/3 items-center justify-center">
+                                <div className="h-fit items-center self-center text-center">
+                                    <div className="relative mt-4 flex flex-col items-center text-sm/6 text-gray-600">
+                                        <label
+                                            htmlFor="aditional_image"
+                                            className="bg-primary-red relative cursor-pointer rounded-md px-2 py-1 font-semibold text-black"
+                                        >
+                                            <span>Cambiar Imagen</span>
+                                            <input
+                                                id="aditional_image"
+                                                name="aditional_image"
+                                                onChange={(e) => setData('aditional_image', e.target.files[0])}
+                                                type="file"
+                                                className="sr-only"
+                                            />
+                                        </label>
+                                        <p className="absolute top-10 max-w-[200px] break-words"> {data?.aditional_image?.name}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="flex h-full flex-col">
+                        <label className="font-semibold" htmlFor="bannerTitle">
+                            Texto:
+                        </label>
+                        <CustomReactQuill additionalStyles="h-full" onChange={setAdditionalText} value={aditionalText} />
                     </div>
                 </div>
                 <div className="mt-20 flex w-full justify-end">

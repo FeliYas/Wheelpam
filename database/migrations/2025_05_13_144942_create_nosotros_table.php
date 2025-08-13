@@ -15,8 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('banner');
             $table->string('title');
+            $table->string('aditional_title');
             $table->longText('text');
+            $table->longText('aditional_text');
             $table->string('image');
+            $table->string('aditional_image');
             $table->string('video');
             $table->timestamps();
         });

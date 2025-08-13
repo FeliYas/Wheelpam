@@ -8,6 +8,11 @@ class Producto extends Model
 {
     protected $guarded = [];
 
+    public function categoria()
+    {
+        return $this->belongsTo(Categoria::class);
+    }
+
     public function sub_categoria()
     {
         return $this->belongsTo(SubCategoria::class);

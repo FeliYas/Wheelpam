@@ -1,6 +1,6 @@
 import { faDownload, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useForm, usePage } from '@inertiajs/react';
+import { router, useForm, usePage } from '@inertiajs/react';
 import axios from 'axios';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
@@ -15,6 +15,8 @@ export default function ProductoAdminRow({ producto }) {
     const [text, setText] = useState(producto?.recomendaciones || '');
     const [caracteristicas, setCaracteristicas] = useState(false);
     const [currentCategory, setCurrentCategory] = useState(producto?.sub_categoria?.categoria_id || '');
+
+    const [imageOrder, setImageOrder] = useState('');
 
     const { categorias, sub_categorias, medidas } = usePage().props;
 
@@ -100,6 +102,19 @@ export default function ProductoAdminRow({ producto }) {
             },
             onError: (errors) => {
                 toast.error('Error al actualizar producto');
+                console.log(errors);
+            },
+        });
+    };
+
+    const updateImage = (image_id) => {
+        router.post(route('admin.imagenes.update', { id: image_id, order: imageOrder }), {
+            preserveScroll: true,
+            onSuccess: () => {
+                toast.success('Imagen actualizada correctamente');
+            },
+            onError: (errors) => {
+                toast.error('Error al actualizar imagen');
                 console.log(errors);
             },
         });
@@ -396,18 +411,35 @@ export default function ProductoAdminRow({ producto }) {
                         <form onSubmit={handleProdImage} method="POST" className="text-black">
                             <div className="max-h-[90vh] w-[500px] overflow-y-auto rounded-md bg-white p-4">
                                 <h2 className="mb-4 text-2xl font-semibold">Imagenes de producto</h2>
-                                <div className="flex w-full flex-row gap-2">
+                                <div className="w-full">
+                                    <div className="grid w-full grid-cols-4 bg-gray-200 py-1 text-center">
+                                        <p>ORDEN</p>
+                                        <p>IMAGEN</p>
+                                        <p>PORTADA</p>
+                                        <p>EDITAR</p>
+                                    </div>
                                     {producto?.imagenes?.length > 0 ? (
                                         producto?.imagenes?.map((imagen) => (
-                                            <div key={imagen.id} className="relative mb-4 flex h-[50px] w-[50px] flex-col gap-2">
-                                                <button
-                                                    type="button"
-                                                    onClick={() => deleteImage(imagen.id)}
-                                                    className="absolute top-0 flex h-full w-full items-center justify-center rounded-md bg-black/30"
-                                                >
-                                                    <FontAwesomeIcon icon={faTrash} color="#ef3620" size="lg" />
-                                                </button>
-                                                <img src={imagen?.image} alt={imagen?.name} className="h-full w-full rounded-md object-contain" />
+                                            <div className="grid w-full grid-cols-4 items-center justify-items-center py-2 text-center">
+                                                <input
+                                                    type="text"
+                                                    className="w-[50px] outline"
+                                                    defaultValue={imagen?.order}
+                                                    onChange={(e) => setImageOrder(e.target.value)}
+                                                />
+                                                <img src={imagen?.image} alt={imagen?.name} className="h-[50px] w-[50px] rounded-md object-contain" />
+                                                <p>
+                                                    <Switch status={imagen?.portada == 1} id={imagen.id} routeName="admin.imagenes.changePortada" />
+                                                </p>
+                                                <div className="flex flex-row gap-2">
+                                                    <button type="button" onClick={() => updateImage(imagen.id)} className="text-blue-500">
+                                                        Guardar
+                                                    </button>
+                                                    /
+                                                    <button type="button" onClick={() => deleteImage(imagen.id)} className="text-red-500">
+                                                        Eliminar
+                                                    </button>
+                                                </div>
                                             </div>
                                         ))
                                     ) : (

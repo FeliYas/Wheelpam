@@ -15,6 +15,7 @@ export default function Switch({ status = false, routeName = '', id }) {
     return (
         <div className="flex items-center">
             <button
+                type="button"
                 onClick={handleChange}
                 className={`relative flex h-6 w-12 cursor-pointer items-center rounded-full p-1 transition-colors duration-300 ${
                     checked ? 'bg-blue-500' : 'bg-gray-300'

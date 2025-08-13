@@ -56,6 +56,12 @@ class ProductoController extends Controller
             ->where('sub_categoria_id', $subcategoriaId)
             ->get();
 
+
+        if ($productos->count() == 1) {
+            $producto = $productos->first();
+            return redirect('/productos/' . $categoriaId . '/' . $subcategoriaId . '/' . $producto->id);
+        }
+
         $categorias = Categoria::orderBy('order', 'asc')->with('subcategorias')->get();
 
         return inertia('subproductosProductos', [
@@ -68,7 +74,7 @@ class ProductoController extends Controller
 
     public function showProducto($categoriaId, $subcategoriaId, $productoId)
     {
-        $producto = Producto::with(['imagenes', 'caracteristicas', 'sub_categoria'])->findOrFail($productoId);
+        $producto = Producto::with(['imagenes', 'caracteristicas', 'sub_categoria.categoria', 'categoria'])->findOrFail($productoId);
         $categorias = Categoria::orderBy('order', 'asc')->with('subcategorias')->get();
 
         return inertia('productoShow', [

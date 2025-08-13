@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('order')->default("zzz");
             $table->foreignId('producto_id')->constrained('productos')->cascadeOnDelete();
+            $table->boolean('portada')->default(false);
             $table->string('image');
             $table->timestamps();
         });

@@ -12,7 +12,11 @@ export default function ProductosCategoria() {
             <Head>
                 <title>Productos</title>
             </Head>
-            <div className="mx-auto min-h-[60vh] w-[1200px] py-20">
+            <div className="mx-auto flex w-[1200px] flex-row gap-2 py-10">
+                <Link href="/productos">Productos</Link> /
+                <Link href={`/productos/${categoria_id}`}>{categorias?.find((cat) => cat?.id == categoria_id)?.title}</Link>
+            </div>
+            <div className="mx-auto min-h-[60vh] w-[1200px]">
                 <div className="flex w-full flex-row gap-20">
                     <div className="flex w-1/3 flex-col">
                         {categorias?.map((categoria) => (

@@ -127,6 +127,7 @@ Route::middleware('auth')->group(function () {
     Route::post('dashboard/novedades/update', [NovedadController::class, 'update'])->name('admin.novedades.update');
     Route::delete('dashboard/novedades/destroy', [NovedadController::class, 'destroy'])->name('admin.novedades.destroy');
     Route::post('dashboard/novedades/changeFeatured', [NovedadController::class, 'changeFeatured'])->name('admin.novedades.changeFeatured');
+
     Route::get('dashboard/novedades-banner', [NovedadController::class, 'novedadesBanner'])->name('admin.novedades.banner');
 
     # Contacto
@@ -153,6 +154,7 @@ Route::middleware('auth')->group(function () {
     Route::post('dashboard/imagenes/store', [ImagenesProductoController::class, 'store'])->name('admin.imagenes.store');
     Route::post('dashboard/imagenes/update', [ImagenesProductoController::class, 'update'])->name('admin.imagenes.update');
     Route::delete('dashboard/imagenes/destroy', [ImagenesProductoController::class, 'destroy'])->name('admin.imagenes.destroy');
+    Route::post('dashboard/imagenes/changePortada', [ImagenesProductoController::class, 'changePortada'])->name('admin.imagenes.changePortada');
 
 
     # Productos

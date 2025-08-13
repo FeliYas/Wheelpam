@@ -11,7 +11,10 @@ export default function BannerInicio() {
                     <div dangerouslySetInnerHTML={{ __html: contenido?.garantia_text }} />
                 </div>
                 <div className="flex w-1/3 flex-col items-center">
-                    <Link href="/garantia" className="bg-primary-color flex h-[38px] w-[184px] items-center justify-center rounded-full">
+                    <Link
+                        href="/solicitud-de-presupuesto"
+                        className="bg-primary-color flex h-[38px] w-[184px] items-center justify-center rounded-full"
+                    >
                         Más info
                     </Link>
                 </div>
