@@ -57,7 +57,7 @@ export default function SubproductosProductos() {
                             >
                                 <div className="relative flex min-h-[286px] items-end justify-center overflow-hidden rounded-t-md">
                                     <img
-                                        src={producto?.imagenes[0]?.image}
+                                        src={producto?.imagenes?.find((img) => img.portada == true)?.image || producto?.imagenes[0]?.image}
                                         className={`h-full min-h-[286px] w-full rounded-t-md object-cover transition duration-300 ${hover === producto.id ? 'scale-105' : ''}`}
                                         alt=""
                                         onMouseEnter={() => setHover(producto.id)}
