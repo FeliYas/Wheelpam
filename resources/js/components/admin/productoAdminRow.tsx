@@ -4,10 +4,13 @@ import { router, useForm, usePage } from '@inertiajs/react';
 import axios from 'axios';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
 import CustomReactQuill from '../customReactQuill';
 import Switch from '../switch';
+
+// Mapa de órdenes por imagen
+type OrdersMap = Record<number, string | number>;
 
 export default function ProductoAdminRow({ producto }) {
     const [edit, setEdit] = useState(false);
@@ -16,35 +19,48 @@ export default function ProductoAdminRow({ producto }) {
     const [caracteristicas, setCaracteristicas] = useState(false);
     const [currentCategory, setCurrentCategory] = useState(producto?.sub_categoria?.categoria_id || '');
 
-    const [imageOrder, setImageOrder] = useState('');
+    // -----------------------------
+    // NUEVO: Estado controlado por imagen
+    // -----------------------------
+    const [imageOrders, setImageOrders] = useState<OrdersMap>(() => {
+        const map: OrdersMap = {};
+        (producto?.imagenes || []).forEach((img) => {
+            map[img.id] = img.order ?? '';
+        });
+        return map;
+    });
+
+    // Rehidratar cuando cambie el producto o se abra el modal de imágenes
+    useEffect(() => {
+        const map: OrdersMap = {};
+        (producto?.imagenes || []).forEach((img) => {
+            map[img.id] = img.order ?? '';
+        });
+        setImageOrders(map);
+    }, [producto?.id, imageView]);
 
     const { categorias, sub_categorias, medidas } = usePage().props;
 
     const handleDownload = async (producto) => {
         try {
+            if (!producto?.archivo) {
+                toast.error('Este producto no tiene archivo asociado');
+                return;
+            }
             const filename = producto.archivo.split('/').pop();
-            // Make a GET request to the download endpoint
-            const response = await axios.get(`/descargar/archivo/${filename}`, {
-                responseType: 'blob', // Important for file downloads
-            });
-
-            // Create a link element to trigger the download
+            const response = await axios.get(`/descargar/archivo/${filename}`, { responseType: 'blob' });
             const fileType = response.headers['content-type'] || 'application/octet-stream';
             const blob = new Blob([response.data], { type: fileType });
             const url = window.URL.createObjectURL(blob);
-
             const a = document.createElement('a');
             a.href = url;
-            a.download = filename; // Descargar con el nombre original
+            a.download = filename || 'archivo';
             document.body.appendChild(a);
             a.click();
-
             window.URL.revokeObjectURL(url);
         } catch (error) {
             console.error('Download failed:', error);
-
-            // Optional: show user-friendly error message
-            alert('Failed to download the file. Please try again.');
+            toast.error('No se pudo descargar el archivo.');
         }
     };
 
@@ -72,7 +88,7 @@ export default function ProductoAdminRow({ producto }) {
         producto_id: producto?.id,
     });
 
-    const handleProdImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleProdImage = (e: React.ChangeEvent<HTMLInputElement> | React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         imageForm.post(route('admin.imagenes.store'), {
             preserveScroll: true,
@@ -90,14 +106,12 @@ export default function ProductoAdminRow({ producto }) {
         updateForm.setData('recomendaciones', text);
     }, [text]);
 
-    console.log(producto);
-
     const handleUpdate = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         updateForm.post(route('admin.productos.update'), {
             preserveScroll: true,
             onSuccess: () => {
-                toast.success('Producto actualizada correctamente');
+                toast.success('Producto actualizado correctamente');
                 setEdit(false);
             },
             onError: (errors) => {
@@ -107,25 +121,42 @@ export default function ProductoAdminRow({ producto }) {
         });
     };
 
-    const updateImage = (image_id) => {
-        router.post(route('admin.imagenes.update', { id: image_id, order: imageOrder }), {
-            preserveScroll: true,
-            onSuccess: () => {
-                toast.success('Imagen actualizada correctamente');
+    // -----------------------------
+    // NUEVO: cambiar orden de UNA imagen
+    // -----------------------------
+    const handleOrderChange = (imageId: number, value: string) => {
+        setImageOrders((prev) => ({ ...prev, [imageId]: value }));
+    };
+
+    const updateImage = (image_id: number) => {
+        const order = imageOrders[image_id];
+
+        // Si tu ruta es RESTful: PATCH /imagenes/{id}
+        router.post(
+            route('admin.imagenes.update', { id: image_id }),
+            { order },
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    toast.success('Imagen actualizada correctamente');
+                },
+                onError: (errors) => {
+                    toast.error('Error al actualizar imagen');
+                    console.log(errors);
+                },
             },
-            onError: (errors) => {
-                toast.error('Error al actualizar imagen');
-                console.log(errors);
-            },
-        });
+        );
+
+        // Si tu backend no acepta PATCH directamente, usa method spoofing:
+        // router.post(route('admin.imagenes.update', { id: image_id }), { _method: 'PATCH', order }, { ...callbacks });
     };
 
     const deleteProducto = () => {
-        if (confirm('¿Estas seguro de eliminar esta producto?')) {
+        if (confirm('¿Estas seguro de eliminar este producto?')) {
             updateForm.delete(route('admin.productos.destroy'), {
                 preserveScroll: true,
                 onSuccess: () => {
-                    toast.success('Producto eliminada correctamente');
+                    toast.success('Producto eliminado correctamente');
                 },
                 onError: (errors) => {
                     toast.error('Error al eliminar producto');
@@ -135,7 +166,7 @@ export default function ProductoAdminRow({ producto }) {
         }
     };
 
-    const deleteImage = (imageId) => {
+    const deleteImage = (imageId: number) => {
         if (confirm('¿Estas seguro de eliminar esta imagen?')) {
             imageForm.delete(route('admin.imagenes.destroy', { id: imageId }), {
                 preserveScroll: true,
@@ -150,7 +181,7 @@ export default function ProductoAdminRow({ producto }) {
         }
     };
 
-    const agregarCarac = (e) => {
+    const agregarCarac = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         caracForm.post(route('admin.caracteristicas.store'), {
             preserveScroll: true,
@@ -164,7 +195,15 @@ export default function ProductoAdminRow({ producto }) {
         });
     };
 
-    console.log(producto);
+    // Orden visual de la grilla según el valor actual (editado o original)
+    const imagenesOrdenadas = useMemo(() => {
+        const list = [...(producto?.imagenes || [])];
+        return list.sort((a, b) => {
+            const oa = Number(imageOrders[a.id] ?? a.order ?? 0);
+            const ob = Number(imageOrders[b.id] ?? b.order ?? 0);
+            return oa - ob;
+        });
+    }, [producto?.imagenes, imageOrders]);
 
     return (
         <tr className={`border text-black odd:bg-gray-100 even:bg-white`}>
@@ -210,6 +249,8 @@ export default function ProductoAdminRow({ producto }) {
                     </button>
                 </div>
             </td>
+
+            {/* Modal de edición de producto */}
             <AnimatePresence>
                 {edit && (
                     <motion.div
@@ -400,6 +441,8 @@ export default function ProductoAdminRow({ producto }) {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* Modal de imágenes */}
             <AnimatePresence>
                 {imageView && (
                     <motion.div
@@ -409,25 +452,33 @@ export default function ProductoAdminRow({ producto }) {
                         className="fixed top-0 left-0 z-50 flex h-full w-full items-center justify-center bg-black/50 text-left"
                     >
                         <form onSubmit={handleProdImage} method="POST" className="text-black">
-                            <div className="max-h-[90vh] w-[500px] overflow-y-auto rounded-md bg-white p-4">
+                            <div className="max-h-[90vh] w-[640px] overflow-y-auto rounded-md bg-white p-4">
                                 <h2 className="mb-4 text-2xl font-semibold">Imagenes de producto</h2>
                                 <div className="w-full">
                                     <div className="grid w-full grid-cols-4 bg-gray-200 py-1 text-center">
                                         <p>ORDEN</p>
                                         <p>IMAGEN</p>
                                         <p>PORTADA</p>
-                                        <p>EDITAR</p>
+                                        <p>OPERACIONES</p>
                                     </div>
+
                                     {producto?.imagenes?.length > 0 ? (
-                                        producto?.imagenes?.map((imagen) => (
-                                            <div className="grid w-full grid-cols-4 items-center justify-items-center py-2 text-center">
+                                        imagenesOrdenadas.map((imagen) => (
+                                            <div
+                                                key={imagen.id}
+                                                className="grid w-full grid-cols-4 items-center justify-items-center py-2 text-center"
+                                            >
                                                 <input
                                                     type="text"
-                                                    className="w-[50px] outline"
-                                                    defaultValue={imagen?.order}
-                                                    onChange={(e) => setImageOrder(e.target.value)}
+                                                    className="w-[60px] rounded-md border px-1 py-0.5 text-center outline-none"
+                                                    value={imageOrders[imagen.id] ?? ''}
+                                                    onChange={(e) => handleOrderChange(imagen.id, e.target.value)}
                                                 />
-                                                <img src={imagen?.image} alt={imagen?.name} className="h-[50px] w-[50px] rounded-md object-contain" />
+                                                <img
+                                                    src={imagen?.image}
+                                                    alt={imagen?.name || 'imagen'}
+                                                    className="h-[50px] w-[50px] rounded-md object-contain"
+                                                />
                                                 <p>
                                                     <Switch status={imagen?.portada == 1} id={imagen.id} routeName="admin.imagenes.changePortada" />
                                                 </p>
@@ -446,7 +497,8 @@ export default function ProductoAdminRow({ producto }) {
                                         <p className="pb-5">Sin Imagenes</p>
                                     )}
                                 </div>
-                                <h2 className="mb-4 text-2xl font-semibold">Cargar nueva imagen</h2>
+
+                                <h2 className="mt-6 mb-4 text-2xl font-semibold">Cargar nueva imagen</h2>
                                 <div className="flex flex-col gap-4">
                                     <label htmlFor="ordennn">Orden</label>
                                     <input
@@ -503,6 +555,8 @@ export default function ProductoAdminRow({ producto }) {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* Modal de características */}
             <AnimatePresence>
                 {caracteristicas && (
                     <motion.div
