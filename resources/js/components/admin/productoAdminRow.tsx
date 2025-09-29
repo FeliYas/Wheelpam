@@ -16,8 +16,15 @@ export default function ProductoAdminRow({ producto }) {
     const [edit, setEdit] = useState(false);
     const [imageView, setImageView] = useState(false);
     const [text, setText] = useState(producto?.recomendaciones || '');
+    const [description, setDescripcion] = useState(producto?.description || '');
     const [caracteristicas, setCaracteristicas] = useState(false);
-    const [currentCategory, setCurrentCategory] = useState(producto?.sub_categoria?.categoria_id || '');
+    const [currentCategory, setCurrentCategory] = useState(() => {
+        // Primero intentar obtener desde sub_categoria, sino desde categoria_id directo
+        const categoryId = producto?.sub_categoria?.categoria_id || producto?.categoria_id;
+        console.log('Producto categoria inicial:', categoryId, typeof categoryId);
+        // Asegurar que siempre retorne un string, nunca null o undefined
+        return categoryId ? String(categoryId) : '';
+    });
 
     // -----------------------------
     // NUEVO: Estado controlado por imagen
@@ -38,6 +45,13 @@ export default function ProductoAdminRow({ producto }) {
         });
         setImageOrders(map);
     }, [producto?.id, imageView]);
+
+    // Sincronizar currentCategory cuando cambie el producto
+    useEffect(() => {
+        const categoryId = producto?.categoria_id;
+        // Asegurar que siempre se establezca un string válido
+        setCurrentCategory(categoryId ? String(categoryId) : '');
+    }, [producto?.categoria_id]);
 
     const { categorias, sub_categorias, medidas } = usePage().props;
 
@@ -63,13 +77,41 @@ export default function ProductoAdminRow({ producto }) {
             toast.error('No se pudo descargar el archivo.');
         }
     };
+    const handleDownloadFicha = async (producto) => {
+        try {
+            if (!producto?.ficha) {
+                toast.error('Este producto no tiene ficha asociada');
+                return;
+            }
+            const filename = producto.ficha.split('/').pop();
+            const response = await axios.get(`/descargar/ficha/${filename}`, { responseType: 'blob' });
+            const fileType = response.headers['content-type'] || 'application/octet-stream';
+            const blob = new Blob([response.data], { type: fileType });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename || 'ficha';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('Download failed:', error);
+            toast.error('No se pudo descargar la ficha.');
+        }
+    };
 
     const updateForm = useForm({
         order: producto?.order,
         name: producto?.name,
         recomendaciones: producto?.recomendaciones,
+        categoria_id: producto?.categoria_id,
         sub_categoria_id: producto?.sub_categoria_id,
         description: producto?.description,
+        dureza: producto?.dureza,
+        subtitulo1: producto?.subtitulo1,
+        subtitulo2: producto?.subtitulo2,
+        archivo: null as File | null,
+        ficha: null as File | null,
         temperatura: producto?.temperatura,
         confort: producto?.confort,
         desgaste: producto?.desgaste,
@@ -106,9 +148,41 @@ export default function ProductoAdminRow({ producto }) {
         updateForm.setData('recomendaciones', text);
     }, [text]);
 
+    useEffect(() => {
+        updateForm.setData('description', description);
+    }, [description]);
+
+    useEffect(() => {
+        updateForm.setData('categoria_id', currentCategory);
+        // Cuando cambia la categoría, limpiar la subcategoría
+        if (currentCategory !== String(producto?.categoria_id)) {
+            updateForm.setData('sub_categoria_id', '');
+        }
+    }, [currentCategory]);
+
     const handleUpdate = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        updateForm.post(route('admin.productos.update'), {
+        
+        // Crear un objeto con solo los datos que queremos enviar
+        const dataToSend: any = { ...updateForm.data };
+        
+        // Solo incluir archivo si se seleccionó uno nuevo
+        if (!updateForm.data.archivo) {
+            delete dataToSend.archivo;
+        }
+        
+        // Solo incluir ficha si se seleccionó una nueva
+        if (!updateForm.data.ficha) {
+            delete dataToSend.ficha;
+        }
+        
+        // Convertir string vacío a null para sub_categoria_id
+        if (dataToSend.sub_categoria_id === '') {
+            dataToSend.sub_categoria_id = null;
+        }
+        
+        // Usar router.post directamente para tener más control sobre los datos
+        router.post(route('admin.productos.update'), dataToSend, {
             preserveScroll: true,
             onSuccess: () => {
                 toast.success('Producto actualizado correctamente');
@@ -209,7 +283,6 @@ export default function ProductoAdminRow({ producto }) {
         <tr className={`border text-black odd:bg-gray-100 even:bg-white`}>
             <td className="align-middle">{producto?.order}</td>
             <td className="align-middle">{producto?.name}</td>
-            <td>{producto?.description}</td>
 
             <td className="align-middle">{producto?.medida?.name || 'Sin medida'}</td>
 
@@ -226,6 +299,15 @@ export default function ProductoAdminRow({ producto }) {
                     </button>
                 ) : (
                     <span className="text-red-500">Sin archivo</span>
+                )}
+            </td>
+            <td className="h-[90px] w-[90px] px-8">
+                {producto?.ficha ? (
+                    <button onClick={() => handleDownloadFicha(producto)} className="h-10 w-10 rounded-md border border-blue-500 px-2 py-1 text-white">
+                        <FontAwesomeIcon icon={faDownload} size="lg" color="#3b82f6" />
+                    </button>
+                ) : (
+                    <span className="text-red-500">Sin ficha</span>
                 )}
             </td>
 
@@ -261,7 +343,7 @@ export default function ProductoAdminRow({ producto }) {
                     >
                         <form onSubmit={handleUpdate} method="POST" className="text-black">
                             <div className="max-h-[90vh] w-[500px] overflow-y-auto rounded-md bg-white p-4">
-                                <h2 className="mb-4 text-2xl font-semibold">Crear Producto</h2>
+                                <h2 className="mb-4 text-2xl font-semibold">Editar Producto</h2>
                                 <div className="flex flex-col gap-4">
                                     <label htmlFor="ordennn">Orden</label>
                                     <input
@@ -284,16 +366,22 @@ export default function ProductoAdminRow({ producto }) {
                                         onChange={(e) => updateForm.setData('name', e.target.value)}
                                     />
 
-                                    <label htmlFor="descripcion">
+                                    <label htmlFor="description">
                                         Descripcion <span className="text-red-500">*</span>
+                                    </label>
+                                    
+                                    <CustomReactQuill value={description} onChange={setDescripcion} />
+
+                                    <label htmlFor="dureza">
+                                        Dureza <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         className="focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline"
                                         type="text"
-                                        name="descripcion"
-                                        id="descripcion"
-                                        value={updateForm?.data?.description}
-                                        onChange={(e) => updateForm.setData('description', e.target.value)}
+                                        name="dureza"
+                                        id="dureza"
+                                        value={updateForm?.data?.dureza}
+                                        onChange={(e) => updateForm.setData('dureza', e.target.value)}
                                     />
 
                                     <label htmlFor="recom">
@@ -364,27 +452,72 @@ export default function ProductoAdminRow({ producto }) {
                                     </label>
 
                                     <input
-                                        onChange={(e) => updateForm.setData('archivo', e.target.files[0])}
+                                        onChange={(e) => {
+                                            const file = e.target.files?.[0] || null;
+                                            updateForm.setData('archivo', file);
+                                        }}
                                         type="file"
                                         className="file:border"
                                         name=""
                                         id=""
                                     />
 
+                                    <label htmlFor="ficha">Ficha técnica </label>
+                                    <input
+                                        onChange={(e) => {
+                                            const file = e.target.files?.[0] || null;
+                                            updateForm.setData('ficha', file);
+                                        }}
+                                        type="file"
+                                        className="file:border"
+                                        name=""
+                                        id=""
+                                    />
+
+                                    <label htmlFor="subtitulo1">Subtítulo 1</label>
+
+                                    <input
+                                        className="focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline"
+                                        type="text"
+                                        name="subtitulo1"
+                                        id="subtitulo1"
+                                        value={updateForm?.data?.subtitulo1}
+                                        onChange={(e) => updateForm.setData('subtitulo1', e.target.value)}
+                                    />
+
+                                    <label htmlFor="subtitulo2">Subtítulo 2</label>
+
+                                    <input
+                                        className="focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline"
+                                        type="text"
+                                        name="subtitulo2"
+                                        id="subtitulo2"
+                                        value={updateForm?.data?.subtitulo2}
+                                        onChange={(e) => updateForm.setData('subtitulo2', e.target.value)}
+                                    />
+
                                     <label htmlFor="categoria">Categoria</label>
                                     <select
                                         className="focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline"
-                                        value={currentCategory}
-                                        onChange={(e) => setCurrentCategory(e.target.value)}
+                                        value={currentCategory || ''}
+                                        onChange={(e) => {
+                                            const newValue = e.target.value;
+                                            console.log('Cambiando categoria a:', newValue, typeof newValue);
+                                            setCurrentCategory(newValue);
+                                            updateForm.setData('categoria_id', newValue);
+                                        }}
                                         name=""
                                         id=""
                                     >
                                         <option value="">Seleccione una categoria</option>
-                                        {categorias?.map((categoria) => (
-                                            <option key={categoria.id} value={categoria.id}>
-                                                {categoria.title}
-                                            </option>
-                                        ))}
+                                        {categorias?.map((categoria) => {
+                                            console.log('Categoria disponible:', categoria.id, categoria.title, typeof categoria.id);
+                                            return (
+                                                <option key={categoria.id} value={categoria.id}>
+                                                    {categoria.title}
+                                                </option>
+                                            );
+                                        })}
                                     </select>
                                     <label htmlFor="categoria">Sub-categoria</label>
                                     <select
@@ -396,7 +529,7 @@ export default function ProductoAdminRow({ producto }) {
                                     >
                                         <option value="">Seleccione una sub-categoria</option>
                                         {sub_categorias
-                                            ?.filter((sub) => sub?.categoria_id == currentCategory)
+                                            ?.filter((sub) => String(sub?.categoria_id) === currentCategory)
                                             ?.map((subcategoria) => (
                                                 <option key={subcategoria.id} value={subcategoria.id}>
                                                     {subcategoria.title}

@@ -35,8 +35,33 @@ export default function ProductoShow({ producto, categorias, subcategorias, cate
             alert('Failed to download the file. Please try again.');
         }
     };
+    const handleDownloadFicha = async () => {
+        try {
+            const filename = producto.ficha.split('/').pop();
+            // Make a GET request to the download endpoint
+            const response = await axios.get(`/descargar/ficha/${filename}`, {
+                responseType: 'blob', // Important for file downloads
+            });
 
-    console.log(producto);
+            // Create a link element to trigger the download
+            const fileType = response.headers['content-type'] || 'application/octet-stream';
+            const blob = new Blob([response.data], { type: fileType });
+            const url = window.URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename; // Descargar con el nombre original
+            document.body.appendChild(a);
+            a.click();
+
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('Download failed:', error);
+
+            // Optional: show user-friendly error message
+            alert('Failed to download the file. Please try again.');
+        }
+    };
 
     return (
         <DefaultLayout>
@@ -52,7 +77,7 @@ export default function ProductoShow({ producto, categorias, subcategorias, cate
                     {producto?.name}
                 </Link>
             </div>
-            <div className="mx-auto flex w-[1200px] flex-col">
+            <div className="mx-auto flex w-[1200px] pb-10 flex-col">
                 <div className="flex w-full flex-row gap-10">
                     <div className="flex w-1/4 flex-col">
                         {categorias?.map((categoria) => (
@@ -115,10 +140,10 @@ export default function ProductoShow({ producto, categorias, subcategorias, cate
                                         </div>
                                     </div>
                                     <div className="flex flex-col gap-15">
-                                        {producto?.description && <p className="text-[16px] font-bold">{producto?.description}</p>}
+                                        {producto?.description && <div className="text-[16px] font-bold" dangerouslySetInnerHTML={{ __html: producto?.description }}></div>}
                                         {Number(producto?.confort) > 0 && Number(producto?.temperatura) > 0 && Number(producto?.desgaste) > 0 && (
                                             <div className="flex flex-col gap-2">
-                                                <p className="text-[16px] font-bold">Dureza de banda de rodadura 65 shore +- 5</p>
+                                                <p className="text-[16px] font-bold">{producto?.dureza || 'Dureza de banda de rodadura 65 shore +- 5'}</p>
                                                 <div className="grid grid-cols-2 grid-rows-3 items-center gap-y-2">
                                                     <p>{producto?.barra_uno || 'Resistencia a la temperatura'}</p>
                                                     <div className="relative h-2 rounded bg-gray-200">
@@ -157,13 +182,14 @@ export default function ProductoShow({ producto, categorias, subcategorias, cate
                                         </button>
                                     )}
 
-                                    <Link
-                                        href="/solicitud-de-presupuesto"
-                                        data={{ producto_id: producto?.name }}
-                                        className="bg-primary-color flex w-full items-center justify-center rounded-full font-bold text-white"
-                                    >
-                                        Consultar
-                                    </Link>
+                                    {producto?.ficha && (
+                                        <button
+                                            onClick={handleDownloadFicha}
+                                            className="bg-primary-color flex w-full items-center justify-center rounded-full font-bold text-white"
+                                        >
+                                            Ficha técnica
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -196,7 +222,7 @@ export default function ProductoShow({ producto, categorias, subcategorias, cate
                             </style>
                             {producto?.recomendaciones && producto.recomendaciones.trim() !== '<p><br></p>' && (
                                 <div className="flex w-full flex-col">
-                                    <h3 className="border-b pb-2 text-[30px] font-semibold">Recomendaciones de uso</h3>
+                                    <h3 className="border-b pb-2 text-[30px] font-semibold">{producto?.subtitulo1 || 'Recomendaciones de uso'}</h3>
                                     <div
                                         className="custom-list prose prose-sm sm:prose lg:prose-lg xl:prose-xl pt-4"
                                         dangerouslySetInnerHTML={{ __html: producto?.recomendaciones }}
@@ -206,7 +232,7 @@ export default function ProductoShow({ producto, categorias, subcategorias, cate
 
                             {producto?.caracteristicas != false && (
                                 <div className="flex w-full flex-col">
-                                    <h3 className="border-b pb-2 text-[30px] font-semibold">Características</h3>
+                                    <h3 className="border-b pb-2 text-[30px] font-semibold">{producto?.subtitulo2 || 'Características'}</h3>
                                     <div className="flex flex-row gap-5 pt-4">
                                         {producto?.caracteristicas?.map((caracteristica, index) => (
                                             <div key={index} className="h-[80px] w-[115px] rounded-md">

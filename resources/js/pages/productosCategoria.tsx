@@ -3,7 +3,7 @@ import { useState } from 'react';
 import DefaultLayout from './defaultLayout';
 
 export default function ProductosCategoria() {
-    const { categorias, productos, categoria_id, subcategoria_id } = usePage().props;
+    const { categorias, productosCategorias, categoria_id, subcategoria_id } = usePage().props;
 
     const [hover, setHover] = useState(null);
 
@@ -16,7 +16,7 @@ export default function ProductosCategoria() {
                 <Link href="/productos">Productos</Link> /
                 <Link href={`/productos/${categoria_id}`}>{categorias?.find((cat) => cat?.id == categoria_id)?.title}</Link>
             </div>
-            <div className="mx-auto min-h-[60vh] w-[1200px]">
+            <div className="mx-auto min-h-[60vh] w-[1200px] pb-10">
                 <div className="flex w-full flex-row gap-20">
                     <div className="flex w-1/3 flex-col">
                         {categorias?.map((categoria) => (
@@ -64,7 +64,28 @@ export default function ProductosCategoria() {
                                     <div className={`absolute h-full w-full bg-black/50 transition duration-300`}></div>
                                     <h2 className="absolute bottom-5 z-30 text-[25px] font-semibold text-black">{subcategoria?.title}</h2>
                                 </Link>
-                            ))}
+                        ))}
+                        {productosCategorias?.map((producto) => (
+                            <Link
+                                href={`/productos/${categoria_id}/${subcategoria_id}/${producto.id}`}
+                                className="flex h-[375px] flex-col rounded-md border"
+                            >
+                                <div className="relative flex min-h-[286px] items-end justify-center overflow-hidden rounded-t-md">
+                                    <img
+                                        src={producto?.imagenes?.find((img) => img.portada == true)?.image || producto?.imagenes[0]?.image}
+                                        className={`h-full min-h-[286px] w-full rounded-t-md object-cover transition duration-300 ${hover === producto.id ? 'scale-105' : ''}`}
+                                        alt=""
+                                        onMouseEnter={() => setHover(producto.id)}
+                                        onMouseLeave={() => setHover(null)}
+                                    />
+                                    <div className="bg-primary-color absolute -bottom-[2px] h-[2px] w-[25px]"></div>
+                                </div>
+                                <div className="flex h-full flex-col items-center justify-center">
+                                    <h3 className="text-primary-color text-[14px] font-semibold uppercase">{producto?.categoria?.title}</h3>
+                                    <h2 className="text-[18px] text-black">{producto?.name}</h2>
+                                </div>
+                            </Link>
+                        ))}
                     </div>
                 </div>
             </div>

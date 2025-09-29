@@ -89,10 +89,8 @@ class ProductoController extends Controller
     {
         $categorias = Categoria::orderBy('order', 'asc')->with('subcategorias')->get();
         $productos = Producto::when($request->subcategoria, function ($query) use ($request) {
-            // Si viene una subcategoría, filtra por esa directamente
             $query->where('sub_categoria_id', $request->subcategoria);
         }, function ($query) use ($id) {
-            // Si no viene subcategoría, filtra por la categoría a través de la relación
             $query->whereHas('sub_categoria', function ($subQuery) use ($id) {
                 $subQuery->where('categoria_id', $id);
             });
@@ -101,11 +99,19 @@ class ProductoController extends Controller
             ->with(['imagenes', 'sub_categoria'])
             ->get();
 
+        $productosCategorias = Producto::whereHas('categoria', function ($query) use ($id) {
+            $query->where('id', $id);
+        })->where('sub_categoria_id', null)
+            ->orderBy('order', 'asc')
+            ->with(['imagenes', 'categoria'])
+            ->get();
+
 
 
         return inertia('productosCategoria', [
             'categorias' => $categorias,
             'productos' => $productos,
+            'productosCategorias' => $productosCategorias,
             'categoria_id' => $id,
             'subcategoria_id' => $request->subcategoria,
         ]);
@@ -138,15 +144,20 @@ class ProductoController extends Controller
     {
         $data = $request->validate([
             'order' => 'sometimes|nullable|string',
-            'sub_categoria_id' => 'required|exists:sub_categorias,id',
+            'categoria_id' => 'required|exists:categorias,id',
+            'sub_categoria_id' => 'nullable|exists:sub_categorias,id',
             'name' => 'required|string|max:255',
             'recomendaciones' => 'sometimes|nullable|string',
             'archivo' => 'sometimes|nullable|file|max:2048',
+            'ficha' => 'sometimes|nullable|file|max:2048',
             'featured' => 'sometimes|nullable|boolean',
             'temperatura' => 'sometimes|nullable',
             'desgaste' => 'sometimes|nullable',
             'confort' => 'sometimes|nullable',
             'description' => 'sometimes|nullable|string',
+            'dureza' => 'sometimes|nullable|string',
+            'subtitulo1' => 'sometimes|nullable|string',
+            'subtitulo2' => 'sometimes|nullable|string',
             'medida_id' => 'sometimes|nullable|exists:medidas,id',
             'barra_uno' => 'sometimes|nullable|string',
             'barra_dos' => 'sometimes|nullable|string',
@@ -158,6 +169,11 @@ class ProductoController extends Controller
             $data['archivo'] = $request->file('archivo')->store('images', 'public');
         }
 
+            if ($request->hasFile('ficha')) {
+                # Store the ficha
+                $data['ficha'] = $request->file('ficha')->store('images', 'public');
+            }
+
         Producto::create($data);
 
         return redirect()->back()->with('success', 'Producto creado correctamente.');
@@ -166,7 +182,8 @@ class ProductoController extends Controller
     {
         $data = $request->validate([
             'order' => 'sometimes|nullable|string',
-            'sub_categoria_id' => 'required|exists:sub_categorias,id',
+            'categoria_id' => 'required|exists:categorias,id',
+            'sub_categoria_id' => 'nullable|exists:sub_categorias,id',
             'name' => 'required|string|max:255',
             'recomendaciones' => 'sometimes|nullable|string',
             'archivo' => 'sometimes|nullable|file',
@@ -175,6 +192,10 @@ class ProductoController extends Controller
             'desgaste' => 'sometimes|nullable',
             'confort' => 'sometimes|nullable',
             'description' => 'sometimes|nullable|string',
+            'dureza' => 'sometimes|nullable|string',
+            'subtitulo1' => 'sometimes|nullable|string',
+            'subtitulo2' => 'sometimes|nullable|string',
+            'ficha' => 'sometimes|nullable|file',
             'medida_id' => 'sometimes|nullable|exists:medidas,id',
             'barra_uno' => 'sometimes|nullable|string',
             'barra_dos' => 'sometimes|nullable|string',
@@ -193,6 +214,18 @@ class ProductoController extends Controller
             }
             // Store the new archivo
             $data['archivo'] = $request->file('archivo')->store('images', 'public');
+        }
+
+        if ($request->hasFile('ficha')) {
+            // Delete the old ficha if it exists
+            if ($producto->ficha) {
+                $absolutePath = public_path('storage/' . $producto->ficha);
+                if (file_exists($absolutePath)) {
+                    unlink($absolutePath);
+                }
+            }
+            // Store the new ficha
+            $data['ficha'] = $request->file('ficha')->store('images', 'public');
         }
 
 

@@ -32,7 +32,7 @@ export default function Garantia() {
                 <h2 className="absolute z-10 mx-auto w-[1200px] pb-20 text-3xl font-bold text-white max-sm:max-w-[1200px] sm:text-4xl">Calidad</h2>
             </div>
 
-            <div className="mx-auto my-20 flex h-[564px] max-w-[1200px] flex-row gap-10 max-sm:flex-col max-sm:items-center">
+            <div className="mx-auto my-20 flex max-w-[1200px] flex-row gap-10 max-sm:flex-col max-sm:items-center">
                 <div className="flex w-full flex-col">
                     <h2 className="text-[35px] font-semibold">{garantia?.title}</h2>
                     <div className="text-[16px]" dangerouslySetInnerHTML={{ __html: garantia?.text }} />

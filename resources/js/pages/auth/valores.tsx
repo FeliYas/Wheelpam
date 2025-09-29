@@ -49,8 +49,8 @@ export default function Valores() {
                             exit={{ opacity: 0 }}
                             className="fixed top-0 left-0 z-50 flex h-full w-full items-center justify-center bg-black/50 text-left"
                         >
-                            <form onSubmit={handleSubmit} method="POST" className="text-black">
-                                <div className="w-[500px] rounded-md bg-white p-4">
+                            <form onSubmit={handleSubmit} method="POST" className="text-black ">
+                                <div className="w-[500px] rounded-md bg-white p-4 max-h-[90vh] overflow-y-auto">
                                     <h2 className="mb-4 text-2xl font-semibold">Crear Campo</h2>
                                     <div className="flex flex-col gap-4">
                                         <label htmlFor="ordennn">Orden</label>

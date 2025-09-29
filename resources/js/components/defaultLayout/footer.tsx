@@ -56,27 +56,30 @@ export default function Footer() {
         <div className="flex h-fit w-full flex-col bg-black">
             <div className="mx-auto flex h-full w-full max-w-[1200px] flex-col items-center justify-between gap-10 px-4 py-10 lg:flex-row lg:items-start lg:gap-0 lg:px-0 lg:py-26">
                 {/* logo redes */}
-                <div className="flex h-full flex-col items-center gap-4">
-                    <img src={logos?.logo_principal} alt="Logo secundario" className="max-h-[72px] max-w-[200px] sm:max-w-full" />
+                <div className="flex h-full flex-col items-center gap-6">
+                    <div className='flex flex-col items-center'>
+                        <img src={logos?.logo_principal} alt="Logo secundario" className="max-h-[70px] max-w-[200px] sm:max-w-full" />
+                        <img src={`${window.location.origin}/storage/images/wpslogan.png`} alt="Logo secundario" className="max-h-[40px] max-w-[100px] sm:max-w-full" />
+                    </div>
                     <div className="flex flex-row items-center justify-center gap-4 sm:gap-2">
                         {contacto?.instagram && (
                             <a target="_blank" rel="noopener noreferrer" href={contacto?.instagram} aria-label="Facebook">
-                                <Instagram color="#ffffff" />
+                                <Instagram color="#EF3620" />
                             </a>
                         )}
                         {contacto?.facebook && (
                             <a target="_blank" rel="noopener noreferrer" href={contacto?.facebook} aria-label="Instagram">
-                                <Facebook color="#ffffff" />
+                                <Facebook color="#EF3620" />
                             </a>
                         )}
                         {contacto?.linkedin && (
                             <a target="_blank" rel="noopener noreferrer" href={contacto?.linkedin} aria-label="Instagram">
-                                <Linkedin color="#ffffff" />
+                                <Linkedin color="#EF3620" />
                             </a>
                         )}
                         {contacto?.youtube && (
                             <a target="_blank" rel="noopener noreferrer" href={contacto?.youtube} aria-label="Instagram">
-                                <Youtube color="#ffffff" />
+                                <Youtube color="#EF3620" />
                             </a>
                         )}
                     </div>

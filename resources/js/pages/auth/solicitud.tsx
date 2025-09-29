@@ -6,16 +6,18 @@ import Dashboard from '../dashboard';
 
 export default function SolicitudAdmin() {
     const { solicitud } = usePage().props;
-
     const [solicitudText, setSolicitudText] = useState(solicitud?.text || '');
+    const [titulo, setTitulo] = useState(solicitud?.titulo || '');
 
     const { data, setData, post, reset, errors, processing } = useForm({
+        titulo: solicitud?.titulo || '',
         text: solicitud?.text || '',
     });
 
     useEffect(() => {
+        setData('titulo', titulo);
         setData('text', solicitudText);
-    }, [solicitudText]);
+    }, [solicitudText, titulo]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -38,9 +40,14 @@ export default function SolicitudAdmin() {
             <form onSubmit={handleSubmit} className="flex w-full flex-col gap-5 p-6">
                 <div className="flex w-full flex-col gap-4">
                     <div className="flex flex-col gap-2">
-                        <label className="text-xl" htmlFor="solicitud_text">
-                            Informacion adicional
-                        </label>
+                        <label htmlFor="titulo" className="font-bold">Título de la Solicitud</label>
+                        <input
+                            type="text"
+                            id="titulo"
+                            value={titulo}
+                            onChange={(e) => setTitulo(e.target.value)}
+                            className="w-full rounded border border-gray-300 bg-white px-3 py-2 focus:border-primary-color focus:outline-none"
+                        />
                         <CustomReactQuill value={solicitudText} onChange={setSolicitudText} />
                         {errors.text && <p className="mt-1 text-xs text-red-500">{errors.text}</p>}
                     </div>

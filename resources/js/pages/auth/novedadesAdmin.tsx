@@ -197,7 +197,6 @@ export default function NovedadesAdmin() {
                                     <td className="text-center">ORDEN</td>
                                     <td className="text-center">TIPO</td>
                                     <td className="text-center">TITULO</td>
-                                    <td className="text-center">TEXTO</td>
                                     <td className="w-[400px] px-3 py-2 text-center">IMAGEN</td>
                                     <td className="text-center">DESTACADA</td>
                                     <td className="text-center">EDITAR</td>

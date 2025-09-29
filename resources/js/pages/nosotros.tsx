@@ -75,7 +75,6 @@ export default function Nosotros() {
             <div className="w-full bg-black py-8 sm:py-10">
                 <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-10 px-4 lg:px-0">
                     <div className="flex flex-col">
-                        <p className="text-primary-color text-[18px] font-bold">NUESTROS VALORES</p>
                         <h2 className="text-2xl font-semibold text-white sm:text-[30px]">¿Por qué elegirnos?</h2>
                     </div>
 

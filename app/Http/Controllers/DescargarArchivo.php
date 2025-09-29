@@ -15,4 +15,14 @@ class DescargarArchivo extends Controller
 
         return response()->json(['message' => 'Archivo no encontrado'], 404);
     }
+    public function descargarFicha($filename)
+    {
+        $path = storage_path("app/public/images/" . $filename);
+
+        if (file_exists($path)) {
+            return response()->download($path);
+        }
+
+        return response()->json(['message' => 'Ficha no encontrada'], 404);
+    }
 }

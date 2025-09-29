@@ -27,21 +27,16 @@ use App\Http\Controllers\SolicitudController;
 use App\Http\Controllers\SubCategoriaController;
 use App\Http\Controllers\ValoresController;
 use App\Models\Banner;
-use App\Models\Medida;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
 
 
-
-
-
-
     Route::get('adm', [AuthenticatedSessionController::class, 'create'])
         ->name('adm');
 
-    Route::post('adm', [AuthenticatedSessionController::class, 'store']);
+    Route::post('adm', [AuthenticatedSessionController::class, 'store'])->name('login');
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
         ->name('password.request');

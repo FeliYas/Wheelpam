@@ -230,7 +230,6 @@ class NovedadController extends Controller
                     $imagen->delete();
                 }
 
-
                 // Eliminar la novedad
                 $novedad->delete();
             });

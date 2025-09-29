@@ -104,15 +104,12 @@ export default function NovedadesAdminRow({ novedad }) {
     };
 
     return (
-        <tr className={`border text-black odd:bg-gray-100 even:bg-white`}>
+        <tr className={`border text-black odd:bg-gray-100 even:bg-white pt`}>
             <td className="align-middle">{novedad?.order}</td>
             <td className="align-middle">{novedad?.type}</td>
             <td className="align-middle">{novedad?.title}</td>
-            <td className="align-middle">
-                <div dangerouslySetInnerHTML={{ __html: novedad?.text }} />
-            </td>
 
-            <td className="h-[90px] w-[90px] px-8">
+            <td className="h-[90px] w-[90px] px-8 py-1">
                 <img className="h-full w-full object-contain" src={novedad?.imagenes[0]?.image} alt="" />
             </td>
 

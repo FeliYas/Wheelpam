@@ -14,11 +14,25 @@ export default function ProductosAdmin() {
         desgaste: '0',
         temperatura: '0',
         confort: '0',
+        categoria_id: '',
+        order: '',
+        description: '',
+        dureza: '',
+        recomendaciones: '',
+        barra_uno: '',
+        barra_dos: '',
+        barra_tres: '',
+        archivo: null as File | null,
+        ficha: null as File | null,
+        subtitulo1: '',
+        subtitulo2: '',
+        sub_categoria_id: '',
+        medida_id: '',
     });
 
-    const [currentCategory, setCurrentCategory] = useState();
+    const [currentCategory, setCurrentCategory] = useState<string>('');
 
-    const [text, setText] = useState();
+    const [text, setText] = useState<string>('');
 
     useEffect(() => {
         setData('recomendaciones', text);
@@ -107,15 +121,24 @@ export default function ProductosAdmin() {
                                             onChange={(e) => setData('name', e.target.value)}
                                         />
 
-                                        <label htmlFor="descripcion">
+                                        <label htmlFor="description">
                                             Descripcion <span className="text-red-500">*</span>
                                         </label>
+                                        <textarea
+                                            className="focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline"
+                                            name="description"
+                                            id="description"
+                                            onChange={(e) => setData('description', e.target.value)}
+                                            rows={4}
+                                        />
+
+                                        <label htmlFor="dureza">Dureza <span className="text-red-500">*</span></label>
                                         <input
                                             className="focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline"
                                             type="text"
-                                            name="descripcion"
-                                            id="descripcion"
-                                            onChange={(e) => setData('description', e.target.value)}
+                                            name="dureza"
+                                            id="dureza"
+                                            onChange={(e) => setData('dureza', e.target.value)}
                                         />
 
                                         <label htmlFor="recom">
@@ -179,21 +202,52 @@ export default function ProductosAdmin() {
                                         />
 
                                         <label htmlFor="archivo">
-                                            Tabla de medidas <span className="text-red-500">*</span>
+                                            Tabla de medidas
                                         </label>
 
                                         <input
-                                            onChange={(e) => setData('archivo', e.target.files[0])}
+                                            onChange={(e) => setData('archivo', e.target.files?.[0] || null)}
                                             type="file"
                                             className="file:bg-primary-color file:cursor-pointer file:rounded-full file:border file:px-2 file:py-1 file:text-white"
                                             name=""
                                             id=""
                                         />
 
+                                        <label htmlFor="ficha">Ficha técnica</label>
+
+                                        <input
+                                            onChange={(e) => setData('ficha', e.target.files?.[0] || null)}
+                                            type="file"
+                                            className="file:bg-primary-color file:cursor-pointer file:rounded-full file:border file:px-2 file:py-1 file:text-white"
+                                            name=""
+                                            id=""
+                                        />
+
+                                        <label htmlFor="subtitulo1">Subtítulo 1</label>
+
+                                        <input
+                                            className="focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline"
+                                            type="text"
+                                            name="subtitulo1"
+                                            id="subtitulo1"
+                                            onChange={(e) => setData('subtitulo1', e.target.value)}
+                                        />
+                                        <label htmlFor="subtitulo2">Subtítulo 2</label>
+                                        <input
+                                            className="focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline"
+                                            type="text"
+                                            name="subtitulo2"
+                                            id="subtitulo2"
+                                            onChange={(e) => setData('subtitulo2', e.target.value)}
+                                        />
+
                                         <label htmlFor="categoria">Categoria</label>
                                         <select
                                             className="focus:outline-primary-color rounded-md p-2 outline outline-gray-300 focus:outline"
-                                            onChange={(e) => setCurrentCategory(e.target.value)}
+                                            onChange={(e) => {
+                                                setCurrentCategory(e.target.value);
+                                                setData('categoria_id', e.target.value);
+                                            }}
                                             name=""
                                             id=""
                                         >
@@ -284,14 +338,12 @@ export default function ProductosAdmin() {
                                 <tr>
                                     <td className="text-center">ORDEN</td>
                                     <td className="text-center">NOMBRE</td>
-                                    <td className="py-2 text-center">DESCRIPCION</td>
                                     <td className="text-center">MEDIDA</td>
                                     <td className="text-center">CARACTERISTICAS</td>
                                     <td className="text-center">TABLA DE MEDIDAS</td>
+                                    <td className="text-center">FICHA</td>
                                     <td className="text-center">IMAGENES</td>
-
                                     <td className="text-center">DESTACADO</td>
-
                                     <td className="text-center">EDITAR</td>
                                 </tr>
                             </thead>

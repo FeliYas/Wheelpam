@@ -104,7 +104,7 @@ export default function SolicitudPresupuesto() {
 
             <form onSubmit={handleSubmit} className="mx-auto my-20 flex w-[1200px] flex-col gap-20">
                 <div className="flex flex-col gap-5">
-                    <h2 className="col-span-2 text-[24px] font-bold">Informacion Importante</h2>
+                    <h2 className="col-span-2 text-[24px] font-bold">{informacion?.titulo}</h2>
                     <div dangerouslySetInnerHTML={{ __html: informacion?.text || '' }} className="break-words" />
                     <h2 className="col-span-2 text-[24px] font-bold">Datos personales</h2>
                     <div className="grid grid-cols-2 grid-rows-2 gap-x-6 gap-y-8">

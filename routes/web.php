@@ -118,6 +118,8 @@ Route::post('/presupuesto/enviar', function (Request $request) {
 
 Route::get('/descargar/archivo/{id}', [DescargarArchivo::class, 'descargarArchivo'])
     ->name('descargar.archivo');
+Route::get('/descargar/ficha/{id}', [DescargarArchivo::class, 'descargarFicha'])
+    ->name('descargar.ficha');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {

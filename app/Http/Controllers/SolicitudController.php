@@ -27,9 +27,11 @@ class SolicitudController extends Controller
         /* si no existe crearlo */
         $solicitud = Solicitud::firstOrCreate(
             [],
+            ['titulo' => $request->input('titulo')],
             ['text' => $request->input('text')]
         );
         $solicitud->update([
+            'titulo' => $request->input('titulo'),
             'text' => $request->input('text'),
         ]);
 
